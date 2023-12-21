@@ -64,24 +64,14 @@
                                             <Font size="12.0" />
                                         </font>
                                     </Button>
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
-                                        <children>
-                                            <Label id="label_forget" fx:id="label_forget" text="Your email : " />
-                                            <TextField id="field_forget" fx:id="field_forget" />
-                                 <Button id="btn_forget" fx:id="btn_forget" mnemonicParsing="false" text="OK" />
-                                        </children>
-                              <padding>
-                                 <Insets left="20.0" />
-                              </padding>
-                                    </HBox>
-                                    <Button id="btn-connecter" fx:id="btn_connexion" mnemonicParsing="false" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 11pt; -fx-padding: 2 5; -fx-border-radius: 15; -fx-border: transparent; -fx-font-weight: bold;" text="Log in">
+                                    <Button id="btn-connecter" fx:id="btn_connexion" mnemonicParsing="false" onAction="#verif_identifiants" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 11pt; -fx-padding: 2 5; -fx-border-radius: 15; -fx-border: transparent; -fx-font-weight: bold;" text="Log in">
                                         <font>
                                             <Font name="Mistral" size="12.0" />
                                         </font>
                                         <textFill>
                                         </textFill>
                                         <VBox.margin>
-                                            <Insets bottom="10.0" left="120.0" />
+                                            <Insets bottom="10.0" left="120.0" top="5.0" />
                                         </VBox.margin>
                                     </Button>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
@@ -107,12 +97,39 @@
 
                     </Pane>
 
-                    <Pane prefHeight="100.0" prefWidth="100.0">
+                    <Pane fx:id="pane_password" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: orange; -fx-background-radius: 10;">
+                        <children>
+                            <HBox prefHeight="100.0" prefWidth="400.0">
+                                <children>
+                                    <Label id="label_forget" fx:id="label_forget" text="Your email : ">
+                              <HBox.margin>
+                                 <Insets left="35.0" top="8.0" />
+                              </HBox.margin>
+                              <font>
+                                 <Font name="System Bold" size="14.0" />
+                              </font></Label>
+                                    <TextField id="field_forget" fx:id="field_forget" promptText="email@px.c" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                        <HBox.margin>
+                                            <Insets left="8.0" top="8.0" />
+                                        </HBox.margin></TextField>
+                                    <Button id="btn_forget" fx:id="btn_forget" mnemonicParsing="false" onAction="#sendMail" style="-fx-background-color: #4081E8 ; -fx-text-fill: white;" text="OK">
+                                        <HBox.margin>
+                                            <Insets left="10.0" top="8.0" />
+                                        </HBox.margin></Button>
+                                </children>
+                                <padding>
+                                    <Insets left="20.0" top="5.0" />
+                                </padding>
+                                <VBox.margin>
+                                    <Insets top="5.0" />
+                                </VBox.margin>
+                            </HBox>
+                        </children>
                         <opaqueInsets>
                             <Insets />
                         </opaqueInsets>
                         <VBox.margin>
-                            <Insets bottom="30.0" />
+                            <Insets top="10.0" />
                         </VBox.margin>
                     </Pane>
                 </VBox>
@@ -126,6 +143,9 @@
         <Pane prefHeight="365.0" prefWidth="45.0" BorderPane.alignment="CENTER" />
     </left>
     <bottom>
-        <Pane prefHeight="42.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+        <Pane prefHeight="42.0" prefWidth="659.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin></Pane>
     </bottom>
 </BorderPane>

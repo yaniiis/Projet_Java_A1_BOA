@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -22,16 +23,52 @@ public class ControllerConnexion {
     private Button btn_connexion;
     @FXML
     private Button btn_forget;
+    @FXML
+    private TextField txt_mdp;
+    @FXML
+    private TextField txt_email;
+    @FXML
+    private Pane pane_password;
 
     public void initialize() {
-        label_forget.setVisible(false);
-        field_forget.setVisible(false);
-        btn_forget.setVisible(false);
+        pane_password.setVisible(false);
     }
 
     @FXML
+    protected void verif_identifiants(){
+        String email = txt_email.getText();
+        String mdp = txt_mdp.getText();
+
+        String query = "SELECT COUNT(*) FROM utilisateurs WHERE email = ? AND mdp = ?";
+
+        /*
+        try (
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, mdp);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int nombreUtilisateurs = resultSet.getInt(1);
+                    boolean identifiantsCorrects = nombreUtilisateurs > 0;
+
+                    if (identifiantsCorrects) {
+                        System.out.println("Présent !");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+         */
+    }
+
+
+    @FXML
     protected void layout_inscription() throws Exception {
-        System.out.println("aa");
+
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("inscription.fxml"));
         Parent root = fxmlLoader.load();
         Stage stage = new Stage();
@@ -46,9 +83,12 @@ public class ControllerConnexion {
 
     @FXML
     protected void display_fields_password() {
-        label_forget.setVisible(true);
-        field_forget.setVisible(true);
-        btn_forget.setVisible(true);
-        btn_connexion.setVisible(false);
+        pane_password.setVisible(true);
+    }
+
+    @FXML
+    public void sendMail(){
+        System.out.println("Erreur envoi mail !");
+        pane_password.setVisible(false);
     }
 }

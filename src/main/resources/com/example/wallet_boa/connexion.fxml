@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.wallet_boa.ControllerConnexion">
+    <top>
+        <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER" />
+    </top>
+    <center>
+        <HBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+
+                <Pane prefHeight="200.0" prefWidth="300.0" />
+
+
+                <VBox prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+                    <Pane prefHeight="100.0" prefWidth="350.0" />
+                    <Pane prefHeight="300.0" prefWidth="238.0" style="-fx-background-color: lightblue; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
+                        <children>
+                            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="307.0">
+                                <children>
+                                    <Label text="Connexion">
+                                        <font>
+                                            <Font name="JetBrains Mono Bold" size="30.0" />
+                                        </font>
+                                        <VBox.margin>
+                                            <Insets left="130.0" top="10.0" />
+                                        </VBox.margin>
+                                    </Label>
+                                    <Label text="Login">
+                                        <VBox.margin>
+                                            <Insets left="40.0" top="5.0" />
+                                        </VBox.margin>
+                                        <font>
+                                            <Font size="18.0" />
+                                        </font>
+                                    </Label>
+                                    <TextField fx:id="txt_email" prefHeight="25.0" prefWidth="150.0" promptText="email@px.c" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                        <VBox.margin>
+                                            <Insets left="30.0" top="10.0" />
+                                        </VBox.margin>
+                                    </TextField>
+                                    <Label text="PassWord">
+                                        <VBox.margin>
+                                            <Insets left="40.0" top="10.0" />
+                                        </VBox.margin>
+                                        <font>
+                                            <Font size="18.0" />
+                                        </font>
+                                    </Label>
+                                    <PasswordField id="txt_mdp" fx:id="txt_mdp" prefHeight="25.0" prefWidth="150.0" promptText="***********" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                        <VBox.margin>
+                                            <Insets left="30.0" top="10.0" />
+                                        </VBox.margin>
+                                    </PasswordField>
+                                    <Button id="btn_fields_password" fx:id="btn_fields_password" mnemonicParsing="false" onAction="#display_fields_password" style="-fx-background-color: none; -fx-underline: true;" text="Forget password ?">
+                                        <VBox.margin>
+                                            <Insets left="22.0" />
+                                        </VBox.margin>
+                                        <font>
+                                            <Font size="12.0" />
+                                        </font>
+                                    </Button>
+                                    <Button id="btn-connecter" fx:id="btn_connexion" mnemonicParsing="false" onAction="#verif_identifiants" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 11pt; -fx-padding: 2 5; -fx-border-radius: 15; -fx-border: transparent; -fx-font-weight: bold;" text="Log in">
+                                        <font>
+                                            <Font name="Mistral" size="12.0" />
+                                        </font>
+                                        <textFill>
+                                        </textFill>
+                                        <VBox.margin>
+                                            <Insets bottom="10.0" left="120.0" top="5.0" />
+                                        </VBox.margin>
+                                    </Button>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                        <children>
+                                            <Label text="Vous n'avez pas de compte ? ">
+                                    <HBox.margin>
+                                       <Insets />
+                                    </HBox.margin></Label>
+                                            <Button id="btn_layout_inscription" fx:id="btn_layout_inscription" mnemonicParsing="false" onAction="#layout_inscription" style="-fx-background-color: none; -fx-text-fill: blue;" text="Créez le !">
+                                                <HBox.margin>
+                                                    <Insets top="-3.0" />
+                                                </HBox.margin>
+                                            </Button>
+                                        </children>
+                                        <VBox.margin>
+                                            <Insets left="20.0" top="-5.0" />
+                                        </VBox.margin>
+                                    </HBox>
+                                </children>
+                            </VBox>
+
+                        </children>
+
+                    </Pane>
+
+                    <Pane fx:id="pane_password" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: orange; -fx-background-radius: 10;">
+                        <children>
+                            <HBox prefHeight="100.0" prefWidth="400.0">
+                                <children>
+                                    <Label id="label_forget" fx:id="label_forget" text="Your email : ">
+                              <HBox.margin>
+                                 <Insets left="35.0" top="8.0" />
+                              </HBox.margin>
+                              <font>
+                                 <Font name="System Bold" size="14.0" />
+                              </font></Label>
+                                    <TextField id="field_forget" fx:id="field_forget" promptText="email@px.c" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                        <HBox.margin>
+                                            <Insets left="8.0" top="8.0" />
+                                        </HBox.margin></TextField>
+                                    <Button id="btn_forget" fx:id="btn_forget" mnemonicParsing="false" onAction="#sendMail" style="-fx-background-color: #4081E8 ; -fx-text-fill: white;" text="OK">
+                                        <HBox.margin>
+                                            <Insets left="10.0" top="8.0" />
+                                        </HBox.margin></Button>
+                                </children>
+                                <padding>
+                                    <Insets left="20.0" top="5.0" />
+                                </padding>
+                                <VBox.margin>
+                                    <Insets top="5.0" />
+                                </VBox.margin>
+                            </HBox>
+                        </children>
+                        <opaqueInsets>
+                            <Insets />
+                        </opaqueInsets>
+                        <VBox.margin>
+                            <Insets top="10.0" />
+                        </VBox.margin>
+                    </Pane>
+                </VBox>
+            </children>
+        </HBox>
+    </center>
+    <right>
+        <Pane prefHeight="200.0" prefWidth="45.0" BorderPane.alignment="CENTER" />
+    </right>
+    <left>
+        <Pane prefHeight="365.0" prefWidth="45.0" BorderPane.alignment="CENTER" />
+    </left>
+    <bottom>
+        <Pane prefHeight="42.0" prefWidth="659.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin></Pane>
+    </bottom>
+</BorderPane>

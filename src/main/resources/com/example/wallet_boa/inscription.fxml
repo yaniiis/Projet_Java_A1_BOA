@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.wallet_boa.ControllerInscription">
+    <top>
+        <Pane prefHeight="35.0" prefWidth="669.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER" />
+    </top>
+    <center>
+        <HBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+
+                <Pane prefHeight="200.0" prefWidth="300.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+
+
+                <VBox prefHeight="850.0" prefWidth="350.0" BorderPane.alignment="CENTER">
+                    <Pane prefHeight="80.0" prefWidth="350.0" />
+                    <Pane prefHeight="567.0" prefWidth="321.0" style="-fx-background-color: lightblue; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
+                        <children>
+                            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="307.0">
+                                <children>
+                                    <Label text="Inscription">
+                                        <font>
+                                            <Font name="JetBrains Mono Bold" size="30.0" />
+                                        </font>
+                                        <VBox.margin>
+                                            <Insets left="95.0" top="6.0" />
+                                        </VBox.margin>
+                                    </Label>
+                                    <Label text="Name">
+                                        <VBox.margin>
+                                            <Insets left="40.0" top="5.0" />
+                                        </VBox.margin>
+                                        <font>
+                                            <Font size="18.0" />
+                                        </font>
+                                    </Label>
+                                    <TextField fx:id="i_name" prefHeight="25.0" prefWidth="150.0" promptText="Name" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                        <VBox.margin>
+                                            <Insets left="30.0" top="6.0" />
+                                        </VBox.margin>
+                                    </TextField>
+                                    <Label text="Surname">
+                                        <VBox.margin>
+                                            <Insets left="40.0" top="5.0" />
+                                        </VBox.margin>
+                                        <font>
+                                            <Font size="18.0" />
+                                        </font>
+                                    </Label>
+                                    <TextField fx:id="i_surname" prefHeight="25.0" prefWidth="150.0" promptText="Surname" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                        <VBox.margin>
+                                            <Insets left="30.0" top="6.0" />
+                                        </VBox.margin>
+                                    </TextField>
+                                    <Label text="Email">
+                                        <VBox.margin>
+                                            <Insets left="40.0" top="5.0" />
+                                        </VBox.margin>
+                                        <font>
+                                            <Font size="18.0" />
+                                        </font>
+                                    </Label>
+                                    <TextField fx:id="i_email" prefHeight="25.0" prefWidth="150.0" promptText="email@px.c" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                        <VBox.margin>
+                                            <Insets left="30.0" top="6.0" />
+                                        </VBox.margin>
+                                    </TextField>
+                                    <Label text="Phone number">
+                                        <VBox.margin>
+                                            <Insets left="40.0" top="5.0" />
+                                        </VBox.margin>
+                                        <font>
+                                            <Font size="18.0" />
+                                        </font>
+                                    </Label>
+                                    <TextField fx:id="i_phone" prefHeight="25.0" prefWidth="150.0" promptText="07 80 65 23 12" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                        <VBox.margin>
+                                            <Insets left="30.0" top="6.0" />
+                                        </VBox.margin>
+                                    </TextField>
+                                    <Label text="Password">
+                                        <VBox.margin>
+                                            <Insets left="40.0" top="5.0" />
+                                        </VBox.margin>
+                                        <font>
+                                            <Font size="18.0" />
+                                        </font>
+                                    </Label>
+                                    <PasswordField fx:id="i_mdp" prefHeight="25.0" prefWidth="150.0" promptText="************" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                        <VBox.margin>
+                                            <Insets left="30.0" top="6.0" />
+                                        </VBox.margin>
+                                    </PasswordField>
+                                    <Label text="Retape Password">
+                                        <VBox.margin>
+                                            <Insets left="40.0" top="5.0" />
+                                        </VBox.margin>
+                                        <font>
+                                            <Font size="18.0" />
+                                        </font>
+                                    </Label>
+                                    <PasswordField fx:id="i_mdp2" prefHeight="25.0" prefWidth="150.0" promptText="************" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                        <VBox.margin>
+                                            <Insets left="30.0" top="6.0" />
+                                        </VBox.margin>
+                                    </PasswordField>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="100.0">
+                                        <children>
+                                            <Button id="btn_inscription" fx:id="btn_inscription" mnemonicParsing="false" onAction="#insert_inscription" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 11pt; -fx-padding: 2 5; -fx-border-radius: 15; -fx-border: transparent; -fx-font-weight: bold;" text="Log in">
+                                                <font>
+                                                    <Font name="Mistral" size="12.0" />
+                                                </font>
+                                                <textFill>
+                                                </textFill>
+                                                <VBox.margin>
+                                                    <Insets bottom="0" left="70" top="13" />
+                                                </VBox.margin>
+                                    <HBox.margin>
+                                       <Insets left="100.0" top="15.0" />
+                                    </HBox.margin>
+                                            </Button>
+                                            <Button id="btn_back" fx:id="btn_back" mnemonicParsing="false" onAction="#back_connect" prefHeight="0" style="-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 11pt; -fx-padding: 2 5; -fx-border-radius: 15; -fx-border: transparent; -fx-font-weight: bold;" text="Back">
+                                                <font>
+                                                    <Font name="Mistral" size="12.0" />
+                                                </font>
+                                                <textFill>
+                                                </textFill>
+                                                <VBox.margin>
+                                                    <Insets bottom="0" left="0" top="0" />
+                                                </VBox.margin>
+                                    <HBox.margin>
+                                       <Insets left="10.0" top="15.0" />
+                                    </HBox.margin>
+                                            </Button>
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+
+                        </children>
+                  <VBox.margin>
+                     <Insets />
+                  </VBox.margin>
+
+                    </Pane>
+
+                    <Pane prefHeight="100.0" prefWidth="100.0">
+                        <opaqueInsets>
+                            <Insets />
+                        </opaqueInsets>
+                        <VBox.margin>
+                            <Insets bottom="30.0" />
+                        </VBox.margin>
+                    </Pane>
+                </VBox>
+            </children>
+        </HBox>
+    </center>
+    <right>
+        <Pane prefHeight="200.0" prefWidth="45.0" BorderPane.alignment="CENTER" />
+    </right>
+    <left>
+        <Pane prefHeight="365.0" prefWidth="45.0" BorderPane.alignment="CENTER" />
+    </left>
+</BorderPane>

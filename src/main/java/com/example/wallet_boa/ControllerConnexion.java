@@ -11,6 +11,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.sql.*;
+
 public class ControllerConnexion {
 
     @FXML
@@ -34,16 +36,22 @@ public class ControllerConnexion {
         pane_password.setVisible(false);
     }
 
+    public void enter_app(){
+
+    }
+
     @FXML
     protected void verif_identifiants(){
         String email = txt_email.getText();
         String mdp = txt_mdp.getText();
 
-        String query = "SELECT COUNT(*) FROM utilisateurs WHERE email = ? AND mdp = ?";
+        String query = "SELECT COUNT(*) FROM investor WHERE email = ? AND mdp = ?";
+        String url_c = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC";
 
-        /*
         try (
+                Connection connection = DriverManager.getConnection(url_c, "root", "equipe_BOA3");
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
+
         ) {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, mdp);
@@ -54,7 +62,7 @@ public class ControllerConnexion {
                     boolean identifiantsCorrects = nombreUtilisateurs > 0;
 
                     if (identifiantsCorrects) {
-                        System.out.println("Présent !");
+                        enter_app();
                     }
                 }
             }
@@ -62,7 +70,7 @@ public class ControllerConnexion {
             e.printStackTrace();
         }
 
-         */
+
     }
 
 

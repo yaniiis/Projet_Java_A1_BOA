@@ -10,6 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class ControllerInscription {
 
@@ -49,17 +53,19 @@ public class ControllerInscription {
         String surname = i_surname.getText();
         String name = i_name.getText();
 
-        String query = "INSERT INTO utilisateurs (email, mot_de_passe, telephone, nom, prenom) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO investor (name, surnme, email, mdp, phone_number) VALUES (?, ?, ?, ?, ?)";
+        String url_c = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC";
 
-        /*
+
         try (
+                Connection connection = DriverManager.getConnection(url_c, "root", "equipe_BOA3");
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
         ) {
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, mdp);
-            preparedStatement.setString(3, phone);
-            preparedStatement.setString(4, surname);
-            preparedStatement.setString(5, name);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, surname);
+            preparedStatement.setString(3, email);
+            preparedStatement.setString(4, mdp);
+            preparedStatement.setString(5, phone);
 
             int rowsAffected = preparedStatement.executeUpdate();
 
@@ -74,7 +80,6 @@ public class ControllerInscription {
             e.printStackTrace();
         }
 
-         */
 
     }
 }

@@ -7,14 +7,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import java.sql.*;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 public class HelloApplication extends Application {
 
 
     @Override
-    public void start(Stage stage) throws IOException, ClassNotFoundException {
+    public void start(Stage stage) throws IOException, ClassNotFoundException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("connexion.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 900, 600);
         stage.setTitle("Connexion");
@@ -27,11 +29,13 @@ public class HelloApplication extends Application {
         launch();
     }
 
-    public static void connect_db() throws ClassNotFoundException {
+    public static void connect_db() throws ClassNotFoundException, SQLException {
 
-//        Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-//        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/boa_database", "root", "equipe_BOA3");
+        String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC";
+        Connection connection = DriverManager.getConnection(url, "root", "equipe_BOA3");
+
 
     }
 }

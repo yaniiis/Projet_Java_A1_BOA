@@ -1,6 +1,6 @@
-package com.example.wallet_boa;
+package com.example.wallet_boa.controleur;
 
-import javafx.event.ActionEvent;
+import com.example.wallet_boa.HelloApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +19,6 @@ public class ControllerInscription {
 
     @FXML
     Button btn_back;
-
     @FXML
     TextField i_email;
     @FXML
@@ -35,18 +34,13 @@ public class ControllerInscription {
     public void back_connect() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("connexion.fxml"));
         Parent root = fxmlLoader.load();
-        Stage stage = new Stage();
+        Stage stage = HelloApplication.getPrimaryStage();
         stage.setTitle("Connexion");
         stage.setScene(new Scene(root, 900, 600));
-
-        Stage stage_ = (Stage) btn_back.getScene().getWindow();
-        stage_.close();
-
-        stage.show();
     }
 
     @FXML
-    public void insert_inscription(){
+    public void insert_inscription () throws IOException {
         String email = i_email.getText();
         String mdp = i_mdp.getText();
         String phone = i_phone.getText();
@@ -54,11 +48,11 @@ public class ControllerInscription {
         String name = i_name.getText();
 
         String query = "INSERT INTO investor (name, surnme, email, mdp, phone_number) VALUES (?, ?, ?, ?, ?)";
-        String url_c = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
 
 
         try (
-                Connection connection = DriverManager.getConnection(url_c, "root", "equipe_BOA3");
+                Connection connection = DriverManager.getConnection(url, "root", "equipe_BOA3");
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
         ) {
             preparedStatement.setString(1, name);
@@ -70,11 +64,9 @@ public class ControllerInscription {
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("Insertion réussie.");
-                // Ajoutez ici le code pour gérer la suite de votre application après l'insertion réussie.
+                back_connect();
             } else {
                 System.out.println("L'insertion a échoué.");
-                // Ajoutez ici le code pour gérer le cas où l'insertion échoue.
             }
         } catch (SQLException e) {
             e.printStackTrace();

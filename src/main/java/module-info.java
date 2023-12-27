@@ -6,4 +6,8 @@ module com.example.wallet_boa {
 
     opens com.example.wallet_boa to javafx.fxml;
     exports com.example.wallet_boa;
+    exports com.example.wallet_boa.controleur;
+    opens com.example.wallet_boa.controleur to javafx.fxml;
+    exports com.example.wallet_boa.modele;
+    opens com.example.wallet_boa.modele to javafx.fxml;
 }

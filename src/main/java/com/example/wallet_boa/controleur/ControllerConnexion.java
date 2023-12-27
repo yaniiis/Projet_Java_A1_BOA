@@ -1,5 +1,7 @@
-package com.example.wallet_boa;
+package com.example.wallet_boa.controleur;
 
+import com.example.wallet_boa.HelloApplication;
+import com.example.wallet_boa.modele.Investor;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,9 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.*;
 
 public class ControllerConnexion {
@@ -32,45 +34,61 @@ public class ControllerConnexion {
     @FXML
     private Pane pane_password;
 
+
     public void initialize() {
         pane_password.setVisible(false);
     }
 
-    public void enter_app(){
+    public void enter_app(String name, String surname, String email, String phone_number) throws IOException {
 
+        Investor investor = new Investor(name, surname, email, phone_number);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("accueil.fxml"));
+        Parent root = fxmlLoader.load();
+
+        ControllerAccueil accueilController = fxmlLoader.getController();
+
+        accueilController.setInvestor(investor);
+
+        Stage stage = HelloApplication.getPrimaryStage();
+        stage.setTitle("Accueil");
+        stage.setScene(new Scene(root, 900, 600));
+        stage.show();
     }
 
+
     @FXML
-    protected void verif_identifiants(){
+    protected void verif_identifiants() throws IOException {
         String email = txt_email.getText();
         String mdp = txt_mdp.getText();
 
-        String query = "SELECT COUNT(*) FROM investor WHERE email = ? AND mdp = ?";
-        String url_c = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC";
+        String query = "SELECT name, surnme, phone_number FROM investor WHERE email = ? AND mdp = ?";
+        String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
 
         try (
-                Connection connection = DriverManager.getConnection(url_c, "root", "equipe_BOA3");
+                Connection connection = DriverManager.getConnection(url, "root", "equipe_BOA3");
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
-
         ) {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, mdp);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    int nombreUtilisateurs = resultSet.getInt(1);
-                    boolean identifiantsCorrects = nombreUtilisateurs > 0;
 
-                    if (identifiantsCorrects) {
-                        enter_app();
+                    String name = resultSet.getString("name");
+                    String surname = resultSet.getString("surnme");
+                    String phone_number = resultSet.getString("phone_number");
+
+                    if (name != null && !name.isEmpty()) {
+                        enter_app(name, surname, email, phone_number);
+                    } else {
+                        System.out.println("Aucun utilisateur trouvé avec ces identifiants.");
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 
 
@@ -79,14 +97,10 @@ public class ControllerConnexion {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("inscription.fxml"));
         Parent root = fxmlLoader.load();
-        Stage stage = new Stage();
+        Stage stage = HelloApplication.getPrimaryStage();
+
         stage.setTitle("Inscription");
         stage.setScene(new Scene(root, 900, 600));
-
-        Stage stage_ = (Stage) btn_layout_inscription.getScene().getWindow();
-        stage_.close();
-
-        stage.show();
     }
 
     @FXML
@@ -99,4 +113,7 @@ public class ControllerConnexion {
         System.out.println("Erreur envoi mail !");
         pane_password.setVisible(false);
     }
+
+
+
 }

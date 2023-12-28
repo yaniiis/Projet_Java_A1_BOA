@@ -98,12 +98,23 @@ public class ControllerAccueil {
 
     @FXML
     public void layout_account() throws Exception {
+
+        Investor investor = new Investor(this.investor.getName(), this.investor.getSurname(), this.investor.getEmail(), this.investor.getPhone_number(), this.investor.getId());
+
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("account.fxml"));
         Parent root = fxmlLoader.load();
+
+        ControlleurAccount accountController = fxmlLoader.getController();
+
+        accountController.initialize_investor(investor);
+
         Stage stage = HelloApplication.getPrimaryStage();
         stage.setTitle("Account");
         stage.setScene(new Scene(root, 900, 600));
+
     }
+
+
 
 
 

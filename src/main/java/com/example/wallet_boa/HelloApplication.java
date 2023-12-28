@@ -29,7 +29,6 @@ public class HelloApplication extends Application {
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Votre Application");
         primaryStage.setScene(new Scene(root, 800, 600));
-        connect_db();
         primaryStage.show();
     }
 
@@ -37,20 +36,5 @@ public class HelloApplication extends Application {
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
-
-    public static Connection getDB() {
-        return connection;
-    }
-
-
-    public static void connect_db() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
-        connection = DriverManager.getConnection(url, "root", "equipe_BOA3");
-
-
-    }
-
 
 }

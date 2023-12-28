@@ -39,9 +39,9 @@ public class ControllerConnexion {
         pane_password.setVisible(false);
     }
 
-    public void enter_app(String name, String surname, String email, String phone_number) throws IOException {
+    public void enter_app(String name, String surname, String email, String phone_number, int id) throws IOException {
 
-        Investor investor = new Investor(name, surname, email, phone_number);
+        Investor investor = new Investor(name, surname, email, phone_number, id);
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("accueil.fxml"));
         Parent root = fxmlLoader.load();
@@ -62,7 +62,7 @@ public class ControllerConnexion {
         String email = txt_email.getText();
         String mdp = txt_mdp.getText();
 
-        String query = "SELECT name, surnme, phone_number FROM investor WHERE email = ? AND mdp = ?";
+        String query = "SELECT id_investor, name, surnme, phone_number FROM investor WHERE email = ? AND mdp = ?";
         String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
 
         try (
@@ -78,9 +78,10 @@ public class ControllerConnexion {
                     String name = resultSet.getString("name");
                     String surname = resultSet.getString("surnme");
                     String phone_number = resultSet.getString("phone_number");
+                    int id = resultSet.getInt("id_investor");
 
                     if (name != null && !name.isEmpty()) {
-                        enter_app(name, surname, email, phone_number);
+                        enter_app(name, surname, email, phone_number, id);
                     } else {
                         System.out.println("Aucun utilisateur trouvé avec ces identifiants.");
                     }

@@ -85,7 +85,7 @@
                   <Insets bottom="80.0" left="120.0" right="120.0" />
                </GridPane.margin>
                <children>
-                    <VBox fx:id="box_npw" layoutX="79.0" layoutY="14.0" prefHeight="369.0" prefWidth="296.0" visible="true">
+                    <VBox fx:id="box_npw" layoutX="79.0" layoutY="14.0" prefHeight="369.0" prefWidth="296.0" visible="false">
                         <children>
                             <Label text="New PassWord">
                                 <VBox.margin>
@@ -128,7 +128,7 @@
                                 </VBox.margin></Button>
                         </children>
                     </VBox>
-                   <VBox fx:id="box_profil" alignment="CENTER" layoutX="130.0" layoutY="14.0" prefHeight="257.0" prefWidth="210.0" visible="false">
+                   <VBox fx:id="box_profil" alignment="CENTER" layoutX="130.0" layoutY="14.0" prefHeight="257.0" prefWidth="210.0" visible="true">
                        <children>
                            <Button fx:id="btn_edit" mnemonicParsing="false" onAction="#edit_fields" text="Edit" />
                            <Label text="Name">

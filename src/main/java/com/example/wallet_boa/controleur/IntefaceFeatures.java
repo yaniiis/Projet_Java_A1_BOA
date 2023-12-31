@@ -13,7 +13,13 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Base64;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public interface IntefaceFeatures {
 
@@ -137,6 +143,7 @@ public interface IntefaceFeatures {
         stage.setScene(new Scene(root, 900, 600));
         stage.show();
     }
+
     @FXML
     static void layout_inscription() throws Exception {
 
@@ -147,6 +154,7 @@ public interface IntefaceFeatures {
         stage.setTitle("Inscription");
         stage.setScene(new Scene(root, 900, 600));
     }
+
     @FXML
     static void layout_connexion() throws Exception {
 
@@ -199,5 +207,64 @@ public interface IntefaceFeatures {
         stage.setScene(new Scene(root, 900, 600));
     }
 
+    static boolean isValidEmail(String email) {
+        String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+
+
+    static boolean isValidPhone(String phone) {
+
+        if(phone.length()!=10){
+            return false;
+        }
+
+        String PHONE_REGEX = "^\\+?\\d{10,15}$";
+        Pattern pattern = Pattern.compile(PHONE_REGEX);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
+    }
+
+    static boolean isValidPassword(String password) {
+        if (password.length()<7 ) {
+            return false;
+        }
+
+        boolean hasUpper = false, hasLower = false, hasDigit = false, hasSpecial = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) hasUpper = true;
+            else if (Character.isLowerCase(c)) hasLower = true;
+            else if (Character.isDigit(c)) hasDigit = true;
+            else hasSpecial = true;
+        }
+
+        return hasUpper && hasLower && hasDigit && hasSpecial;
+    }
+
+    static boolean isEmailUnique(String email) {
+        String query = "SELECT COUNT(*) AS nb FROM investor WHERE email = ?";
+        String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
+
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("nb") == 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
 }

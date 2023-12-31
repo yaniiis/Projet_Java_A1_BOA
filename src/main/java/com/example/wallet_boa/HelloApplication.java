@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.sql.*;
 
 import java.sql.Connection;
@@ -25,6 +27,7 @@ public class HelloApplication extends Application {
 
         HelloApplication.primaryStage = primaryStage;
 
+//        primaryStage.initStyle(StageStyle.UNDECORATED);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("connexion.fxml"));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Votre Application");

@@ -2,6 +2,9 @@ module com.example.wallet_boa {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires javafx.media;
+    requires java.scripting;
+
 
 
     opens com.example.wallet_boa to javafx.fxml;

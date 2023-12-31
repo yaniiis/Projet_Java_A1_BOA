@@ -9,10 +9,11 @@
     <top>
         <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
             <children>
-                <Label layoutX="612.0" layoutY="4.0" text="Name">
+                <Label fx:id="label_name" layoutX="612.0" layoutY="4.0" text="Name">
                     <font>
                         <Font size="18.0" />
                     </font></Label>
+                <Button fx:id="btn_logout" layoutX="550.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
             </children></Pane>
     </top>
     <left>
@@ -20,17 +21,17 @@
             <children>
                 <VBox prefHeight="366.0" prefWidth="202.0">
                     <children>
-                        <Button fx:id="btn_accueil" mnemonicParsing="false" onAction="#layout_accueil" text="Accueil">
+                        <Button fx:id="btn_accueil" mnemonicParsing="false" onAction="#l_accueil" text="Accueil">
                             <VBox.margin>
                                 <Insets left="70.0" top="60.0" />
                             </VBox.margin>
                         </Button>
-                        <Button fx:id="btn_wallet" mnemonicParsing="false" onAction="#layout_wallet" text="Wallet">
+                        <Button fx:id="btn_wallet" mnemonicParsing="false" onAction="#l_wallet" text="Wallet">
                             <VBox.margin>
                                 <Insets left="73.0" top="30.0" />
                             </VBox.margin>
                         </Button>
-                        <Button fx:id="btn_cryptocurrency" mnemonicParsing="false" onAction="#layout_crypto" text="Cryptocurrency">
+                        <Button fx:id="btn_cryptocurrency" mnemonicParsing="false" onAction="#l_crytpo" text="Cryptocurrency">
                             <VBox.margin>
                                 <Insets left="53.0" top="30.0" />
                             </VBox.margin>
@@ -40,16 +41,16 @@
                                 <Insets left="73.0" top="30.0" />
                             </VBox.margin>
                         </Button>
-                        <Button fx:id="btn_transaction" mnemonicParsing="false" onAction="#layout_transaction" text="Transaction">
+                        <Button fx:id="btn_transaction" mnemonicParsing="false" onAction="#l_transaction" text="Transaction">
                             <VBox.margin>
                                 <Insets left="61.0" top="30.0" />
                             </VBox.margin></Button>
-                        <Button fx:id="btn_account" mnemonicParsing="false" onAction="#layout_account" text="Account">
+                        <Button fx:id="btn_account" mnemonicParsing="false" onAction="#l_account" text="Account">
                             <VBox.margin>
                                 <Insets left="73.0" top="30.0" />
                             </VBox.margin>
                         </Button>
-                        <Button fx:id="btn_help" mnemonicParsing="false" onAction="#layout_help" text="Help">
+                        <Button fx:id="btn_help" mnemonicParsing="false" onAction="#l_help" text="Help">
                             <VBox.margin>
                                 <Insets left="75.0" top="150.0" />
                             </VBox.margin>
@@ -71,12 +72,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label text="Wallet" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                <Label text="Stock" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
                     <font>
                         <Font size="36.0" />
                     </font>
                     <GridPane.margin>
-                        <Insets left="200.0" />
+                        <Insets left="210.0" />
                     </GridPane.margin>
                 </Label>
             </children>

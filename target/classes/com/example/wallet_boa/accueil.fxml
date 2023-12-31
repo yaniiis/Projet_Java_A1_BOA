@@ -13,50 +13,50 @@
                <font>
                   <Font size="18.0" />
                </font></Label>
-            <Button fx:id="btn_logout" layoutX="550.0" layoutY="5.0" mnemonicParsing="false" onAction="#log_out" text="log out" />
+             <Button fx:id="btn_logout" layoutX="550.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
          </children></Pane>
     </top>
    <left>
        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="366.0" prefWidth="202.0">
-               <children>
-                  <Button fx:id="btn_accueil" mnemonicParsing="false" text="Accueil">
-                     <VBox.margin>
-                        <Insets left="70.0" top="60.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="btn_wallet" mnemonicParsing="false" onAction="#layout_wallet" text="Wallet">
-                     <VBox.margin>
-                        <Insets left="73.0" top="30.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="btn_cryptocurrency" mnemonicParsing="false" onAction="#layout_crypto" text="Cryptocurrency">
-                     <VBox.margin>
-                        <Insets left="53.0" top="30.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="btn_action" mnemonicParsing="false" onAction="#layout_stock" text="Action">
-                     <VBox.margin>
-                        <Insets left="73.0" top="30.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="btn_transaction" mnemonicParsing="false" onAction="#layout_transaction" text="Transaction">
-                     <VBox.margin>
-                        <Insets left="61.0" top="30.0" />
-                     </VBox.margin></Button>
-                  <Button fx:id="btn_account" mnemonicParsing="false" onAction="#layout_account" text="Account">
-                     <VBox.margin>
-                        <Insets left="73.0" top="30.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="btn_help" mnemonicParsing="false" onAction="#layout_help" text="Help">
-                     <VBox.margin>
-                        <Insets left="75.0" top="150.0" />
-                     </VBox.margin>
-                  </Button>
-               </children>
-            </VBox>
+             <VBox prefHeight="366.0" prefWidth="202.0">
+                 <children>
+                     <Button fx:id="btn_accueil" mnemonicParsing="false" text="Accueil">
+                         <VBox.margin>
+                             <Insets left="70.0" top="60.0" />
+                         </VBox.margin>
+                     </Button>
+                     <Button fx:id="btn_wallet" mnemonicParsing="false" onAction="#l_wallet" text="Wallet">
+                         <VBox.margin>
+                             <Insets left="73.0" top="30.0" />
+                         </VBox.margin>
+                     </Button>
+                     <Button fx:id="btn_cryptocurrency" mnemonicParsing="false" onAction="#l_crytpo" text="Cryptocurrency">
+                         <VBox.margin>
+                             <Insets left="53.0" top="30.0" />
+                         </VBox.margin>
+                     </Button>
+                     <Button fx:id="btn_action" mnemonicParsing="false" onAction="#l_action" text="Action">
+                         <VBox.margin>
+                             <Insets left="73.0" top="30.0" />
+                         </VBox.margin>
+                     </Button>
+                     <Button fx:id="btn_transaction" mnemonicParsing="false" onAction="#l_transaction" text="Transaction">
+                         <VBox.margin>
+                             <Insets left="61.0" top="30.0" />
+                         </VBox.margin></Button>
+                     <Button fx:id="btn_account" mnemonicParsing="false" onAction="#l_account" text="Account">
+                         <VBox.margin>
+                             <Insets left="73.0" top="30.0" />
+                         </VBox.margin>
+                     </Button>
+                     <Button fx:id="btn_help" mnemonicParsing="false" onAction="#l_help" text="Help">
+                         <VBox.margin>
+                             <Insets left="75.0" top="150.0" />
+                         </VBox.margin>
+                     </Button>
+                 </children>
+             </VBox>
          </children></Pane>
 
    </left>
@@ -72,7 +72,7 @@
                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
            <children>
-               <Label text="Wallet" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+               <Label text="Accueil" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
                    <font>
                        <Font size="36.0" />
                    </font>

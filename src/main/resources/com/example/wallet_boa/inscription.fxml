@@ -127,7 +127,7 @@
                                        <Insets left="100.0" top="15.0" />
                                     </HBox.margin>
                                             </Button>
-                                            <Button id="btn_back" fx:id="btn_back" mnemonicParsing="false" onAction="#back_connect" prefHeight="0" style="-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 11pt; -fx-padding: 2 5; -fx-border-radius: 15; -fx-border: transparent; -fx-font-weight: bold;" text="Back">
+                                            <Button id="btn_back" fx:id="btn_back" mnemonicParsing="false" onAction="#l_connection" prefHeight="0" style="-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 11pt; -fx-padding: 2 5; -fx-border-radius: 15; -fx-border: transparent; -fx-font-weight: bold;" text="Back">
                                                 <font>
                                                     <Font name="Mistral" size="12.0" />
                                                 </font>

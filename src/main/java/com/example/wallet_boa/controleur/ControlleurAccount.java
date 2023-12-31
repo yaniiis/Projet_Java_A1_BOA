@@ -7,18 +7,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class ControlleurAccount {
 
     private Investor investor;
+    @FXML
+    Label label_name;
 
     @FXML
     TextField txt_name;
@@ -45,10 +53,18 @@ public class ControlleurAccount {
     @FXML
     PasswordField txt_p_actu;
 
+    /*
+        Toutes les fonctions commencant par l_
+        Permettent la redirection vers une autre page
+    */
 
 
 
     public void initialize_investor(Investor investor){
+        /*
+            Cette fonction permet d'ajouter dans les champs les valeurs de l'investisseur
+         */
+
         this.investor = investor;
         txt_name.setText(investor.getName());
         txt_surname.setText(investor.getSurname());
@@ -57,63 +73,39 @@ public class ControlleurAccount {
     }
 
 
-    @FXML
-    public void layout_wallet() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("wallet.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Wallet");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_logout() throws IOException {
+        IntefaceFeatures.log_out();
     }
-
-
-    @FXML
-    public void layout_transaction() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("transactions.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Transactions");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_accueil() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_accueil(investor);
     }
-
-    @FXML
-    public void layout_crypto() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("crypto.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Cryptocurrency");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_help() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_help(investor);
     }
-
-    @FXML
-    public void layout_stock() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("action.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Stock");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_wallet() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_wallet(investor);
     }
-
-    @FXML
-    public void layout_help() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("help.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Help");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_action() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_stock(investor);
     }
-
-    @FXML
-    public void layout_accueil() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("accueil.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Accueil");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_transaction() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_transaction(investor);
     }
-
+    public void l_crytpo() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_crypto(investor);
+    }
     @FXML
     public void edit_fields () {
+        /*
+            Cette fonction permet de modifier l'affichage de la page pour modifier un champ
+         */
+
         btn_submit.setVisible(true);
         txt_name.setText("");
         txt_surname.setText("");
@@ -133,6 +125,9 @@ public class ControlleurAccount {
 
 
     public void edit_fields2 () {
+        /*
+            Cette fonction permet de modifier l'affichage de la page pour ne pas modifier les champs
+         */
         btn_submit.setVisible(false);
         txt_phone_number.setEditable(false);
         txt_email.setEditable(false);
@@ -147,6 +142,10 @@ public class ControlleurAccount {
 
     @FXML
     public void update_field(){
+        /*
+            Cette fonction permet de modifier les données d'un investisseur dans la base de données
+         */
+
         String name = txt_name.getText();
         String surname = txt_surname.getText();
         String email = txt_email.getText();
@@ -167,7 +166,7 @@ public class ControlleurAccount {
         }
         if(!surname.isEmpty()){
             if(first) requeteBuilder.append(", ");
-            requeteBuilder.append("surnme = ?");
+            requeteBuilder.append("surname = ?");
             investor.setSurname(surname);
             txt_surname.setText(surname);
             values.add(surname);
@@ -203,7 +202,7 @@ public class ControlleurAccount {
             String requete = requeteBuilder.toString();
             String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
             try (
-                    Connection connection = DriverManager.getConnection(url, "root", "equipe_BOA3");
+                    Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
                     PreparedStatement statement = connection.prepareStatement(requete);)
             {
                 for(int i = 0; i < values.size(); i++) {
@@ -233,9 +232,11 @@ public class ControlleurAccount {
         box_profil.setVisible(false);
     }
     @FXML
-    public void submit_password(){
-
-        String txt_mdp1 = txt_p_actu.getText();
+    public void submit_password() throws Exception {
+        /*
+            Cette fonction permet de modifier le mot de passe d'un utilisateur en base
+         */
+        String txt_mdp1 = IntefaceFeatures.encryptPassword(txt_p_actu.getText());
         String txt_mdp2 = txt_p_n_a.getText();
         String txt_mdp3 = txt_p_n.getText();
 
@@ -245,8 +246,7 @@ public class ControlleurAccount {
         String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
 
         try (
-                Connection connection = DriverManager.getConnection(url, "root", "equipe_BOA3");
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);                PreparedStatement preparedStatement = connection.prepareStatement(query);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -255,10 +255,11 @@ public class ControlleurAccount {
                 if(ps.equals(txt_mdp1)){
                     if(txt_mdp2.equals(txt_mdp3)){
 
+                        String mdp = IntefaceFeatures.encryptPassword(txt_mdp2);
                         String updateQuery = "UPDATE investor SET mdp = ? WHERE id_investor = ?;";
                         try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
-                            updateStmt.setString(1, txt_mdp2); // Nouveau mot de passe
-                            updateStmt.setString(2, id); // ID de l'utilisateur
+                            updateStmt.setString(1, mdp);
+                            updateStmt.setString(2, id);
 
                             int rowsAffected = updateStmt.executeUpdate();
                             if(rowsAffected > 0) {
@@ -279,5 +280,13 @@ public class ControlleurAccount {
         }
     }
 
+    public void setInvestor(Investor investor) {
+        /*
+            Affection d'un objet Investor
+         */
+
+        this.investor = investor;
+        label_name.setText(investor.getName());
+    }
 
 }

@@ -2,6 +2,7 @@ package com.example.wallet_boa.controleur;
 
 import com.example.wallet_boa.HelloApplication;
 import com.example.wallet_boa.modele.Investor;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,92 +30,49 @@ public class ControllerAccueil {
     @FXML
     Button btn_cryptocurrency;
 
+    /*
+        Toutes les fonctions commencant par l_
+        Permettent la redirection vers une autre page
+    */
+
 
     public void setInvestor(Investor investor) {
+        /*
+            Affection d'un objet Investor
+         */
+
         this.investor = investor;
-        setLabel();
-    }
-
-
-    public void setLabel() {
         label_name.setText(investor.getName());
     }
 
-    @FXML
-    public void log_out() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("connexion.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Connexion");
-        stage.setScene(new Scene(root, 900, 600));
+
+    public void l_logout() throws IOException {
+        IntefaceFeatures.log_out();
     }
-
-    @FXML
-    public void layout_wallet() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("wallet.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Wallet");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_help() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_help(investor);
     }
-
-
-    @FXML
-    public void layout_transaction() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("transactions.fxml"));
-
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Transactions");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_wallet() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_wallet(investor);
     }
-
-    @FXML
-    public void layout_crypto() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("crypto.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Cryptocurrency");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_action() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_stock(investor);
     }
-
-    @FXML
-    public void layout_stock() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("action.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Stock");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_transaction() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_transaction(investor);
     }
-
-    @FXML
-    public void layout_help() throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("help.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Help");
-        stage.setScene(new Scene(root, 900, 600));
+    public void l_crytpo() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_crypto(investor);
     }
-
-    @FXML
-    public void layout_account() throws Exception {
-
-        Investor investor = new Investor(this.investor.getName(), this.investor.getSurname(), this.investor.getEmail(), this.investor.getPhone_number(), this.investor.getId());
-
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("account.fxml"));
-        Parent root = fxmlLoader.load();
-
-        ControlleurAccount accountController = fxmlLoader.getController();
-
-        accountController.initialize_investor(investor);
-
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Account");
-        stage.setScene(new Scene(root, 900, 600));
-
+    public void l_account() throws Exception{
+        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
+        IntefaceFeatures.layout_account(investor);
     }
-
-
 
 
 

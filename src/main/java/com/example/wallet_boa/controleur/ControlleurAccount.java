@@ -174,7 +174,7 @@ public class ControlleurAccount {
         }else{
             txt_surname.setText(investor.getSurname());
         }
-        if(!email.isEmpty()){
+        if(!email.isEmpty() && IntefaceFeatures.isValidEmail(email) && IntefaceFeatures.isEmailUnique(email)){
             if(first) requeteBuilder.append(", ");
             requeteBuilder.append("email = ?");
             investor.setEmail(email);
@@ -184,7 +184,7 @@ public class ControlleurAccount {
         }else{
             txt_email.setText(investor.getEmail());
         }
-        if(!phone_number.isEmpty()){
+        if(!phone_number.isEmpty() && IntefaceFeatures.isValidPhone(phone_number)){
             if(first) requeteBuilder.append(", ");
             requeteBuilder.append("phone_number = ?");
             investor.setPhone_number(phone_number);
@@ -233,50 +233,59 @@ public class ControlleurAccount {
     }
     @FXML
     public void submit_password() throws Exception {
-        /*
+         /*
             Cette fonction permet de modifier le mot de passe d'un utilisateur en base
          */
-        String txt_mdp1 = IntefaceFeatures.encryptPassword(txt_p_actu.getText());
+        String txt_mdp1 = txt_p_actu.getText();
         String txt_mdp2 = txt_p_n_a.getText();
         String txt_mdp3 = txt_p_n.getText();
 
-        String id = String.valueOf(investor.getId());
+        if(txt_mdp2.equals("") || txt_mdp3.equals("") || txt_mdp1.equals("")){
+            System.out.println("Veuillez remplir tous les champs !");
+        }else{
+            if(!txt_mdp2.equals(txt_mdp3)){
+                System.out.println("Les deux nouveaux mots de passe sont différents");
+            }else{
+                if(!IntefaceFeatures.isValidPassword(txt_mdp2)){
+                    System.out.println("Le format du nouveau mot de passe est incorrect");
+                }else{
+                    String id = String.valueOf(investor.getId());
+                    txt_mdp1 = IntefaceFeatures.encryptPassword(txt_p_actu.getText());
 
-        String query = "SELECT mdp FROM investor WHERE id_investor = " + id + " ;";
-        String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
+                    String query = "SELECT mdp FROM investor WHERE id_investor = " + id + " ;";
+                    String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
 
-        try (
-                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);                PreparedStatement preparedStatement = connection.prepareStatement(query);
-        ) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                String ps = resultSet.getString("mdp");
+                    try (
+                            Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    ) {
+                        ResultSet resultSet = preparedStatement.executeQuery();
+                        if (resultSet.next()) {
+                            String ps = resultSet.getString("mdp");
 
-                if(ps.equals(txt_mdp1)){
-                    if(txt_mdp2.equals(txt_mdp3)){
+                            if(ps.equals(txt_mdp1)){
 
-                        String mdp = IntefaceFeatures.encryptPassword(txt_mdp2);
-                        String updateQuery = "UPDATE investor SET mdp = ? WHERE id_investor = ?;";
-                        try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
-                            updateStmt.setString(1, mdp);
-                            updateStmt.setString(2, id);
+                                String mdp = IntefaceFeatures.encryptPassword(txt_mdp2);
+                                String updateQuery = "UPDATE investor SET mdp = ? WHERE id_investor = ?;";
+                                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                                    updateStmt.setString(1, mdp);
+                                    updateStmt.setString(2, id);
 
-                            int rowsAffected = updateStmt.executeUpdate();
-                            if(rowsAffected > 0) {
-                                System.out.println("Le mot de passe a été changé avec succès!");
-                            } else {
-                                System.out.println("Erreur lors de la mise à jour du mot de passe.");
+                                    int rowsAffected = updateStmt.executeUpdate();
+                                    if(rowsAffected > 0) {
+                                        System.out.println("Le mot de passe a été changé avec succès!");
+                                    } else {
+                                        System.out.println("Erreur lors de la mise à jour du mot de passe.");
+                                    }
+                                }
+                            }else{
+                                System.out.println("Votre mot de passe actuel est faux !");
                             }
                         }
-                    }else{
-                        System.out.println("Les deux nouveaux mots de passe sont différents !");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                }else{
-                    System.out.println("Votre mot de passe actuel est faux !");
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 

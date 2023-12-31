@@ -81,7 +81,7 @@
                                             <Font size="18.0" />
                                         </font>
                                     </Label>
-                                    <TextField fx:id="i_phone" prefHeight="25.0" prefWidth="150.0" promptText="07 80 65 23 12" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                    <TextField fx:id="i_phone" prefHeight="25.0" prefWidth="150.0" promptText="0780652312" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
                                         <VBox.margin>
                                             <Insets left="30.0" top="6.0" />
                                         </VBox.margin>

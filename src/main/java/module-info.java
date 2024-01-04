@@ -5,6 +5,8 @@ module com.example.wallet_boa {
     requires javafx.media;
     requires java.scripting;
     requires YahooFinanceAPI;
+    requires binance.connector.java;
+    requires org.json;
 
 
 

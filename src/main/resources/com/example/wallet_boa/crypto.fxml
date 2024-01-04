@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -67,12 +69,13 @@
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="6.000030517578125" prefWidth="249.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="206.0" minHeight="10.0" prefHeight="41.999996185302734" vgrow="SOMETIMES" />
+                <RowConstraints fillHeight="false" maxHeight="221.00000190734863" minHeight="10.0" prefHeight="32.666651407877595" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="377.3333485921224" minHeight="10.0" prefHeight="377.3333485921224" vgrow="SOMETIMES" />
+            <RowConstraints />
             </rowConstraints>
             <children>
-                <Label text="Cryptoccurenci" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                <Label text="Cryptocurrency" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
                     <font>
                         <Font size="36.0" />
                     </font>
@@ -80,6 +83,79 @@
                         <Insets left="150.0" />
                     </GridPane.margin>
                 </Label>
+            <Button fx:id="btn_buy_crypto" maxWidth="-Infinity" mnemonicParsing="false" onAction="#buy_crypto_layout" text="Buy" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="150.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="btn_sell_crypto" maxWidth="-Infinity" mnemonicParsing="false" onAction="#sell_crypto_layout" text="Sell" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="40.0" />
+               </GridPane.margin>
+            </Button>
+            <Pane fx:id="layout_buy" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="315.0" prefWidth="408.0" style="-fx-background-color: lightblue; -fx-background-radius: 10;" visible="true" BorderPane.alignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+               <GridPane.margin>
+                  <Insets bottom="50.0" left="100.0" />
+               </GridPane.margin>
+               <children>
+                  <VBox prefHeight="313.0" prefWidth="401.0">
+                     <children>
+                        <Button mnemonicParsing="false" style="-fx-background-color: none;" text="Back" />
+                        <Label text="Purchase">
+                           <VBox.margin>
+                              <Insets left="180.0" top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Select amung your wallets">
+                           <VBox.margin>
+                              <Insets left="130.0" top="20.0" />
+                           </VBox.margin></Label>
+                         <ComboBox fx:id="md_wallet" prefWidth="150.0">
+                             <items>
+                                 <FXCollections fx:factory="observableArrayList">
+                                     <String fx:value="Wallet 1" />
+                                     <String fx:value="Wallet 2" />
+                                 </FXCollections>
+                             </items>
+                           <VBox.margin>
+                              <Insets left="130.0" top="10.0" />
+                           </VBox.margin>
+                         </ComboBox>
+                        <Label text="Select a cryptocurrency">
+                           <VBox.margin>
+                              <Insets left="130.0" top="20.0" />
+                           </VBox.margin></Label>
+                         <ComboBox fx:id="md_crypto" prefWidth="150.0">
+                             <items>
+                                 <FXCollections fx:factory="observableArrayList">
+                                     <String fx:value="BTCN" />
+                                     <String fx:value="Option 2" />
+                                     <String fx:value="Option 3" />
+                                 </FXCollections>
+                             </items>
+                           <VBox.margin>
+                              <Insets left="130.0" top="10.0" />
+                           </VBox.margin>
+                         </ComboBox>
+                        <Button mnemonicParsing="false" text="Buy">
+                           <VBox.margin>
+                              <Insets left="185.0" top="25.0" />
+                           </VBox.margin></Button>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <Pane fx:id="layout_sell" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="315.0" prefWidth="408.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10;" visible="false" BorderPane.alignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                <GridPane.margin>
+                    <Insets bottom="50.0" left="100.0" />
+                </GridPane.margin>
+                <children>
+                    <VBox prefHeight="313.0" prefWidth="401.0">
+                        <children>
+ 
+                        </children>
+                    </VBox>
+                </children></Pane>
             </children>
         </GridPane>
     </center>

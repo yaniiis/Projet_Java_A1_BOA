@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import yahoofinance.*;
 
 public class ControlleurAction {
 

@@ -55,10 +55,11 @@ public class ControllerWallet {
         /*
             Affection d'un objet Investor
          */
-
         this.investor = investor;
         label_name.setText(investor.getName());
-
     }
+
+
+
 
 }

@@ -28,7 +28,7 @@ public class HelloApplication extends Application {
         HelloApplication.primaryStage = primaryStage;
 
 //        primaryStage.initStyle(StageStyle.UNDECORATED);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("connexion.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("crypto.fxml"));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Votre Application");
         primaryStage.setScene(new Scene(root, 800, 600));

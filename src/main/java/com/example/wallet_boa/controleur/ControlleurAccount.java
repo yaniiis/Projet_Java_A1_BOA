@@ -59,20 +59,6 @@ public class ControlleurAccount {
     */
 
 
-
-    public void initialize_investor(Investor investor){
-        /*
-            Cette fonction permet d'ajouter dans les champs les valeurs de l'investisseur
-         */
-
-        this.investor = investor;
-        txt_name.setText(investor.getName());
-        txt_surname.setText(investor.getSurname());
-        txt_phone_number.setText(investor.getPhone_number());
-        txt_email.setText(investor.getEmail());
-    }
-
-
     public void l_logout() throws IOException {
         IntefaceFeatures.log_out();
     }
@@ -200,7 +186,7 @@ public class ControlleurAccount {
             values.add(String.valueOf(investor.getId()));
 
             String requete = requeteBuilder.toString();
-            String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
+            String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
             try (
                     Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
                     PreparedStatement statement = connection.prepareStatement(requete);)
@@ -253,7 +239,7 @@ public class ControlleurAccount {
                     txt_mdp1 = IntefaceFeatures.encryptPassword(txt_p_actu.getText());
 
                     String query = "SELECT mdp FROM investor WHERE id_investor = " + id + " ;";
-                    String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
+                    String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
 
                     try (
                             Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);                PreparedStatement preparedStatement = connection.prepareStatement(query);

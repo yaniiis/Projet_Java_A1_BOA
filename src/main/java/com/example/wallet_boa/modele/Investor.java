@@ -1,5 +1,7 @@
 package com.example.wallet_boa.modele;
 
+import java.util.ArrayList;
+
 public class Investor {
 
     private String name;

@@ -93,7 +93,7 @@
                   <Insets left="40.0" />
                </GridPane.margin>
             </Button>
-            <Pane fx:id="layout_buy" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="315.0" prefWidth="408.0" style="-fx-background-color: lightblue; -fx-background-radius: 10;" visible="true" BorderPane.alignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <Pane fx:id="layout_buy" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="350.0" prefWidth="401.0" style="-fx-background-color: lightblue; -fx-background-radius: 10;" visible="true" BorderPane.alignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
                <GridPane.margin>
                   <Insets bottom="50.0" left="100.0" />
                </GridPane.margin>
@@ -103,19 +103,17 @@
                         <Button mnemonicParsing="false" style="-fx-background-color: none;" text="Back" />
                         <Label text="Purchase">
                            <VBox.margin>
-                              <Insets left="180.0" top="15.0" />
+                              <Insets left="170.0" top="5.0" />
                            </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
                         </Label>
                         <Label text="Select amung your wallets">
                            <VBox.margin>
                               <Insets left="130.0" top="20.0" />
                            </VBox.margin></Label>
                          <ComboBox fx:id="md_wallet" prefWidth="150.0">
-                             <items>
-                                 <FXCollections fx:factory="observableArrayList">
-
-                                 </FXCollections>
-                             </items>
                            <VBox.margin>
                               <Insets left="130.0" top="10.0" />
                            </VBox.margin>
@@ -127,18 +125,35 @@
                          <ComboBox fx:id="md_crypto" prefWidth="150.0">
                              <items>
                                  <FXCollections fx:factory="observableArrayList">
-                                     <String fx:value="Option 1" />
-                                     <String fx:value="Option 2" />
-                                     <String fx:value="Option 3" />
+                                     <String fx:value="BTC" />
+                                     <String fx:value="ETH" />
+                                     <String fx:value="BNB" />
+                                     <String fx:value="ADA" />
+                                     <String fx:value="SOL" />
+                                     <String fx:value="XRP" />
+                                     <String fx:value="DOT" />
+                                     <String fx:value="DOGE" />
+                                     <String fx:value="AVAX" />
+                                     <String fx:value="LINK" />
                                  </FXCollections>
                              </items>
                            <VBox.margin>
                               <Insets left="130.0" top="10.0" />
                            </VBox.margin>
                          </ComboBox>
-                        <Button mnemonicParsing="false" text="Buy">
+                        <Label text="Amount">
                            <VBox.margin>
-                              <Insets left="185.0" top="25.0" />
+                              <Insets left="180.0" top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="txt_amount" maxWidth="-Infinity" prefHeight="25.0" prefWidth="62.0">
+                           <VBox.margin>
+                              <Insets left="170.0" top="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Button fx:id="btn_buy_crypto_connect" mnemonicParsing="false" onAction="#buy_crypto" text="Buy">
+                           <VBox.margin>
+                              <Insets left="183.0" top="20.0" />
                            </VBox.margin></Button>
                      </children>
                   </VBox>

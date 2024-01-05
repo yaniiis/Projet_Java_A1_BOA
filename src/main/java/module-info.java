@@ -4,7 +4,7 @@ module com.example.wallet_boa {
     requires java.sql;
     requires javafx.media;
     requires java.scripting;
-
+    requires org.json;
 
 
     opens com.example.wallet_boa to javafx.fxml;

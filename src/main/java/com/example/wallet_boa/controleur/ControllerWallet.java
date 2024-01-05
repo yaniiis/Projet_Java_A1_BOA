@@ -59,6 +59,12 @@ public class ControllerWallet {
         label_name.setText(investor.getName());
     }
 
+    @FXML
+    public void layout_new_wallet(){
+
+
+    }
+
 
 
 

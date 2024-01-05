@@ -90,7 +90,7 @@ public class ControllerConnexion {
             mdp = IntefaceFeatures.encryptPassword(mdp);
 
             String query = "SELECT id_investor, name, surname, phone_number FROM investor WHERE email = ? AND mdp = ?";
-            String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
+            String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
             System.out.println(mdp);
             try (
                     Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
@@ -99,12 +99,12 @@ public class ControllerConnexion {
                 preparedStatement.setString(1, email);
                 preparedStatement.setString(2, mdp);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    System.out.println("vz");
                     if (resultSet.next()) {
 
                         String name = resultSet.getString("name");
                         String surname = resultSet.getString("surname");
                         String phone_number = resultSet.getString("phone_number");
+
                         int id = resultSet.getInt("id_investor");
                         if (name != null && !name.isEmpty()) {
                             layout_accueil(name, surname, email, phone_number, id);

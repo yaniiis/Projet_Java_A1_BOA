@@ -91,7 +91,7 @@ public class ControllerInscription {
                             }else{
                                 mdp = IntefaceFeatures.encryptPassword(mdp);
                                 String query = "INSERT INTO investor (name, surname, email, mdp, phone_number) VALUES (?, ?, ?, ?, ?)";
-                                String url = "jdbc:mysql://localhost:3306/boa_database?serverTimezone=UTC&useSSL=false";
+                                String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
 
                                 try (
                                         Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);

@@ -7,6 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,6 +19,16 @@ public class ControllerWallet {
     private Investor investor;
     @FXML
     Label label_name;
+    @FXML
+    VBox vbox_wallet;
+    @FXML
+    VBox vbox_new_wallet;
+    @FXML
+    VBox vbox_clone;
+    @FXML
+    HBox hbox_crypto;
+
+
 
     /*
         Toutes les fonctions commencant par l_
@@ -62,7 +75,25 @@ public class ControllerWallet {
     @FXML
     public void layout_new_wallet(){
 
+    vbox_clone.setVisible(false);
+    vbox_wallet.setVisible(false);
+    vbox_new_wallet.setVisible(true);
+    hbox_crypto.setVisible(false);
 
+    }
+    @FXML
+    public void layout_clone_wallet(){
+        vbox_clone.setVisible(true);
+        vbox_wallet.setVisible(false);
+        vbox_new_wallet.setVisible(false);
+        hbox_crypto.setVisible(false);
+    }
+    @FXML
+    public void back_wallet(){
+        vbox_clone.setVisible(false);
+        vbox_wallet.setVisible(true);
+        vbox_new_wallet.setVisible(false);
+        hbox_crypto.setVisible(true);
     }
 
 

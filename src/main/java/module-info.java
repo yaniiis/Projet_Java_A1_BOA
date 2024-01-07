@@ -6,6 +6,7 @@ module com.example.wallet_boa {
     requires java.scripting;
     requires binance.connector.java;
     requires org.json;
+    requires mysql.connector.java;
 
 
 

@@ -1,5 +1,6 @@
 package com.example.wallet_boa;
 
+import com.example.wallet_boa.controleur.IntefaceFeatures;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,11 +29,12 @@ public class HelloApplication extends Application {
         HelloApplication.primaryStage = primaryStage;
 
 //        primaryStage.initStyle(StageStyle.UNDECORATED);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("wallet.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("connexion.fxml"));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Votre Application");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
+
     }
 
 

@@ -96,15 +96,82 @@
                 <children>
                     <HBox>
                         <children>
-                            <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                            <Pane fx:id="pane_1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none; ">
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
+                                        <children>
+                                            <Label fx:id="label_1" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                                <VBox.margin>
+                                                    <Insets bottom="15.0" left="10.0" />
+                                                </VBox.margin>
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                            </Label>
+                                            <Label fx:id="amount_1" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                                <VBox.margin>
+                                                    <Insets bottom="5.0" left="10.0" />
+                                                </VBox.margin>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                            </Label>
+                                        </children>
+                                    </VBox>
+
+                                </children>
                                 <HBox.margin>
                                     <Insets left="25.0" top="20" />
                                 </HBox.margin></Pane>
-                            <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                            <Pane fx:id="pane_2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none">
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
+                                        <children>
+                                            <Label fx:id="label_2" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                                <VBox.margin>
+                                                    <Insets bottom="15.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="15.0" />
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="amount_2" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                                <VBox.margin>
+                                                    <Insets bottom="5.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Label>
+                                        </children>
+                                    </VBox>
+                                </children>
                                 <HBox.margin>
                                     <Insets left="20.0" top="20" />
                                 </HBox.margin></Pane>
-                            <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                            <Pane fx:id="pane_3" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
+                                        <children>
+                                            <Label fx:id="label_3" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                                <VBox.margin>
+                                                    <Insets bottom="15.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="15.0" />
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="amount_3" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                                <VBox.margin>
+                                                    <Insets bottom="5.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Label>
+                                        </children>
+                                    </VBox>
+                                </children>
                                 <HBox.margin>
                                     <Insets left="20.0" top="20" />
                                 </HBox.margin></Pane>
@@ -112,15 +179,84 @@
                     </HBox>
                     <HBox>
                         <children>
-                            <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                            <Pane fx:id="pane_4" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
+                                        <children>
+                                            <Label fx:id="label_4" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                                <VBox.margin>
+                                                    <Insets bottom="15.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="15.0" />
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="amount_4" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                                <VBox.margin>
+                                                    <Insets bottom="5.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Label>
+                                        </children>
+                                    </VBox>
+                                </children>
                                 <HBox.margin>
                                     <Insets left="25.0" top="10" />
                                 </HBox.margin></Pane>
-                            <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                            <Pane fx:id="pane_5" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
+
+                                        <children>
+                                            <Label fx:id="label_5" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                                <VBox.margin>
+                                                    <Insets bottom="15.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="15.0" />
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="amount_5" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                                <VBox.margin>
+                                                    <Insets bottom="5.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Label>
+                                        </children>
+                                    </VBox>
+                                </children>
                                 <HBox.margin>
                                     <Insets left="20.0" top="10" />
                                 </HBox.margin></Pane>
-                            <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                            <Pane fx:id="pane_6" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
+                                        <children>
+                                            <Label fx:id="label_6" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                                <VBox.margin>
+                                                    <Insets bottom="15.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="15.0" />
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="amount_6" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                                <VBox.margin>
+                                                    <Insets bottom="5.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Label>
+                                        </children>
+
+                                    </VBox>
+
+                                </children>
                                 <HBox.margin>
                                     <Insets left="20.0" top="10" />
                                 </HBox.margin></Pane>
@@ -128,15 +264,82 @@
                     </HBox>
                     <HBox>
                         <children>
-                            <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                            <Pane fx:id="pane_7" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
+                                        <children>
+                                            <Label fx:id="label_7" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                                <VBox.margin>
+                                                    <Insets bottom="15.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="15.0" />
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="amount_7" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                                <VBox.margin>
+                                                    <Insets bottom="5.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Label>
+
+                                        </children>
+                                    </VBox>
+                                </children>
                                 <HBox.margin>
                                     <Insets left="25.0" top="10" />
                                 </HBox.margin></Pane>
-                            <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                            <Pane fx:id="pane_8" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
+                                        <children>
+                                            <Label fx:id="label_8" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                                <VBox.margin>
+                                                    <Insets bottom="15.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="15.0" />
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="amount_8" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                                <VBox.margin>
+                                                    <Insets bottom="5.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Label>
+                                        </children>
+                                    </VBox>
+                                </children>
                                 <HBox.margin>
                                     <Insets left="20.0" top="10" />
                                 </HBox.margin></Pane>
-                            <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                            <Pane fx:id="pane_9" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
+                                        <children>
+                                            <Label fx:id="label_9" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                                <VBox.margin>
+                                                    <Insets bottom="15.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="15.0" />
+                                                </font>
+                                            </Label>
+                                            <Label fx:id="amount_9" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                                <VBox.margin>
+                                                    <Insets bottom="5.0" left="10.0" />
+                                                </VBox.margin>
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Label>
+                                        </children>
+                                    </VBox>
+                                </children>
                                 <HBox.margin>
                                     <Insets left="20.0" top="10" />
                                 </HBox.margin></Pane>
@@ -165,7 +368,7 @@
                            <HBox.margin>
                               <Insets left="30.0" top="3.0" />
                            </HBox.margin></Label>
-                        <TextField>
+                        <TextField fx:id="txt_wallet">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin></TextField>
@@ -178,19 +381,19 @@
                     <children>
                         <Label text="Description :">
                            <HBox.margin>
-                              <Insets left="30.0" top="20.0" right="10.0"/>
+                              <Insets left="30.0" right="10.0" top="20.0" />
                            </HBox.margin></Label>
-                        <TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="224.0" />
+                        <TextArea fx:id="txt_description" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="224.0" />
                     </children>
                 </HBox>
-                <Button maxHeight="-Infinity" maxWidth="-Infinity" text="Create">
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" onAction="#insert_wallet" text="Create">
                      <VBox.margin>
                         <Insets left="180.0" top="10.0" />
                      </VBox.margin></Button>
 
                 </children>
                 <GridPane.margin>
-                    <Insets left="105.0" bottom="170.0" />
+                    <Insets bottom="170.0" left="105.0" />
                 </GridPane.margin>
             </VBox>
             <VBox fx:id="vbox_clone" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="190.0" prefWidth="305.0" style="-fx-background-color: orange; -fx-background-radius: 10;" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
@@ -232,23 +435,23 @@
             </VBox>
             <HBox fx:id="hbox_crypto" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="560.0" style="-fx-background-color: orange; -fx-background-radius: 10;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                 <children>
-                    <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                    <Pane fx:id="pane_crypto_1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
                         <HBox.margin>
                             <Insets left="15.0" top="10" />
                         </HBox.margin></Pane>
-                    <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                    <Pane fx:id="pane_crypto_2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
                         <HBox.margin>
                             <Insets left="5.0" top="10" />
                         </HBox.margin></Pane>
-                    <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                    <Pane fx:id="pane_crypto_3" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
                         <HBox.margin>
                             <Insets left="5.0" top="10" />
                         </HBox.margin></Pane>
-                    <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                    <Pane fx:id="pane_crypto_4" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
                         <HBox.margin>
                             <Insets left="5.0" top="10" />
                         </HBox.margin></Pane>
-                    <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                    <Pane fx:id="pane_crypto_5" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
                         <HBox.margin>
                             <Insets left="5.0" top="10" />
                         </HBox.margin></Pane>

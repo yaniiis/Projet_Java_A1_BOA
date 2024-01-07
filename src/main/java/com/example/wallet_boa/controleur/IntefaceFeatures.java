@@ -18,6 +18,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Base64;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -176,6 +177,7 @@ public interface IntefaceFeatures {
         stage.setTitle("Presentation");
         stage.setScene(new Scene(root, 900, 600));
     }
+
     static String encryptPassword(String password) throws Exception {
 
         /*
@@ -265,6 +267,22 @@ public interface IntefaceFeatures {
         }
 
         return false;
+    }
+
+
+    static int random_id() {
+
+        Random random = new Random();
+        StringBuilder randomString = new StringBuilder();
+
+        for (int i = 0; i < 9; i++) {
+            int randomDigit = random.nextInt(10);
+            randomString.append(randomDigit);
+        }
+
+        String randomIDStr = randomString.toString();
+        int randomID = Integer.parseInt(randomIDStr);
+        return randomID;
     }
 
 }

@@ -59,6 +59,8 @@ public class ControllerInscription {
         String surname = i_surname.getText();
         String name = i_name.getText();
 
+        String mdp_no = IntefaceFeatures.encryptPassword(i_mdp.getText());
+
         String mdp = IntefaceFeatures.encryptPassword(i_mdp.getText());
         String mdp_ = IntefaceFeatures.encryptPassword(i_mdp2.getText());
 
@@ -74,7 +76,7 @@ public class ControllerInscription {
                     System.out.println("Le format de l'email ne correspond pas !");
                     System.out.println("Ex : java@boa.fr");
                 }else{
-                    if(!IntefaceFeatures.isValidPassword(mdp)){
+                    if(IntefaceFeatures.isValidPassword(mdp_no)){
                         System.out.println("Veuillez vérifier le format de votre mot de passe !");
                         System.out.println("minimum 8 caractères");
                         System.out.println("minimum 1 majuscule");
@@ -89,7 +91,6 @@ public class ControllerInscription {
                             if(!IntefaceFeatures.isEmailUnique(email)){
                                 System.out.println("L'email est déjà utilisé !");
                             }else{
-                                mdp = IntefaceFeatures.encryptPassword(mdp);
                                 String query = "INSERT INTO investor (name, surname, email, mdp, phone_number) VALUES (?, ?, ?, ?, ?)";
                                 String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
 

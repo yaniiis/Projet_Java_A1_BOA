@@ -11,9 +11,10 @@ public class Wallet {
     private double amount;
     private int id_investor;
     private int id_list_valeur;
+    private boolean clone;
 
 
-    public Wallet(String name, Date date, String description, double amount, int id_wallet, int id_investor, int id_list_valeur){
+    public Wallet(String name, Date date, String description, double amount, int id_wallet, int id_investor, int id_list_valeur, boolean clone){
         this.name =name;
         this.date = date;
         this.description = description;
@@ -21,9 +22,10 @@ public class Wallet {
         this.id_investor = id_investor;
         this.id_list_valeur = id_list_valeur;
         this.id_wallet = id_wallet;
+        this.clone = clone;
     }
 
-    public Wallet(String name, Date date, String description, double amount){
+    public Wallet(String name, Date date, String description, double amount, boolean clone){
         this.name =name;
         this.date = date;
         this.description = description;
@@ -51,5 +53,14 @@ public class Wallet {
     public void setId_investor(int id_investor){
         this.id_investor = id_investor;
     }
+    public boolean getClone(){
+        return this.clone;
+    }
+
+    public int getId_list_valeur(){
+        return this.id_list_valeur;
+
+    }
+
 
 }

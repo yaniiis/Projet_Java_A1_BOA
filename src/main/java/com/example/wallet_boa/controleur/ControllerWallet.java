@@ -24,6 +24,8 @@ import java.util.ArrayList;
 public class ControllerWallet {
 
     private Investor investor;
+    private int nb_wallet = 0;
+
     @FXML
     Label label_name;
     @FXML
@@ -92,6 +94,10 @@ public class ControllerWallet {
     Label amount_8;
     @FXML
     Label amount_9;
+    @FXML
+    TextField txt_wallet_clone;
+    @FXML
+    ComboBox<String> cb_wallet_clone;
 
 
 
@@ -102,8 +108,9 @@ public class ControllerWallet {
 
     public void ajoutWallet(Investor _investor){
 
+        ArrayList <String> name_wallet = new <String> ArrayList();
         int indice_wallet = 1;
-        String query = "SELECT id_wallet, name, date, description, id_investor, id_list_valeur, amount FROM wallet WHERE id_investor = ? ;";
+        String query = "SELECT id_wallet, name, date, description, id_investor, id_list_valeur, amount, clone FROM wallet WHERE id_investor = ? ;";
         String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
         try (
                 Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
@@ -124,8 +131,11 @@ public class ControllerWallet {
                         int id_investor = resultSet.getInt("id_investor");
                         int id_list_valeur = resultSet.getInt("id_list_valeur");
                         double amount = resultSet.getDouble("amount");
-                        create_walet(name,date, id_wallet, description, id_investor, id_list_valeur, amount, indice_wallet);
+                        boolean clone = resultSet.getBoolean("clone");
+                        create_walet(name,date, id_wallet, description, id_investor, id_list_valeur, amount, indice_wallet, clone );
                         indice_wallet +=1;
+
+                        name_wallet.add(name);
                     } else {
                         System.out.println("Mettre une alerte pour créer un wallet");
                     }
@@ -134,69 +144,110 @@ public class ControllerWallet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        this.nb_wallet = indice_wallet;
+        remplir_cb(name_wallet);
     }
 
 
-    public void create_walet(String name, Date date, int id_wallet, String description, int id_investor, int id_list_valeur, double amount, int i){
+    public void create_walet(String name, Date date, int id_wallet, String description, int id_investor, int id_list_valeur, double amount, int i, boolean clone){
 
-        Wallet new_vallet = new Wallet(name, date, description, amount, id_wallet, id_investor, id_list_valeur);
+        Wallet new_vallet = new Wallet(name, date, description, amount, id_wallet, id_investor, id_list_valeur, clone);
         switch (i){
             case 1 :
-                pane_1.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                if(clone==true){
+                    pane_1.setStyle("-fx-background-color: red; -fx-background-radius: 10;");
+                }else{
+                    pane_1.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                }
                 label_1.setText(name);
                 amount_1.setText(String.valueOf(amount));
                 break;
 
             case 2 :
-                pane_2.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                if(clone==true){
+                    pane_2.setStyle("-fx-background-color: red; -fx-background-radius: 10;");
+                }else{
+                    pane_2.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                }
                 label_2.setText(name);
                 amount_2.setText(String.valueOf(amount));
                 break;
             case 3 :
-                pane_3.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                if(clone==true){
+                    pane_3.setStyle("-fx-background-color: red; -fx-background-radius: 10;");
+                }else{
+                    pane_3.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                }
                 label_3.setText(name);
                 amount_3.setText(String.valueOf(amount));
                 break;
             case 4 :
-                pane_4.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                if(clone==true){
+                    pane_4.setStyle("-fx-background-color: red; -fx-background-radius: 10;");
+                }else{
+                    pane_4.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                }
                 label_4.setText(name);
                 amount_4.setText(String.valueOf(amount));
                 break;
             case 5 :
-                pane_5.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                if(clone==true){
+                    pane_5.setStyle("-fx-background-color: red; -fx-background-radius: 10;");
+                }else{
+                    pane_5.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                }
                 label_5.setText(name);
                 amount_5.setText(String.valueOf(amount));
                 break;
             case 6 :
-                pane_6.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                if(clone==true){
+                    pane_6.setStyle("-fx-background-color: red; -fx-background-radius: 10;");
+                }else{
+                    pane_6.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                }
                 label_6.setText(name);
                 amount_6.setText(String.valueOf(amount));
                 break;
             case 7 :
-                pane_7.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                if(clone==true){
+                    pane_7.setStyle("-fx-background-color: red; -fx-background-radius: 10;");
+                }else{
+                    pane_7.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                }
                 label_7.setText(name);
                 amount_7.setText(String.valueOf(amount));
                 break;
             case 8 :
-                pane_8.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                if(clone==true){
+                    pane_8.setStyle("-fx-background-color: red; -fx-background-radius: 10;");
+                }else{
+                    pane_8.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                }
                 label_8.setText(name);
                 amount_8.setText(String.valueOf(amount));
                 break;
             case 9 :
-                pane_9.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                if(clone==true){
+                    pane_9.setStyle("-fx-background-color: red; -fx-background-radius: 10;");
+                }else{
+                    pane_9.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                }
                 label_9.setText(name);
                 amount_9.setText(String.valueOf(amount));
                 break;
 
-
         }
-
-
-
-
-
-
     }
+
+    public void remplir_cb(ArrayList list_name) {
+        for (int i = 0; i < list_name.size(); i++) {
+            cb_wallet_clone.getItems().add(
+                    String.valueOf(list_name.get(i))
+            );
+        }
+    }
+
+
 
     public void l_logout() throws IOException {
         IntefaceFeatures.log_out();
@@ -237,19 +288,29 @@ public class ControllerWallet {
 
     @FXML
     public void layout_new_wallet(){
+        if(this.nb_wallet>9){
+            System.out.println("Le nombre de wallet maximum est atteint");
+        }else{
+            vbox_clone.setVisible(false);
+            vbox_wallet.setVisible(false);
+            vbox_new_wallet.setVisible(true);
+            hbox_crypto.setVisible(false);
+        }
 
-    vbox_clone.setVisible(false);
-    vbox_wallet.setVisible(false);
-    vbox_new_wallet.setVisible(true);
-    hbox_crypto.setVisible(false);
+
 
     }
     @FXML
     public void layout_clone_wallet(){
-        vbox_clone.setVisible(true);
-        vbox_wallet.setVisible(false);
-        vbox_new_wallet.setVisible(false);
-        hbox_crypto.setVisible(false);
+        if(this.nb_wallet>9){
+            System.out.println("Le nombre de wallet maximum est atteint");
+        }else{
+            vbox_clone.setVisible(true);
+            vbox_wallet.setVisible(false);
+            vbox_new_wallet.setVisible(false);
+            hbox_crypto.setVisible(false);
+        }
+
     }
     @FXML
     public void back_wallet(){
@@ -267,11 +328,57 @@ public class ControllerWallet {
 
         Date dateSQL = new Date(dateActuelle.getTime());
 
-        Wallet wallet = new Wallet(wallet_name, dateSQL, description_wallet, 0 );
+        Wallet wallet = new Wallet(wallet_name, dateSQL, description_wallet, 0, false );
 
         insert_wallet_bdd(wallet);
     }
 
+
+    public void insert_wallet_clone() throws Exception {
+
+        String name = txt_wallet_clone.getText();
+        String selected = cb_wallet_clone.getSelectionModel().getSelectedItem();
+
+
+
+
+        String query = "SELECT description, id_list_valeur, amount FROM wallet WHERE id_investor = ? and name = ?; ";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, this.investor.getId());
+            preparedStatement.setString(2, selected);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+
+
+                    String description = resultSet.getString("description");
+                    int amount = resultSet.getInt("amount");
+                    int id_list_valeur = resultSet.getInt("id_list_valeur");
+                    java.util.Date dateActuelle = new java.util.Date();
+                    Date dateSQL = new Date(dateActuelle.getTime());
+
+                    Wallet wallet = new Wallet(name, dateSQL, description,  amount, 0, this.investor.getId(), id_list_valeur, true);
+
+                    insert_wallet_bdd(wallet);
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+    }
     public void insert_wallet_bdd(Wallet wallet) throws Exception {
 
 
@@ -280,15 +387,7 @@ public class ControllerWallet {
 
             Connection connexion = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
 
-            int id_list_value = IntefaceFeatures.random_id();
-            String sql = "INSERT INTO list_value (id_list_valeur, BTC, ETH, BNB, ADA, SOL, XRP, DOT, DOGE, AVAX, LINK) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)";
-            PreparedStatement pstmt = connexion.prepareStatement(sql);
-            pstmt.setInt(1, id_list_value);
-            int affectedRows = pstmt.executeUpdate();
-
-
-
-            String requeteSQL = "INSERT INTO wallet (id_wallet ,name, description, amount, date, id_investor, id_list_valeur) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String requeteSQL = "INSERT INTO wallet (id_wallet ,name, description, amount, date, id_investor, id_list_valeur, clone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connexion.prepareStatement(requeteSQL);
             int id = IntefaceFeatures.random_id();
             preparedStatement.setInt(1, id);
@@ -297,7 +396,28 @@ public class ControllerWallet {
             preparedStatement.setDouble(4, wallet.getAmount());
             preparedStatement.setDate(5, wallet.getDate());
             preparedStatement.setInt(6, this.investor.getId());
-            preparedStatement.setInt(7, id_list_value);
+
+
+            if(wallet.getClone()==true){
+                preparedStatement.setInt(7, wallet.getId_list_valeur());
+
+            }else{
+                int id_list_value = IntefaceFeatures.random_id();
+                String sql = "INSERT INTO list_value (id_list_valeur, BTC, ETH, BNB, ADA, SOL, XRP, DOT, DOGE, AVAX, LINK) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)";
+                PreparedStatement pstmt = connexion.prepareStatement(sql);
+                pstmt.setInt(1, id_list_value);
+                pstmt.executeUpdate();
+                preparedStatement.setInt(7, id_list_value);
+                wallet.setId_investor(id_list_value);
+
+            }
+
+
+            preparedStatement.setBoolean(8, wallet.getClone());
+
+
+
+
 
             preparedStatement.executeUpdate();
 
@@ -305,7 +425,6 @@ public class ControllerWallet {
             connexion.close();
             wallet.setId_wallet(id);
             wallet.setId_list_valeur(this.investor.getId());
-            wallet.setId_investor(id_list_value);
 
             System.out.println("L'objet Wallet a été inséré dans la base de données.");
 

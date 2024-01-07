@@ -91,7 +91,7 @@
                 <GridPane.margin>
                     <Insets left="330.0" />
                 </GridPane.margin></Button>
-            <VBox fx:id="vbox_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #6FEB4E; -fx-background-radius: 10;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <VBox fx:id="vbox_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #6FEB4E; -fx-background-radius: 10;" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
 
                 <children>
                     <HBox>
@@ -100,7 +100,7 @@
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
-                                            <Label fx:id="label_1" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                            <Label fx:id="label_1" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" textOverrun="CENTER_ELLIPSIS">
                                                 <VBox.margin>
                                                     <Insets bottom="15.0" left="10.0" />
                                                 </VBox.margin>
@@ -108,7 +108,7 @@
                                           <Font size="15.0" />
                                        </font>
                                             </Label>
-                                            <Label fx:id="amount_1" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                            <Label fx:id="amount_1" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity">
                                                 <VBox.margin>
                                                     <Insets bottom="5.0" left="10.0" />
                                                 </VBox.margin>
@@ -127,7 +127,7 @@
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
-                                            <Label fx:id="label_2" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                            <Label fx:id="label_2" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" textOverrun="CENTER_ELLIPSIS">
                                                 <VBox.margin>
                                                     <Insets bottom="15.0" left="10.0" />
                                                 </VBox.margin>
@@ -135,7 +135,7 @@
                                                     <Font size="15.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="amount_2" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                            <Label fx:id="amount_2" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity">
                                                 <VBox.margin>
                                                     <Insets bottom="5.0" left="10.0" />
                                                 </VBox.margin>
@@ -153,7 +153,7 @@
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
-                                            <Label fx:id="label_3" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                            <Label fx:id="label_3" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" textOverrun="CENTER_ELLIPSIS">
                                                 <VBox.margin>
                                                     <Insets bottom="15.0" left="10.0" />
                                                 </VBox.margin>
@@ -161,7 +161,7 @@
                                                     <Font size="15.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="amount_3" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                            <Label fx:id="amount_3" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity">
                                                 <VBox.margin>
                                                     <Insets bottom="5.0" left="10.0" />
                                                 </VBox.margin>
@@ -183,7 +183,7 @@
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
-                                            <Label fx:id="label_4" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                            <Label fx:id="label_4" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" textOverrun="CENTER_ELLIPSIS">
                                                 <VBox.margin>
                                                     <Insets bottom="15.0" left="10.0" />
                                                 </VBox.margin>
@@ -191,7 +191,7 @@
                                                     <Font size="15.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="amount_4" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                            <Label fx:id="amount_4" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity">
                                                 <VBox.margin>
                                                     <Insets bottom="5.0" left="10.0" />
                                                 </VBox.margin>
@@ -210,7 +210,7 @@
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
 
                                         <children>
-                                            <Label fx:id="label_5" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                            <Label fx:id="label_5" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" textOverrun="CENTER_ELLIPSIS">
                                                 <VBox.margin>
                                                     <Insets bottom="15.0" left="10.0" />
                                                 </VBox.margin>
@@ -218,7 +218,7 @@
                                                     <Font size="15.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="amount_5" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                            <Label fx:id="amount_5" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity">
                                                 <VBox.margin>
                                                     <Insets bottom="5.0" left="10.0" />
                                                 </VBox.margin>
@@ -236,7 +236,7 @@
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
-                                            <Label fx:id="label_6" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                            <Label fx:id="label_6" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" textOverrun="CENTER_ELLIPSIS">
                                                 <VBox.margin>
                                                     <Insets bottom="15.0" left="10.0" />
                                                 </VBox.margin>
@@ -244,7 +244,7 @@
                                                     <Font size="15.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="amount_6" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                            <Label fx:id="amount_6" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity">
                                                 <VBox.margin>
                                                     <Insets bottom="5.0" left="10.0" />
                                                 </VBox.margin>
@@ -268,7 +268,7 @@
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
-                                            <Label fx:id="label_7" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                            <Label fx:id="label_7" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" textOverrun="CENTER_ELLIPSIS">
                                                 <VBox.margin>
                                                     <Insets bottom="15.0" left="10.0" />
                                                 </VBox.margin>
@@ -276,7 +276,7 @@
                                                     <Font size="15.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="amount_7" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                            <Label fx:id="amount_7" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity">
                                                 <VBox.margin>
                                                     <Insets bottom="5.0" left="10.0" />
                                                 </VBox.margin>
@@ -295,7 +295,7 @@
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
-                                            <Label fx:id="label_8" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                            <Label fx:id="label_8" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" textOverrun="CENTER_ELLIPSIS">
                                                 <VBox.margin>
                                                     <Insets bottom="15.0" left="10.0" />
                                                 </VBox.margin>
@@ -303,7 +303,7 @@
                                                     <Font size="15.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="amount_8" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                            <Label fx:id="amount_8" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity">
                                                 <VBox.margin>
                                                     <Insets bottom="5.0" left="10.0" />
                                                 </VBox.margin>
@@ -321,7 +321,7 @@
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
-                                            <Label fx:id="label_9" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" text="WALLET1" textOverrun="CENTER_ELLIPSIS">
+                                            <Label fx:id="label_9" alignment="TOP_CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="45.0" textOverrun="CENTER_ELLIPSIS">
                                                 <VBox.margin>
                                                     <Insets bottom="15.0" left="10.0" />
                                                 </VBox.margin>
@@ -329,7 +329,7 @@
                                                     <Font size="15.0" />
                                                 </font>
                                             </Label>
-                                            <Label fx:id="amount_9" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" text="10000">
+                                            <Label fx:id="amount_9" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity">
                                                 <VBox.margin>
                                                     <Insets bottom="5.0" left="10.0" />
                                                 </VBox.margin>
@@ -396,7 +396,7 @@
                     <Insets bottom="170.0" left="105.0" />
                 </GridPane.margin>
             </VBox>
-            <VBox fx:id="vbox_clone" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="190.0" prefWidth="305.0" style="-fx-background-color: orange; -fx-background-radius: 10;" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <VBox fx:id="vbox_clone" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="190.0" prefWidth="305.0" style="-fx-background-color: orange; -fx-background-radius: 10;" visible="true" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
                 <children>
                     <Button mnemonicParsing="false" onAction="#back_wallet" style="-fx-background-color: none;" text="Back" />
 
@@ -409,9 +409,9 @@
                     </VBox.margin></Label>
                     <Label text="Select a wallet">
                      <VBox.margin>
-                        <Insets left="115.0" top="20.0" />
+                        <Insets left="115.0" top="15.0" />
                      </VBox.margin></Label>
-                    <ComboBox prefWidth="150.0">
+                    <ComboBox fx:id="cb_wallet_clone" prefWidth="150.0">
                         <items>
                             <FXCollections fx:factory="observableArrayList">
                             </FXCollections>
@@ -421,10 +421,19 @@
                      </VBox.margin>
                     </ComboBox>
 
+                    <Label text="Name">
+                     <padding>
+                        <Insets left="130.0" top="10.0" />
+                     </padding></Label>
+                    <TextField fx:id="txt_wallet_clone" maxWidth="-Infinity">
+                     <VBox.margin>
+                        <Insets left="80.0" top="5.0" />
+                     </VBox.margin></TextField>
 
-                    <Button maxHeight="-Infinity" maxWidth="-Infinity" text="Create">
+
+                    <Button maxHeight="-Infinity" maxWidth="-Infinity" text="Create" onAction="#insert_wallet_clone">
                         <VBox.margin>
-                            <Insets left="125.0" top="20.0" />
+                            <Insets left="125.0" top="10.0" />
                         </VBox.margin>
                     </Button>
 
@@ -432,6 +441,9 @@
                 <GridPane.margin>
                     <Insets bottom="230.0" left="150.0" />
                 </GridPane.margin>
+               <padding>
+                  <Insets bottom="15.0" />
+               </padding>
             </VBox>
             <HBox fx:id="hbox_crypto" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="560.0" style="-fx-background-color: orange; -fx-background-radius: 10;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                 <children>

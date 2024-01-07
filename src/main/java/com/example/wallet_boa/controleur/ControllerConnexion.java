@@ -56,6 +56,7 @@ public class ControllerConnexion {
     */
 
 
+
     public void layout_accueil(String name, String surname, String email, String phone_number, int id) throws IOException {
 
         Investor investor = new Investor(name, surname, email, phone_number, id);
@@ -91,13 +92,13 @@ public class ControllerConnexion {
 
             String query = "SELECT id_investor, name, surname, phone_number FROM investor WHERE email = ? AND mdp = ?";
             String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
-            System.out.println(mdp);
             try (
                     Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
             ) {
                 preparedStatement.setString(1, email);
                 preparedStatement.setString(2, mdp);
+
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
 

@@ -4,14 +4,9 @@ module com.example.wallet_boa {
     requires java.sql;
     requires javafx.media;
     requires java.scripting;
-<<<<<<< HEAD
-    requires org.json;
-=======
-    requires YahooFinanceAPI;
     requires binance.connector.java;
     requires org.json;
 
->>>>>>> 71757db5b87f228200e160dd4a72ba892b1ff8c0
 
 
     opens com.example.wallet_boa to javafx.fxml;

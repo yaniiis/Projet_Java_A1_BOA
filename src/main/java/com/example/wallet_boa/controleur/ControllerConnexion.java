@@ -1,7 +1,9 @@
 package com.example.wallet_boa.controleur;
 
 import com.example.wallet_boa.HelloApplication;
+import com.example.wallet_boa.modele.Cryptocurrency;
 import com.example.wallet_boa.modele.Investor;
+import com.example.wallet_boa.modele.Wallet;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +23,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -59,7 +62,11 @@ public class ControllerConnexion {
 
     public void layout_accueil(String name, String surname, String email, String phone_number, int id) throws IOException {
 
-        Investor investor = new Investor(name, surname, email, phone_number, id);
+        ArrayList<Wallet> list_wallet = charger_wallet(id);
+
+        Investor investor = new Investor(name, surname, email, phone_number, id, list_wallet);
+
+
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("accueil.fxml"));
         Parent root = fxmlLoader.load();
@@ -74,6 +81,87 @@ public class ControllerConnexion {
         stage.show();
     }
 
+
+
+    public ArrayList<Wallet> charger_wallet(int id){
+
+        ArrayList <Wallet> list_wallets = new ArrayList<>();
+
+        String query = "SELECT id_wallet, name, date, description, id_list_valeur, amount, clone FROM wallet WHERE id_investor = ? ;";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String name = resultSet.getString("name");
+
+                    if (name != null && !name.isEmpty()) {
+
+                        Date date = resultSet.getDate("date");
+                        int id_wallet = resultSet.getInt("id_wallet");
+                        int id_list_value = resultSet.getInt("id_list_valeur");
+
+                        String description = resultSet.getString("description");
+
+                        double amount = resultSet.getDouble("amount");
+                        boolean clone = resultSet.getBoolean("clone");
+
+
+
+                        Cryptocurrency cryptocurrency = charger_value(id_list_value);
+                        Wallet new_wallet = new Wallet(id_wallet, name, date, description, amount, clone, cryptocurrency);
+                        list_wallets.add(new_wallet);
+
+                    } else {
+                        System.out.println("Mettre une alerte pour créer un wallet");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list_wallets;
+
+    }
+
+    public Cryptocurrency charger_value(int id_list_value){
+
+        Cryptocurrency cryptocurrency = new Cryptocurrency();
+        String query = "SELECT BTC, ETH, BNB, ADA, SOL, XRP, DOT, DOGE, AVAX, LINK FROM list_value WHERE id_list_valeur = ? ;";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, id_list_value);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int btc = resultSet.getInt("BTC");
+                    int eth = resultSet.getInt("ETH");
+                    int bnb = resultSet.getInt("BNB");
+                    int ada = resultSet.getInt("ADA");
+                    int sol = resultSet.getInt("SOL");
+                    int xrp = resultSet.getInt("XRP");
+                    int dot = resultSet.getInt("DOT");
+                    int doge = resultSet.getInt("DOGE");
+                    int avax = resultSet.getInt("AVAX");
+                    int link = resultSet.getInt("LINK");
+
+                    cryptocurrency = new Cryptocurrency(btc,eth,bnb,ada, sol,xrp, doge, dot, avax, link);
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cryptocurrency;
+
+    }
 
     @FXML
     protected void verif_identifiants() throws Exception {

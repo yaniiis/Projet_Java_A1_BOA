@@ -9,13 +9,20 @@ public class Investor {
     private String email;
     private String phone_number;
     private int id;
+    private ArrayList<Wallet> list_wallet;
 
-    public Investor(String name,String surname,String email,String phone_number, int id){
+    public Investor(String name,String surname,String email,String phone_number, int id, ArrayList list_wallet){
         this.surname = surname;
         this.email = email;
         this.phone_number = phone_number;
         this.name = name;
         this.id = id;
+        this.list_wallet = list_wallet;
+    }
+
+    public void ajouterWallet(Wallet nouveauWallet) {
+        list_wallet.add(nouveauWallet);
+
     }
 
     public String getName(){
@@ -43,13 +50,13 @@ public class Investor {
         this.email = email;
     }
 
-
-
     public String getSurname(){
         return surname;
     }
     public void setSurname(String surname){
         this.surname = surname;
     }
-
+    public ArrayList<Wallet> getList_wallet(){
+        return this.list_wallet;
+    }
 }

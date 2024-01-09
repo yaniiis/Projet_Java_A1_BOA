@@ -9,28 +9,20 @@ public class Wallet {
     private Date date;
     private String description;
     private double amount;
-    private int id_investor;
-    private int id_list_valeur;
     private boolean clone;
+    private Cryptocurrency list_value;
 
-
-    public Wallet(String name, Date date, String description, double amount, int id_wallet, int id_investor, int id_list_valeur, boolean clone){
-        this.name =name;
-        this.date = date;
-        this.description = description;
-        this.amount = amount;
-        this.id_investor = id_investor;
-        this.id_list_valeur = id_list_valeur;
+    public Wallet(int id_wallet, String name, Date date, String description, double amount, boolean clone, Cryptocurrency list_value){
         this.id_wallet = id_wallet;
-        this.clone = clone;
-    }
-
-    public Wallet(String name, Date date, String description, double amount, boolean clone){
-        this.name =name;
+        this.name = name;
         this.date = date;
         this.description = description;
         this.amount = amount;
+        this.clone = clone;
+        this.list_value = list_value;
     }
+
+
 
     public String getName(){
         return this.name;
@@ -47,20 +39,17 @@ public class Wallet {
     public void setId_wallet(int id_wallet){
         this.id_wallet = id_wallet;
     }
-    public void setId_list_valeur(int id_list_valeur){
-        this.id_list_valeur = id_list_valeur;
-    }
-    public void setId_investor(int id_investor){
-        this.id_investor = id_investor;
-    }
     public boolean getClone(){
         return this.clone;
     }
-
-    public int getId_list_valeur(){
-        return this.id_list_valeur;
-
+    public void setList_value(Cryptocurrency list){
+        this.list_value = list;
     }
+
+    public Cryptocurrency getList_value(){
+        return this.list_value ;
+    }
+
 
 
 }

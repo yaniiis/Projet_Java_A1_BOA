@@ -25,28 +25,22 @@ public class ControlleurHelp {
         IntefaceFeatures.log_out();
     }
     public void l_wallet() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
-        IntefaceFeatures.layout_wallet(investor);
+        IntefaceFeatures.layout_wallet(this.investor);
     }
     public void l_action() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
-        IntefaceFeatures.layout_stock(investor);
+        IntefaceFeatures.layout_stock(this.investor);
     }
     public void l_transaction() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
-        IntefaceFeatures.layout_transaction(investor);
+        IntefaceFeatures.layout_transaction(this.investor);
     }
     public void l_crytpo() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_crypto(investor);
     }
     public void l_account() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
-        IntefaceFeatures.layout_account(investor);
+        IntefaceFeatures.layout_account(this.investor);
     }
     public void l_accueil() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
-        IntefaceFeatures.layout_accueil(investor);
+        IntefaceFeatures.layout_accueil(this.investor);
     }
     public void setInvestor(Investor investor) {
         /*

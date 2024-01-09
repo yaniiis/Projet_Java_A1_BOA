@@ -63,27 +63,21 @@ public class ControlleurAccount {
         IntefaceFeatures.log_out();
     }
     public void l_accueil() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_accueil(investor);
     }
     public void l_help() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_help(investor);
     }
     public void l_wallet() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_wallet(investor);
     }
     public void l_action() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_stock(investor);
     }
     public void l_transaction() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_transaction(investor);
     }
     public void l_crytpo() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_crypto(investor);
     }
     @FXML

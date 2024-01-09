@@ -1,12 +1,9 @@
 package com.example.wallet_boa.controleur;
 
-import com.example.wallet_boa.HelloApplication;
+import com.example.wallet_boa.modele.Cryptocurrency;
 import com.example.wallet_boa.modele.Investor;
 import com.example.wallet_boa.modele.Wallet;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -14,11 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ControllerWallet {
@@ -107,51 +102,22 @@ public class ControllerWallet {
     */
 
     public void ajoutWallet(Investor _investor){
-
-        ArrayList <String> name_wallet = new <String> ArrayList();
-        int indice_wallet = 1;
-        String query = "SELECT id_wallet, name, date, description, id_investor, id_list_valeur, amount, clone FROM wallet WHERE id_investor = ? ;";
-        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
-        try (
-                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-        ) {
-            preparedStatement.setInt(1, _investor.getId());
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) { // Change this to while
-                    String name = resultSet.getString("name");
-
-                    if (name != null && !name.isEmpty()) {
-
-                        Date date = resultSet.getDate("date");
-                        int id_wallet = resultSet.getInt("id_wallet");
-
-                        String description = resultSet.getString("description");
-                        int id_investor = resultSet.getInt("id_investor");
-                        int id_list_valeur = resultSet.getInt("id_list_valeur");
-                        double amount = resultSet.getDouble("amount");
-                        boolean clone = resultSet.getBoolean("clone");
-                        create_walet(name,date, id_wallet, description, id_investor, id_list_valeur, amount, indice_wallet, clone );
-                        indice_wallet +=1;
-
-                        name_wallet.add(name);
-                    } else {
-                        System.out.println("Mettre une alerte pour créer un wallet");
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        ArrayList<Wallet> wallets= this.investor.getList_wallet();
+        int i =1;
+        for(Wallet wallet : wallets) {
+            create_walet(wallet.getName(), wallet.getAmount(), i, wallet.getClone());
+            cb_wallet_clone.getItems().add(
+                    String.valueOf(wallet.getName())
+            );
+            i++;
         }
-        this.nb_wallet = indice_wallet;
-        remplir_cb(name_wallet);
+
+        this.nb_wallet = i;
     }
 
 
-    public void create_walet(String name, Date date, int id_wallet, String description, int id_investor, int id_list_valeur, double amount, int i, boolean clone){
+    public void create_walet(String name, double amount, int i, boolean clone){
 
-        Wallet new_vallet = new Wallet(name, date, description, amount, id_wallet, id_investor, id_list_valeur, clone);
         switch (i){
             case 1 :
                 if(clone==true){
@@ -239,42 +205,26 @@ public class ControllerWallet {
         }
     }
 
-    public void remplir_cb(ArrayList list_name) {
-        for (int i = 0; i < list_name.size(); i++) {
-            cb_wallet_clone.getItems().add(
-                    String.valueOf(list_name.get(i))
-            );
-        }
-    }
-
-
-
     public void l_logout() throws IOException {
         IntefaceFeatures.log_out();
     }
 
     public void l_help() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_help(investor);
     }
     public void l_action() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_stock(investor);
     }
     public void l_transaction() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_transaction(investor);
     }
     public void l_crytpo() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_crypto(investor);
     }
     public void l_account() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_account(investor);
     }
     public void l_accueil() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_accueil(investor);
     }
     public void setInvestor(Investor investor) {
@@ -296,9 +246,6 @@ public class ControllerWallet {
             vbox_new_wallet.setVisible(true);
             hbox_crypto.setVisible(false);
         }
-
-
-
     }
     @FXML
     public void layout_clone_wallet(){
@@ -328,21 +275,23 @@ public class ControllerWallet {
 
         Date dateSQL = new Date(dateActuelle.getTime());
 
-        Wallet wallet = new Wallet(wallet_name, dateSQL, description_wallet, 0, false );
+        Cryptocurrency cryptocurrency = new Cryptocurrency();
 
-        insert_wallet_bdd(wallet);
+        Wallet wallet = new Wallet(0,wallet_name, dateSQL, description_wallet, 0, false, cryptocurrency );
+
+        insert_wallet_bdd(wallet,0);
     }
 
 
     public void insert_wallet_clone() throws Exception {
+        /*
+            Cette fonction permet de récupérer les valeurs du wallet a cloner
+         */
 
         String name = txt_wallet_clone.getText();
         String selected = cb_wallet_clone.getSelectionModel().getSelectedItem();
 
-
-
-
-        String query = "SELECT description, id_list_valeur, amount FROM wallet WHERE id_investor = ? and name = ?; ";
+        String query = "SELECT description, id_list_valeur, id_wallet,amount FROM wallet WHERE id_investor = ? and name = ?; ";
         String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
         try (
                 Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
@@ -358,36 +307,79 @@ public class ControllerWallet {
                     String description = resultSet.getString("description");
                     int amount = resultSet.getInt("amount");
                     int id_list_valeur = resultSet.getInt("id_list_valeur");
+
+                    System.out.println(id_list_valeur);
+
                     java.util.Date dateActuelle = new java.util.Date();
                     Date dateSQL = new Date(dateActuelle.getTime());
 
-                    Wallet wallet = new Wallet(name, dateSQL, description,  amount, 0, this.investor.getId(), id_list_valeur, true);
+                    Cryptocurrency cryptocurrency = list_value_clone(id_list_valeur);
 
-                    insert_wallet_bdd(wallet);
+                    Wallet wallet = new Wallet(0,name, dateSQL, description, amount, true,cryptocurrency);
+
+
+                    insert_wallet_bdd(wallet, id_list_valeur);
+                    System.out.println(cryptocurrency.getId_crypto());
 
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public Cryptocurrency list_value_clone(int id_list_valeur){
+        /*
+            Cette fonction permet de récupérer les valeurs cryptomonnaie d'un wallet
+         */
+        String query = "SELECT BTC, ETH, BNB, ADA, SOL, XRP, DOT, DOGE, AVAX, LINK FROM list_value WHERE id_list_valeur = ? ;";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+        Cryptocurrency crypto = new Cryptocurrency();
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, id_list_valeur);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = IntefaceFeatures.random_id();
+                    int btc = resultSet.getInt("BTC");
+                    int eth = resultSet.getInt("ETH");
+                    int bnb = resultSet.getInt("BNB");
+                    int ada = resultSet.getInt("ADA");
+                    int sol = resultSet.getInt("SOL");
+                    int xrp = resultSet.getInt("XRP");
+                    int dot = resultSet.getInt("DOT");
+                    int doge = resultSet.getInt("DOGE");
+                    int avax = resultSet.getInt("AVAX");
+                    int link = resultSet.getInt("LINK");
 
 
 
+                    crypto = new Cryptocurrency(id,btc,eth,bnb,ada, sol,xrp, doge, dot, avax, link);
+                    return crypto;
 
-
-
-
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return crypto;
 
     }
-    public void insert_wallet_bdd(Wallet wallet) throws Exception {
 
+
+    public void insert_wallet_bdd(Wallet wallet, int id_list_valeur_) throws Exception {
+        /*
+            Cette fonction permet de créer un wallet
+         */
 
         try {
             String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
 
             Connection connexion = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
 
-            String requeteSQL = "INSERT INTO wallet (id_wallet ,name, description, amount, date, id_investor, id_list_valeur, clone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String requeteSQL = "INSERT INTO wallet (id_wallet ,name, description, amount, date, id_investor, clone, id_list_valeur) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connexion.prepareStatement(requeteSQL);
             int id = IntefaceFeatures.random_id();
             preparedStatement.setInt(1, id);
@@ -396,44 +388,37 @@ public class ControllerWallet {
             preparedStatement.setDouble(4, wallet.getAmount());
             preparedStatement.setDate(5, wallet.getDate());
             preparedStatement.setInt(6, this.investor.getId());
+            preparedStatement.setBoolean(7, wallet.getClone());
 
-
-            if(wallet.getClone()==true){
-                preparedStatement.setInt(7, wallet.getId_list_valeur());
-
-            }else{
+            if(wallet.getClone()==false){
                 int id_list_value = IntefaceFeatures.random_id();
                 String sql = "INSERT INTO list_value (id_list_valeur, BTC, ETH, BNB, ADA, SOL, XRP, DOT, DOGE, AVAX, LINK) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)";
                 PreparedStatement pstmt = connexion.prepareStatement(sql);
                 pstmt.setInt(1, id_list_value);
                 pstmt.executeUpdate();
-                preparedStatement.setInt(7, id_list_value);
-                wallet.setId_investor(id_list_value);
+                preparedStatement.setInt(8, id_list_value);
+
+                Cryptocurrency new_values = new Cryptocurrency(0,0,0,0,0,0,0,0,0,0);
+                wallet.setList_value(new_values);
+
+
+            }else{
+                preparedStatement.setInt(8, id_list_valeur_);
+                wallet.setList_value(wallet.getList_value());
 
             }
 
 
-            preparedStatement.setBoolean(8, wallet.getClone());
-
-
-
-
-
             preparedStatement.executeUpdate();
-
             preparedStatement.close();
             connexion.close();
-            wallet.setId_wallet(id);
-            wallet.setId_list_valeur(this.investor.getId());
 
+            wallet.setId_wallet(id);
+            investor.ajouterWallet(wallet);
             System.out.println("L'objet Wallet a été inséré dans la base de données.");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-
-
-
 }

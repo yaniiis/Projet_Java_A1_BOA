@@ -58,27 +58,21 @@ public class ControlleurCryptocurrency {
     }
 
     public void l_help() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_help(investor);
     }
     public void l_wallet() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_wallet(investor);
     }
     public void l_action() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_stock(investor);
     }
     public void l_transaction() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_transaction(investor);
     }
     public void l_account() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_account(investor);
     }
     public void l_accueil() throws Exception{
-        Investor investor = new Investor(this.investor.getName(),this.investor.getSurname(),this.investor.getEmail(),this.investor.getPhone_number(),this.investor.getId());
         IntefaceFeatures.layout_accueil(investor);
     }
     public void setInvestor(Investor investor) {
@@ -146,9 +140,6 @@ public class ControlleurCryptocurrency {
             String price = json.getString("price");
             double numberPrice = Double.parseDouble(price);
             double part = numberAmount / numberPrice;
-            Cryptocurrency cryptocurrency = new Cryptocurrency(selected, numberAmount,part);
-
-
 
         }
     }

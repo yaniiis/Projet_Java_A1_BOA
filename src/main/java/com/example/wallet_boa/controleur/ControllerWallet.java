@@ -4,6 +4,9 @@ import com.example.wallet_boa.modele.Cryptocurrency;
 import com.example.wallet_boa.modele.Investor;
 import com.example.wallet_boa.modele.LigneCryptocurrency;
 import com.example.wallet_boa.modele.Wallet;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,11 +32,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.*;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ControllerWallet {
 
@@ -158,8 +160,6 @@ public class ControllerWallet {
     @FXML
     LineChart<Number, Number> lineChart;
     @FXML
-    CategoryAxis xAxis;
-    @FXML
     NumberAxis yAxis;
     @FXML
     Button btn_impot;
@@ -167,6 +167,8 @@ public class ControllerWallet {
     VBox hbox_insert_montant;
     @FXML
     Button btn_profit;
+    @FXML
+    NumberAxis xAxis;
     @FXML
     Button btn_conseil;
     @FXML
@@ -523,59 +525,63 @@ public class ControllerWallet {
         }
     }
 
-    public void charger_graphique() {
+    public void charger_graphique() throws Exception {
 
-        new Thread(() -> {
-            try {
-                String date = "2023-01-01";
-                long startTime = new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime();
-                long endTime = startTime + (24 * 60 * 60 * 1000);
+        String apiKey = "O2VSXG62XNBFFJDL";
+        String symbol = "AAPL";
 
-                String api_url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&startTime=" + startTime + "&endTime=" + endTime;
+        String apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + apiKey;
 
-                URL url = new URL(api_url);
-                URLConnection conn = url.openConnection();
+        URL url = new URL(apiUrl);
+        URLConnection request = url.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder response = new StringBuilder();
-                String inputLine;
+        String inputLine;
+        StringBuilder response = new StringBuilder();
 
-                while ((inputLine = reader.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                reader.close();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
 
-                JSONArray jsonArray = new JSONArray(response.toString());
-                List<Pair<Long, Double>> chartData = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONArray dataPoint = jsonArray.getJSONArray(i);
-                    long time = dataPoint.getLong(0); // Temps en millisecondes
-                    double closePrice = dataPoint.getDouble(4); // Prix de clôture
+        HashMap<String, Object> root = mapper.readValue(response.toString(), typeRef);
+        HashMap<String, HashMap<String, String>> timeSeries = (HashMap<String, HashMap<String, String>>) root.get("Time Series (Daily)");
 
-                    chartData.add(new Pair<>(time, closePrice));
-                }
+        TreeMap<String, HashMap<String, String>> sortedData = new TreeMap<>(Collections.reverseOrder());
+        sortedData.putAll(timeSeries);
 
-                // Mise à jour de l'interface utilisateur à l'intérieur de Platform.runLater
-                Platform.runLater(() -> {
-                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                    series.setName("BTC/USDT");
+        List<Double> closingPrices = new ArrayList<>();
+        int count = 0;
 
-                    for (Pair<Long, Double> dataPoint : chartData) {
-                        series.getData().add(new XYChart
-                                .Data<>(dataPoint.getKey(), dataPoint.getValue()));
-                    }
-
-                    lineChart.getData().clear();
-                    lineChart.getData().add(series);
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
+        // Ici, nous avons corrigé la boucle pour utiliser les méthodes correctes.
+        for (Map.Entry<String, HashMap<String, String>> entry : sortedData.entrySet()) {
+            if (count++ == 10) {
+                break;
             }
-        }).start();
+            double closePrice = Double.parseDouble(entry.getValue().get("4. close"));
+            closingPrices.add(closePrice);
+        }
+
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.setName(symbol);
+        Collections.reverse(closingPrices);
+
+        for (int i = 0; i < closingPrices.size(); i++) {
+            series.getData().add(new XYChart.Data<>(i - 1, closingPrices.get(i)));
+        }
+
+        Platform.runLater(() -> {
+            lineChart.getData().add(series);
+        });
+
+        xAxis.setLabel("Daily ");
+
     }
 
-    public void lancement_wallet(double total_montant){
+    public void lancement_wallet(double total_montant) throws Exception {
         vbox_wallet.setVisible(false);
         hbox_crypto.setVisible(false);
         btn_new_wallet.setVisible(false);

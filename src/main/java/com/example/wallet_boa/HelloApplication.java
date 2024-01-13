@@ -1,16 +1,20 @@
 package com.example.wallet_boa;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.*;
@@ -18,6 +22,8 @@ import java.sql.*;
 
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class HelloApplication extends Application {
@@ -42,7 +48,6 @@ public class HelloApplication extends Application {
         primaryStage.setTitle("Votre Application");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
-
 
     }
 

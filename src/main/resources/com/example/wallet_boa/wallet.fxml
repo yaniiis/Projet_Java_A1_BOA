@@ -547,11 +547,11 @@
                     <VBox fx:id="vbox_value_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: orange;" />
                     <VBox fx:id="vbox_name_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: blue;" />
                     <LineChart fx:id="lineChart" prefHeight="292.0" prefWidth="325.0" title="">
-                        <xAxis>
-                            <NumberAxis autoRanging="true" label="X Label" />
+                        <xAxis >
+                            <NumberAxis fx:id="xAxis" autoRanging="true" label="X Label" />
                         </xAxis>
                         <yAxis>
-                            <NumberAxis autoRanging="true" label="Y Label" />
+                            <NumberAxis autoRanging="true" label="Value $ " />
                         </yAxis>
                     </LineChart>
                 </children>

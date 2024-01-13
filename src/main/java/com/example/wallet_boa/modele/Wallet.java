@@ -12,6 +12,10 @@ public class Wallet {
     private boolean clone;
     private Cryptocurrency list_value;
 
+    public Wallet(){
+
+    }
+
     public Wallet(int id_wallet, String name, Date date, String description, double amount, boolean clone, Cryptocurrency list_value){
         this.id_wallet = id_wallet;
         this.name = name;

@@ -131,7 +131,7 @@ public class ControllerConnexion {
     public Cryptocurrency charger_value(int id_list_value){
 
         Cryptocurrency cryptocurrency = new Cryptocurrency();
-        String query = "SELECT BTC, ETH, BNB, ADA, SOL, XRP, DOT, DOGE, AVAX, LINK FROM list_value WHERE id_list_valeur = ? ;";
+        String query = "SELECT id_list_valeur, BTC, ETH, BNB, ADA, SOL, XRP, DOT, DOGE, AVAX, LINK FROM list_value WHERE id_list_valeur = ? ;";
         String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
         try (
                 Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
@@ -151,8 +151,9 @@ public class ControllerConnexion {
                     int doge = resultSet.getInt("DOGE");
                     int avax = resultSet.getInt("AVAX");
                     int link = resultSet.getInt("LINK");
+                    int id = resultSet.getInt("id_list_valeur");
 
-                    cryptocurrency = new Cryptocurrency(btc,eth,bnb,ada, sol,xrp, doge, dot, avax, link);
+                    cryptocurrency = new Cryptocurrency(id, btc,eth,bnb,ada, sol,xrp, doge, dot, avax, link);
 
                 }
             }
@@ -179,7 +180,7 @@ public class ControllerConnexion {
             mdp = IntefaceFeatures.encryptPassword(mdp);
 
             String query = "SELECT id_investor, name, surname, phone_number FROM investor WHERE email = ? AND mdp = ?";
-            String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+            String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true";
             try (
                     Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
                     PreparedStatement preparedStatement = connection.prepareStatement(query);

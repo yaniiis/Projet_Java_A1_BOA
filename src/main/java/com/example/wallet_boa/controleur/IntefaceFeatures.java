@@ -136,7 +136,7 @@ public interface IntefaceFeatures {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("accueil.fxml"));
         Parent root = fxmlLoader.load();
 
-        ControlleurAccount accueilController = fxmlLoader.getController();
+        ControllerAccueil accueilController = fxmlLoader.getController();
 
         accueilController.setInvestor(investor);
 
@@ -284,6 +284,14 @@ public interface IntefaceFeatures {
         String randomIDStr = randomString.toString();
         int randomID = Integer.parseInt(randomIDStr);
         return randomID;
+    }
+
+    static double cut_nombre(double nombre) {
+        double valeur_dollar = nombre;
+
+        valeur_dollar = Math.round(valeur_dollar * 100.0) / 100.0;
+        return valeur_dollar;
+
     }
 
 }

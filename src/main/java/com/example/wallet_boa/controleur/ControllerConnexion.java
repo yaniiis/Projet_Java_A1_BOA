@@ -107,7 +107,7 @@ public class ControllerConnexion {
 
                         String description = resultSet.getString("description");
 
-                        double amount = resultSet.getDouble("amount");
+                        int amount = resultSet.getInt("amount");
                         boolean clone = resultSet.getBoolean("clone");
 
 

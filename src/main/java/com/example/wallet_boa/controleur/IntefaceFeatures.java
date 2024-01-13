@@ -66,6 +66,7 @@ public interface IntefaceFeatures {
     }
 
 
+
     static void layout_crypto(Investor investor) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("crypto.fxml"));
@@ -132,7 +133,7 @@ public interface IntefaceFeatures {
 
     static void layout_accueil(Investor investor) throws Exception {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("account.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("accueil.fxml"));
         Parent root = fxmlLoader.load();
 
         ControlleurAccount accueilController = fxmlLoader.getController();
@@ -140,7 +141,7 @@ public interface IntefaceFeatures {
         accueilController.setInvestor(investor);
 
         Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Account");
+        stage.setTitle("Accueil");
         stage.setScene(new Scene(root, 900, 600));
         stage.show();
     }

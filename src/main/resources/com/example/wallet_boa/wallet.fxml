@@ -10,7 +10,7 @@
     <top>
         <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
             <children>
-                <Label fx:id="label_name" layoutX="612.0" layoutY="4.0" text="Name">
+                <Label fx:id="label_name" layoutX="612.0" layoutY="4.0" text="">
                     <font>
                         <Font size="18.0" />
                     </font></Label>
@@ -75,7 +75,7 @@
             <RowConstraints />
             </rowConstraints>
             <children>
-                <Label text="Wallet" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                <Label fx:id="label_wallet_name" text="Wallet" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
                     <font>
                         <Font size="36.0" />
                     </font>
@@ -91,12 +91,19 @@
                 <GridPane.margin>
                     <Insets left="330.0" />
                 </GridPane.margin></Button>
+            <Label fx:id="label_amount" mnemonicParsing="false" text="12000" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                <GridPane.margin>
+                    <Insets left="280.0" />
+                </GridPane.margin>
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
             <VBox fx:id="vbox_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #6FEB4E; -fx-background-radius: 10;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
 
                 <children>
                     <HBox>
                         <children>
-                            <Pane fx:id="pane_1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none; ">
+                            <Pane fx:id="pane_1" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#handlePaneClick1" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none; ">
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
@@ -123,7 +130,7 @@
                                 <HBox.margin>
                                     <Insets left="25.0" top="20" />
                                 </HBox.margin></Pane>
-                            <Pane fx:id="pane_2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none">
+                            <Pane fx:id="pane_2" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#handlePaneClick2" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none">
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
@@ -149,7 +156,7 @@
                                 <HBox.margin>
                                     <Insets left="20.0" top="20" />
                                 </HBox.margin></Pane>
-                            <Pane fx:id="pane_3" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                            <Pane fx:id="pane_3" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#handlePaneClick3" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
@@ -179,7 +186,7 @@
                     </HBox>
                     <HBox>
                         <children>
-                            <Pane fx:id="pane_4" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                            <Pane fx:id="pane_4" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#handlePaneClick4" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
@@ -205,7 +212,7 @@
                                 <HBox.margin>
                                     <Insets left="25.0" top="10" />
                                 </HBox.margin></Pane>
-                            <Pane fx:id="pane_5" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                            <Pane fx:id="pane_5" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#handlePaneClick5" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
 
@@ -232,7 +239,7 @@
                                 <HBox.margin>
                                     <Insets left="20.0" top="10" />
                                 </HBox.margin></Pane>
-                            <Pane fx:id="pane_6" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                            <Pane fx:id="pane_6" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#handlePaneClick6" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
@@ -264,7 +271,7 @@
                     </HBox>
                     <HBox>
                         <children>
-                            <Pane fx:id="pane_7" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                            <Pane fx:id="pane_7" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#handlePaneClick7" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
@@ -291,7 +298,7 @@
                                 <HBox.margin>
                                     <Insets left="25.0" top="10" />
                                 </HBox.margin></Pane>
-                            <Pane fx:id="pane_8" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                            <Pane fx:id="pane_8" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#handlePaneClick8" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
@@ -317,7 +324,7 @@
                                 <HBox.margin>
                                     <Insets left="20.0" top="10" />
                                 </HBox.margin></Pane>
-                            <Pane fx:id="pane_9" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
+                            <Pane fx:id="pane_9" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#handlePaneClick9" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: none;">
                                 <children>
                                     <VBox alignment="CENTER" prefHeight="73.0" prefWidth="121.0">
                                         <children>
@@ -421,17 +428,14 @@
                      </VBox.margin>
                     </ComboBox>
 
-                    <Label text="Name">
-                     <padding>
-                        <Insets left="130.0" top="10.0" />
-                     </padding></Label>
+
                     <TextField fx:id="txt_wallet_clone" maxWidth="-Infinity">
                      <VBox.margin>
                         <Insets left="80.0" top="5.0" />
                      </VBox.margin></TextField>
 
 
-                    <Button maxHeight="-Infinity" maxWidth="-Infinity" text="Create" onAction="#insert_wallet_clone">
+                    <Button maxHeight="-Infinity" maxWidth="-Infinity" onAction="#insert_wallet_clone" text="Create">
                         <VBox.margin>
                             <Insets left="125.0" top="10.0" />
                         </VBox.margin>
@@ -445,35 +449,115 @@
                   <Insets bottom="15.0" />
                </padding>
             </VBox>
-            <HBox fx:id="hbox_crypto" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="560.0" style="-fx-background-color: orange; -fx-background-radius: 10;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <HBox fx:id="hbox_crypto" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="560.0" style="-fx-background-color: orange; -fx-background-radius: 10;" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                 <children>
                     <Pane fx:id="pane_crypto_1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                        <children>
+                            <VBox>
+                                <children>
+                                    <Label fx:id="label_pane1" maxHeight="-Infinity" maxWidth="-Infinity">
+                                 <VBox.margin>
+                                    <Insets left="35.0" top="7.0" />
+                                 </VBox.margin></Label>
+                                    <Label fx:id="montant_pane1" prefHeight="35.0" prefWidth="78.0">
+                                 <VBox.margin>
+                                    <Insets left="25.0" />
+                                 </VBox.margin></Label>
+
+                                </children>
+                            </VBox>
+                        </children>
                         <HBox.margin>
                             <Insets left="15.0" top="10" />
                         </HBox.margin></Pane>
                     <Pane fx:id="pane_crypto_2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                        <children>
+                            <VBox>
+                                <children>
+                                    <Label fx:id="label_pane2" maxHeight="-Infinity" maxWidth="-Infinity">
+                                        <VBox.margin>
+                                            <Insets left="35.0" top="7.0" />
+                                        </VBox.margin></Label>
+                                    <Label fx:id="montant_pane2" prefHeight="35.0" prefWidth="78.0">
+                                        <VBox.margin>
+                                            <Insets left="25.0" />
+                                        </VBox.margin></Label>
+
+                                </children>
+                            </VBox>                        </children>
                         <HBox.margin>
                             <Insets left="5.0" top="10" />
                         </HBox.margin></Pane>
                     <Pane fx:id="pane_crypto_3" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
+                        <children>
+                            <VBox>
+                                <children>
+                                    <Label fx:id="label_pane3" maxHeight="-Infinity" maxWidth="-Infinity">
+                                        <VBox.margin>
+                                            <Insets left="35.0" top="7.0" />
+                                        </VBox.margin></Label>
+                                    <Label fx:id="montant_pane3" prefHeight="35.0" prefWidth="78.0">
+                                        <VBox.margin>
+                                            <Insets left="25.0" />
+                                        </VBox.margin></Label>
+
+                                </children>
+                            </VBox>
+                        </children>
                         <HBox.margin>
                             <Insets left="5.0" top="10" />
                         </HBox.margin></Pane>
                     <Pane fx:id="pane_crypto_4" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
-                        <HBox.margin>
+
+                        <children>
+                            <VBox>
+                                <children>
+                                    <Label fx:id="label_pane4" maxHeight="-Infinity" maxWidth="-Infinity">
+                                        <VBox.margin>
+                                            <Insets left="35.0" top="7.0" />
+                                        </VBox.margin></Label>
+                                    <Label fx:id="montant_pane4" prefHeight="35.0" prefWidth="78.0">
+                                        <VBox.margin>
+                                            <Insets left="25.0" />
+                                        </VBox.margin></Label>
+
+                                </children>
+                            </VBox>                        </children>                        <HBox.margin>
                             <Insets left="5.0" top="10" />
                         </HBox.margin></Pane>
                     <Pane fx:id="pane_crypto_5" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
-                        <HBox.margin>
+                        <children>
+                            <VBox>
+                                <children>
+                                    <Label fx:id="label_pane5" maxHeight="-Infinity" maxWidth="-Infinity">
+                                        <VBox.margin>
+                                            <Insets left="35.0" top="7.0" />
+                                        </VBox.margin></Label>
+                                    <Label fx:id="montant_pane5" prefHeight="35.0" prefWidth="78.0">
+                                        <VBox.margin>
+                                            <Insets left="25.0" />
+                                        </VBox.margin></Label>
+
+                                </children>
+                            </VBox>                        </children>                        <HBox.margin>
                             <Insets left="5.0" top="10" />
                         </HBox.margin></Pane>
 
                 </children>
                <GridPane.margin>
-                  <Insets bottom="30.0" left="23.0" />
+                  <Insets bottom="30.0" left="50.0" />
                </GridPane.margin>
             </HBox>
+            <HBox fx:id="hbox_walet_list_values" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="331.0" prefWidth="207.0" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" >
+                <children>
+                    <VBox fx:id="vbox_value_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: orange;" />
+                    <VBox fx:id="vbox_name_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: blue;" />
 
+                </children>
+               <GridPane.margin>
+                  <Insets left="30.0" />
+               </GridPane.margin>
+            </HBox>
             </children>
         </GridPane>
 

@@ -40,6 +40,7 @@ public class Wallet {
     public double getAmount(){
         return this.amount;
     }
+    public void setAmount(double amount){this.amount = amount;}
     public void setId_wallet(int id_wallet){
         this.id_wallet = id_wallet;
     }
@@ -55,5 +56,7 @@ public class Wallet {
     }
 
 
-
+    public int getId_wallet() {
+        return id_wallet;
+    }
 }

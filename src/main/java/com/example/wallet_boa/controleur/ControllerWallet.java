@@ -4,14 +4,21 @@ import com.example.wallet_boa.modele.Cryptocurrency;
 import com.example.wallet_boa.modele.Investor;
 import com.example.wallet_boa.modele.LigneCryptocurrency;
 import com.example.wallet_boa.modele.Wallet;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -21,8 +28,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ControllerWallet {
@@ -139,14 +148,43 @@ public class ControllerWallet {
     @FXML
     Label label_wallet_name;
     @FXML
-    Label label_amount;
-    @FXML
     VBox vbox_value_wallet;
     @FXML
     VBox vbox_name_wallet;
     @FXML
     HBox hbox_walet_list_values;
+    @FXML
+    HBox hbox_btn_action_wallet;
+    @FXML
+    LineChart<Number, Number> lineChart;
+    @FXML
+    CategoryAxis xAxis;
+    @FXML
+    NumberAxis yAxis;
+    @FXML
+    Button btn_impot;
+    @FXML
+    VBox hbox_insert_montant;
+    @FXML
+    Button btn_profit;
+    @FXML
+    Button btn_conseil;
+    @FXML
+    TextField txt_montant_payment;
+    @FXML
+    TextField txt_name_payment;
+    @FXML
+    TextField txt_carde_payment_un;
+    @FXML
+    TextField txt_carde_payment_deux;
+    @FXML
+    TextField txt_carde_payment_trois;
+    @FXML
+    TextField txt_carde_payment_quatre;
+    @FXML
+    TextField txt_code_payment;
 
+    private int indice_wallet_layout;
 
 
     ArrayList<Wallet> list_wallet;
@@ -322,6 +360,7 @@ public class ControllerWallet {
         }
 
     }
+
     @FXML
     public void back_wallet(){
         vbox_clone.setVisible(false);
@@ -484,22 +523,79 @@ public class ControllerWallet {
         }
     }
 
+    public void charger_graphique() {
+
+        new Thread(() -> {
+            try {
+                String date = "2023-01-01";
+                long startTime = new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime();
+                long endTime = startTime + (24 * 60 * 60 * 1000);
+
+                String api_url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&startTime=" + startTime + "&endTime=" + endTime;
+
+                URL url = new URL(api_url);
+                URLConnection conn = url.openConnection();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String inputLine;
+
+                while ((inputLine = reader.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                reader.close();
+
+                JSONArray jsonArray = new JSONArray(response.toString());
+                List<Pair<Long, Double>> chartData = new ArrayList<>();
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONArray dataPoint = jsonArray.getJSONArray(i);
+                    long time = dataPoint.getLong(0); // Temps en millisecondes
+                    double closePrice = dataPoint.getDouble(4); // Prix de clôture
+
+                    chartData.add(new Pair<>(time, closePrice));
+                }
+
+                // Mise à jour de l'interface utilisateur à l'intérieur de Platform.runLater
+                Platform.runLater(() -> {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName("BTC/USDT");
+
+                    for (Pair<Long, Double> dataPoint : chartData) {
+                        series.getData().add(new XYChart
+                                .Data<>(dataPoint.getKey(), dataPoint.getValue()));
+                    }
+
+                    lineChart.getData().clear();
+                    lineChart.getData().add(series);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public void lancement_wallet(double total_montant){
+        vbox_wallet.setVisible(false);
+        hbox_crypto.setVisible(false);
+        btn_new_wallet.setVisible(false);
+        btn_clone_wallet.setVisible(false);
+        hbox_walet_list_values.setVisible(true);
+        hbox_btn_action_wallet.setVisible(true);
+        label_wallet_name.setText("Wallet name");
+        String monString = String.valueOf(total_montant);
+        charger_graphique();
+        monString = formatPrice(monString);
+        lineChart.setTitle(monString);
+    }
+
     @FXML
     private void handlePaneClick1(MouseEvent event) throws Exception {
         double total_montant;
         if (event.getSource() == pane_1) {
-            vbox_wallet.setVisible(false);
-            hbox_crypto.setVisible(false);
-            btn_new_wallet.setVisible(false);
-            btn_clone_wallet.setVisible(false);
-            hbox_walet_list_values.setVisible(true);
-            label_amount.setVisible(true);
-            label_wallet_name.setText("Wallet name");
+            indice_wallet_layout = 0;
             total_montant = compte_total(list_wallet.get(0));
-            String monString = String.valueOf(total_montant);
-            label_amount.setText(monString);
-
-
+            lancement_wallet(total_montant);
         }
     }
 
@@ -508,14 +604,10 @@ public class ControllerWallet {
         double total_montant;
 
         if (event.getSource() == pane_2) {
-            vbox_wallet.setVisible(false);
-            hbox_crypto.setVisible(false);
-            btn_new_wallet.setVisible(false);
-            btn_clone_wallet.setVisible(false);
-            label_wallet_name.setText("Wallet name");
+            indice_wallet_layout = 1;
             total_montant = compte_total(list_wallet.get(1));
-            String monString = String.valueOf(total_montant);
-            label_amount.setText(monString);        }
+            lancement_wallet(total_montant);
+        }
     }
 
     @FXML
@@ -523,71 +615,47 @@ public class ControllerWallet {
         double total_montant;
 
         if (event.getSource() == pane_3) {
-            vbox_wallet.setVisible(false);
-            hbox_crypto.setVisible(false);
-            btn_new_wallet.setVisible(false);
-            btn_clone_wallet.setVisible(false);
-            label_wallet_name.setText("Wallet name");
+            indice_wallet_layout = 2;
             total_montant = compte_total(list_wallet.get(2));
-            String monString = String.valueOf(total_montant);
-            label_amount.setText(monString);        }
+            lancement_wallet(total_montant);
+        }
     }
     @FXML
     private void handlePaneClick4(MouseEvent event) throws Exception {
         double total_montant;
 
         if (event.getSource() == pane_4) {
-            vbox_wallet.setVisible(false);
-            hbox_crypto.setVisible(false);
-            btn_new_wallet.setVisible(false);
-            btn_clone_wallet.setVisible(false);
-            label_wallet_name.setText("Wallet name");
+            indice_wallet_layout = 3;
             total_montant = compte_total(list_wallet.get(3));
-            String monString = String.valueOf(total_montant);
-            label_amount.setText(monString);        }
+            lancement_wallet(total_montant);
+        }
     }
     @FXML
     private void handlePaneClick5(MouseEvent event) throws Exception {
         double total_montant;
 
         if (event.getSource() == pane_5) {
-            vbox_wallet.setVisible(false);
-            hbox_crypto.setVisible(false);
-            btn_new_wallet.setVisible(false);
-            btn_clone_wallet.setVisible(false);
-            label_wallet_name.setText("Wallet name");
+            indice_wallet_layout = 4;
             total_montant = compte_total(list_wallet.get(4));
-            String monString = String.valueOf(total_montant);
-            label_amount.setText(monString);        }
+            lancement_wallet(total_montant);        }
     }
     @FXML
     private void handlePaneClick6(MouseEvent event) throws Exception {
         double total_montant;
 
         if (event.getSource() == pane_6) {
-            vbox_wallet.setVisible(false);
-            hbox_crypto.setVisible(false);
-            btn_new_wallet.setVisible(false);
-            btn_clone_wallet.setVisible(false);
-            label_wallet_name.setText("Wallet name");
+            indice_wallet_layout = 5;
             total_montant = compte_total(list_wallet.get(5));
-            String monString = String.valueOf(total_montant);
-            label_amount.setText(monString);
-        }
+            lancement_wallet(total_montant);        }
     }
     @FXML
     private void handlePaneClick7(MouseEvent event) throws Exception {
         double total_montant;
 
         if (event.getSource() == pane_7) {
-            vbox_wallet.setVisible(false);
-            hbox_crypto.setVisible(false);
-            btn_new_wallet.setVisible(false);
-            btn_clone_wallet.setVisible(false);
-            label_wallet_name.setText("Wallet name");
+            indice_wallet_layout = 6;
             total_montant = compte_total(list_wallet.get(6));
-            String monString = String.valueOf(total_montant);
-            label_amount.setText(monString);
+            lancement_wallet(total_montant);
         }
     }
     @FXML
@@ -595,28 +663,19 @@ public class ControllerWallet {
         double total_montant;
 
         if (event.getSource() == pane_8) {
-            vbox_wallet.setVisible(false);
-            hbox_crypto.setVisible(false);
-            btn_new_wallet.setVisible(false);
-            btn_clone_wallet.setVisible(false);
-            label_wallet_name.setText("Wallet name");
+            indice_wallet_layout = 7;
             total_montant = compte_total(list_wallet.get(7));
-            String monString = String.valueOf(total_montant);
-            label_amount.setText(monString);        }
+            lancement_wallet(total_montant);
+        }
     }
     @FXML
     private void handlePaneClick9(MouseEvent event) throws Exception {
         double total_montant;
 
         if (event.getSource() == pane_9) {
-            vbox_wallet.setVisible(false);
-            hbox_crypto.setVisible(false);
-            btn_new_wallet.setVisible(false);
-            btn_clone_wallet.setVisible(false);
-            label_wallet_name.setText("Wallet name");
+            indice_wallet_layout = 8;
             total_montant = compte_total(list_wallet.get(8));
-            String monString = String.valueOf(total_montant);
-            label_amount.setText(monString);        }
+            lancement_wallet(total_montant);        }
     }
 
 
@@ -625,7 +684,6 @@ public class ControllerWallet {
         ArrayList<String> list_value = new ArrayList<String>(Arrays.asList("BTC", "ETH", "BNB", "ADA", "SOL", "XRP", "DOT", "DOGE", "AVAX", "LINK"));
         Random rand = new Random();
         int randomInt;
-        ObservableList<LigneCryptocurrency> list = FXCollections.observableArrayList();
 
         for(int i = 0; i < 5; i++) {
 
@@ -676,28 +734,6 @@ public class ControllerWallet {
 
     }
 
-    public double appelerValeurBinance(String crypto) throws Exception{
-
-        String api_url = "https://api.binance.com/api/v3/ticker/price?symbol=" + crypto + "USDT";
-        URL url = new URL(api_url);
-        URLConnection conn = url.openConnection();
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        StringBuilder response = new StringBuilder();
-        String inputLine;
-
-        while ((inputLine = reader.readLine()) != null) {
-            response.append(inputLine);
-        }
-        reader.close();
-
-        JSONObject json = new JSONObject(response.toString());
-        String price_ = json.getString("price");
-        double nombreEnDouble = Double.parseDouble(price_);
-        return nombreEnDouble;
-
-    }
-
 
     public double compte_total(Wallet wallet) throws Exception {
 
@@ -708,10 +744,11 @@ public class ControllerWallet {
 
         if(cryptocurrency.getADA()!=0){
 
-            double valeur_dollar = appelerValeurBinance("ADA");
+            double valeur_dollar = cryptocurrency.getADA();
             montant = recupere_valeur_crypto("ADA") * valeur_dollar;
             total_montant += montant ;
             Label label = new Label("ADA");
+            montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
@@ -719,20 +756,22 @@ public class ControllerWallet {
 
         }
         if(cryptocurrency.getBTC()!=0){
-            double valeur_dollar = appelerValeurBinance("BTC");
+            double valeur_dollar = cryptocurrency.getBTC();
             montant = recupere_valeur_crypto("BTC") * valeur_dollar;
             total_montant += montant ;
             Label label = new Label("BTC");
+            montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
         }
         if(cryptocurrency.getBNB()!=0){
-            double valeur_dollar = appelerValeurBinance("BNB");
+            double valeur_dollar = cryptocurrency.getBNB();
             montant = recupere_valeur_crypto("BNB") * valeur_dollar;
             total_montant += montant ;
             Label label = new Label("BNB");
+            montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
@@ -740,50 +779,55 @@ public class ControllerWallet {
 
         }
         if(cryptocurrency.getETH()!=0){
-            double valeur_dollar = appelerValeurBinance("ETH");
+            double valeur_dollar = cryptocurrency.getETH();
             montant = recupere_valeur_crypto("ETH") * valeur_dollar;
             total_montant += montant ;
             Label label = new Label("ETH");
+            montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
         }
         if(cryptocurrency.getSOL()!=0){
-            double valeur_dollar = appelerValeurBinance("SOL");
+            double valeur_dollar = cryptocurrency.getSOL();
             montant = recupere_valeur_crypto("SOL") * valeur_dollar;
             total_montant += montant ;
             Label label = new Label("SOL");
+            montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
         }
         if(cryptocurrency.getXRP()!=0){
-            double valeur_dollar = appelerValeurBinance("XRP");
+            double valeur_dollar = cryptocurrency.getXRP();
             montant = recupere_valeur_crypto("XRP") * valeur_dollar;
             total_montant += montant ;
             Label label = new Label("XRP");
+            montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
         }
         if(cryptocurrency.getDOT()!=0){
-            double valeur_dollar = appelerValeurBinance("DOT");
+            double valeur_dollar = cryptocurrency.getDOT();
             montant = recupere_valeur_crypto("DOT") * valeur_dollar;
             total_montant += montant ;
             Label label = new Label("DOT");
+            montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
         }
         if(cryptocurrency.getDOGE()!=0){
-            double valeur_dollar = appelerValeurBinance("DOGE");
+            double valeur_dollar = cryptocurrency.getDOGE();
             montant = recupere_valeur_crypto("DOGE") * valeur_dollar;
             total_montant += montant ;
             Label label = new Label("DOGE");
+            montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
@@ -791,20 +835,22 @@ public class ControllerWallet {
         }
 
         if(cryptocurrency.getAVAX()!=0){
-            double valeur_dollar = appelerValeurBinance("AVAX");
+            double valeur_dollar = cryptocurrency.getAVAX();
             montant = recupere_valeur_crypto("AVAX") * valeur_dollar;
             total_montant += montant ;
             Label label = new Label("AVAX");
+            montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
         }
         if(cryptocurrency.getLINK()!=0){
-            double valeur_dollar = appelerValeurBinance("LINK");
+            double valeur_dollar = cryptocurrency.getLINK();
             montant = recupere_valeur_crypto("LINK") * valeur_dollar;
             total_montant += montant ;
             Label label = new Label("LINK");
+            montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
@@ -845,6 +891,120 @@ public class ControllerWallet {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @FXML
+    public void inserer_montant_layout(){
+        lineChart.setVisible(false);
+        hbox_insert_montant.setVisible(true);
+    }
+
+    public void close_insert_montant(){
+        lineChart.setVisible(true);
+        hbox_insert_montant.setVisible(false);
+        txt_montant_payment.setText("");
+        txt_name_payment.setText("");
+        txt_carde_payment_un.setText("");
+        txt_carde_payment_deux.setText("");
+        txt_carde_payment_trois.setText("");
+        txt_carde_payment_quatre.setText("");
+        txt_code_payment.setText("");
+    }
+
+    @FXML
+    public void insert_payment() {
+
+        String montant = txt_montant_payment.getText();
+        String name = txt_name_payment.getText();
+        String carde_un = txt_carde_payment_un.getText();
+        String carde_deux = txt_carde_payment_deux.getText();
+        String carde_trois = txt_carde_payment_trois.getText();
+        String carde_quatre = txt_carde_payment_quatre.getText();
+        String code = txt_code_payment.getText();
+
+        int carde_un_, carde_deux_, carde_trois_, carde_quatre_, code_, montant_int;
+
+        if (montant.isEmpty() || name.isEmpty() || carde_un.isEmpty() || carde_deux.isEmpty() || carde_trois.isEmpty() || carde_quatre.isEmpty() || code.isEmpty()) {
+            System.out.println("Veuillez remplir tous les champs.");
+        } else {
+            try {
+                montant_int = Integer.parseInt(montant);
+
+                if (carde_un.length() == 4) {
+                    carde_un_ = Integer.parseInt(carde_un);
+                } else {
+                    throw new NumberFormatException();
+                }
+
+                if (carde_deux.length() == 4) {
+                    carde_deux_ = Integer.parseInt(carde_deux);
+                } else {
+                    throw new NumberFormatException();
+                }
+
+                if (carde_trois.length() == 4) {
+                    carde_trois_ = Integer.parseInt(carde_trois);
+                } else {
+                    throw new NumberFormatException();
+                }
+
+                if (carde_quatre.length() == 4) {
+                    carde_quatre_ = Integer.parseInt(carde_quatre);
+                } else {
+                    throw new NumberFormatException();
+                }
+
+                if (code.length() == 3) {
+                    code_ = Integer.parseInt(code);
+                } else {
+                    throw new NumberFormatException();
+                }
+
+                update_montant(montant);
+
+            } catch (NumberFormatException e) {
+                System.err.println("La valeur du montant, les numéros de carte ou le code de sécurité ne sont pas valides.");
+            }
+        }
+
+
+    }
+
+    public void update_montant(String montant){
+
+        String updateQuery = "UPDATE Wallet SET amount = ? WHERE id_wallet = ?;";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement updateStmt = connection.prepareStatement(updateQuery);
+        ) {
+            ArrayList<Wallet> list_wallet = investor.getList_wallet();
+            Wallet wallet = list_wallet.get(indice_wallet_layout);
+
+            investor.getList_wallet();
+            indice_wallet_layout = 1;
+            updateStmt.setDouble(1, Double.parseDouble(montant));
+            updateStmt.setInt(2, wallet.getId_wallet());
+
+            int rowsAffected = updateStmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("La quantité dans le portefeuille a été mise à jour avec succès!");
+            } else {
+                System.out.println("Erreur lors de la mise à jour du portefeuille.");
+            }
+            Double new_amount_ = investor.getList_wallet().get(indice_wallet_layout).getAmount() + Double.parseDouble(montant);
+            investor.getList_wallet().get(indice_wallet_layout).setAmount(new_amount_);
+            close_insert_montant();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
     }
 
 

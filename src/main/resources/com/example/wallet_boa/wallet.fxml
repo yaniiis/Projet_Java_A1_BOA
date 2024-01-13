@@ -2,6 +2,7 @@
 
 <?import javafx.collections.*?>
 <?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -91,13 +92,6 @@
                 <GridPane.margin>
                     <Insets left="330.0" />
                 </GridPane.margin></Button>
-            <Label fx:id="label_amount" mnemonicParsing="false" text="12000" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
-                <GridPane.margin>
-                    <Insets left="280.0" />
-                </GridPane.margin>
-               <font>
-                  <Font size="18.0" />
-               </font></Label>
             <VBox fx:id="vbox_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #6FEB4E; -fx-background-radius: 10;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
 
                 <children>
@@ -548,15 +542,118 @@
                   <Insets bottom="30.0" left="50.0" />
                </GridPane.margin>
             </HBox>
-            <HBox fx:id="hbox_walet_list_values" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="331.0" prefWidth="207.0" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" >
+            <HBox fx:id="hbox_walet_list_values" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="331.0" prefWidth="567.0" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
                 <children>
                     <VBox fx:id="vbox_value_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: orange;" />
                     <VBox fx:id="vbox_name_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: blue;" />
-
+                    <LineChart fx:id="lineChart" prefHeight="292.0" prefWidth="325.0" title="">
+                        <xAxis>
+                            <NumberAxis autoRanging="true" label="X Label" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis autoRanging="true" label="Y Label" />
+                        </yAxis>
+                    </LineChart>
                 </children>
                <GridPane.margin>
-                  <Insets left="30.0" />
+                  <Insets bottom="100.0" left="30.0" />
                </GridPane.margin>
+            </HBox>
+            <VBox fx:id="hbox_insert_montant" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="292.0" prefWidth="268.0" style="-fx-background-color: #8FF3FF;" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                <GridPane.margin>
+                    <Insets bottom="100.0" left="280.0" />
+                </GridPane.margin>
+               <children>
+                  <Label text="Payment">
+                     <VBox.margin>
+                        <Insets left="120.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label text="Montant">
+                     <VBox.margin>
+                        <Insets left="122.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="txt_montant_payment" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="88.0">
+                     <VBox.margin>
+                        <Insets left="100.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label text="Name on card">
+                     <VBox.margin>
+                        <Insets left="100.0" top="10.0" />
+                     </VBox.margin></Label>
+                  <TextField fx:id="txt_name_payment" maxHeight="-Infinity" maxWidth="-Infinity">
+                     <VBox.margin>
+                        <Insets left="70.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label text="Card Number">
+                     <VBox.margin>
+                        <Insets left="105.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox prefHeight="36.0" prefWidth="221.0">
+                     <children>
+                        <TextField fx:id="txt_carde_payment_un" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="49.0" />
+                         <TextField fx:id="txt_carde_payment_deux" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="49.0">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin></TextField>
+                         <TextField fx:id="txt_carde_payment_trois" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="49.0">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin></TextField>
+                         <TextField fx:id="txt_carde_payment_quatre" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="49.0">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin></TextField>
+
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Label text="Security code">
+                     <VBox.margin>
+                        <Insets left="100.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="txt_code_payment" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="60.0">
+                     <VBox.margin>
+                        <Insets left="100.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Button mnemonicParsing="false" onAction="#insert_payment" text="Pay">
+                     <VBox.margin>
+                        <Insets left="113.0" top="5.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <HBox fx:id="hbox_btn_action_wallet" prefHeight="100.0" prefWidth="200.0" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <children>
+                   <Button fx:id="btn_inserer" mnemonicParsing="false" onAction="#inserer_montant_layout" text="Inserer montant">
+                       <HBox.margin>
+                           <Insets left="90.0" top="25.0" />
+                       </HBox.margin></Button>
+                  <Button fx:id="btn_profit" mnemonicParsing="false" text="Profit">
+                     <HBox.margin>
+                        <Insets left="180.0" top="25.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="btn_impot" mnemonicParsing="false" text="Impots">
+                     <HBox.margin>
+                        <Insets left="25.0" top="25.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="btn_conseil" mnemonicParsing="false" text="Conseil">
+                     <HBox.margin>
+                        <Insets left="25.0" top="25.0" />
+                     </HBox.margin></Button>
+
+               </children>
             </HBox>
             </children>
         </GridPane>

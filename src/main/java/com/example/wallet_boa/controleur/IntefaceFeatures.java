@@ -132,6 +132,16 @@ public interface IntefaceFeatures {
     }
 
 
+    static String formatPrice(String price) {
+        try {
+            double priceValue = Double.parseDouble(price);
+            return String.format("%.2f", priceValue);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     static void layout_accueil(Investor investor, Blockchaine blockchaine) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("accueil.fxml"));

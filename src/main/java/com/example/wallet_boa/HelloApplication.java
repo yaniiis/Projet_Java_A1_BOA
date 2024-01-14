@@ -13,7 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -42,12 +44,13 @@ public class HelloApplication extends Application {
 
         HelloApplication.primaryStage = primaryStage;
 
-//        primaryStage.initStyle(StageStyle.UNDECORATED);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("connexion.fxml"));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Votre Application");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
+
+
 
     }
 

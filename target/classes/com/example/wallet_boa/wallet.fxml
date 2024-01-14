@@ -443,7 +443,7 @@
                   <Insets bottom="15.0" />
                </padding>
             </VBox>
-            <HBox fx:id="hbox_crypto" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="560.0" style="-fx-background-color: orange; -fx-background-radius: 10;" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <HBox fx:id="hbox_crypto" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="560.0" style="-fx-background-color: orange; -fx-background-radius: 10;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                 <children>
                     <Pane fx:id="pane_crypto_1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
                         <children>
@@ -547,8 +547,8 @@
                     <VBox fx:id="vbox_value_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: orange;" />
                     <VBox fx:id="vbox_name_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: blue;" />
                     <LineChart fx:id="lineChart" prefHeight="292.0" prefWidth="325.0" title="">
-                        <xAxis >
-                            <NumberAxis fx:id="xAxis" autoRanging="true" label="X Label" />
+                        <xAxis>
+                            <NumberAxis autoRanging="true" label="X Label" fx:id="xAxis" />
                         </xAxis>
                         <yAxis>
                             <NumberAxis autoRanging="true" label="Value $ " />
@@ -634,6 +634,57 @@
                   </Button>
                </children>
             </VBox>
+            <VBox fx:id="Vbox_retraite" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="215.0" prefWidth="235.0" style="-fx-background-color: #8FF3FF;" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                <GridPane.margin>
+                    <Insets bottom="100.0" left="290.0" />
+                </GridPane.margin>
+                <children>
+                    <Label text="Retraite">
+                     <VBox.margin>
+                        <Insets left="100.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                    <Label prefHeight="17.0" prefWidth="240.0" text="A combien estimez-vous pouvoir verser" wrapText="true">
+                        <VBox.margin>
+                            <Insets left="5.0" top="10.0" />
+                        </VBox.margin>
+                    </Label>
+                    <Label prefHeight="17.0" prefWidth="213.0" text="par mois sur vos portefeuilles ?" wrapText="true">
+                        <VBox.margin>
+                            <Insets left="40.0" />
+                        </VBox.margin>
+                    </Label>
+                  <TextField fx:id="txt_montant_ptf" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="57.0">
+                     <VBox.margin>
+                        <Insets left="100.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label text="Combien d'année vous reste-il ">
+                     <VBox.margin>
+                        <Insets left="40.0" top="10.0" />
+                     </VBox.margin></Label>
+                  <Label text="avant votre retraite ?">
+                     <VBox.margin>
+                        <Insets left="75.0" />
+                     </VBox.margin>
+                  </Label>
+                <TextField fx:id="txt_annee_retraite" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="40.0">
+                <VBox.margin>
+                    <Insets left="108.0" top="5.0" />
+                </VBox.margin></TextField>
+                  <Button mnemonicParsing="false" onAction="#calcul_retraite" text="Calcul">
+                     <VBox.margin>
+                        <Insets left="105.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+
+
+                </children>
+            </VBox>
+
+
             <HBox fx:id="hbox_btn_action_wallet" prefHeight="100.0" prefWidth="200.0" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <children>
                    <Button fx:id="btn_inserer" mnemonicParsing="false" onAction="#inserer_montant_layout" text="Inserer montant">
@@ -652,6 +703,10 @@
                      <HBox.margin>
                         <Insets left="25.0" top="25.0" />
                      </HBox.margin></Button>
+                   <Button fx:id="btn_retraite" mnemonicParsing="false" onAction="#retraite_layout" text="Retraite">
+                       <HBox.margin>
+                           <Insets left="25.0" top="25.0" />
+                       </HBox.margin></Button>
 
                </children>
             </HBox>

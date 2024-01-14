@@ -1,10 +1,7 @@
 package com.example.wallet_boa.controleur;
 
 import com.example.wallet_boa.HelloApplication;
-import com.example.wallet_boa.modele.Cryptocurrency;
-import com.example.wallet_boa.modele.Investor;
-import com.example.wallet_boa.modele.LigneCryptocurrency;
-import com.example.wallet_boa.modele.Wallet;
+import com.example.wallet_boa.modele.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,11 +28,13 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ControlleurCryptocurrency {
 
     private Investor investor;
+    private Blockchaine blockchain;
 
     @FXML
     Label label_name;
@@ -74,24 +73,24 @@ public class ControlleurCryptocurrency {
     }
 
     public void l_help() throws Exception{
-        IntefaceFeatures.layout_help(investor);
+        IntefaceFeatures.layout_help(investor, blockchain);
     }
     public void l_wallet() throws Exception{
-        IntefaceFeatures.layout_wallet(investor);
+        IntefaceFeatures.layout_wallet(investor, blockchain);
     }
     public void l_action() throws Exception{
-        IntefaceFeatures.layout_stock(investor);
+        IntefaceFeatures.layout_stock(investor,blockchain);
     }
     public void l_transaction() throws Exception{
-        IntefaceFeatures.layout_transaction(investor);
+        IntefaceFeatures.layout_transaction(investor,blockchain);
     }
     public void l_account() throws Exception{
-        IntefaceFeatures.layout_account(investor);
+        IntefaceFeatures.layout_account(investor,blockchain);
     }
     public void l_accueil() throws Exception{
-        IntefaceFeatures.layout_accueil(investor);
+        IntefaceFeatures.layout_accueil(investor,blockchain);
     }
-    public void setInvestor(Investor investor) throws Exception {
+    public void setInvestor(Investor investor, Blockchaine blockchaine) throws Exception {
         /*
             Affection d'un objet Investor
          */
@@ -104,6 +103,7 @@ public class ControlleurCryptocurrency {
         });
 
         this.investor = investor;
+        this.blockchain = blockchaine;
         remplirWallet();
         remplirtableau();
 
@@ -148,10 +148,6 @@ public class ControlleurCryptocurrency {
         }
 
         tableview_value.setItems(list);
-    }
-
-    public void alimenterbouton(){
-
     }
 
 
@@ -252,7 +248,6 @@ public class ControlleurCryptocurrency {
         double montant_investor = 0;
         Wallet wallet_select = new Wallet();
 
-        // Essayer de convertir le montant en double
         try {
             numberAmount = Double.parseDouble(amount);
             nb = true;
@@ -292,76 +287,81 @@ public class ControlleurCryptocurrency {
                 }
             }
 
-            if(montant_investor<numberPrice){
+            if(numberAmount  > montant_investor){
                 System.out.println("Vous n'avez pas assez de sous !");
             }else{
                 double stock_v;
                 double new_value;
+
+
+
                 switch (selected){
 
                     case "BTC":
                         stock_v = wallet_select.getList_value().getBTC();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setBTC(new_value);
-                        update_value_bdd(new_value,"BTC",wallet_select.getList_value().getId_crypto());
+                        update_value_bdd(new_value,"BTC",wallet_select, part);
                         break;
                     case "ETH":
                         stock_v = wallet_select.getList_value().getETH();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setETH(new_value);
-                        update_value_bdd(new_value,"ETH",wallet_select.getList_value().getId_crypto());
+                        update_value_bdd(new_value,"ETH",wallet_select, part);
                         break;
                     case "BNB":
                         stock_v = wallet_select.getList_value().getBNB();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setBNB(new_value);
-                        update_value_bdd(new_value,"BNB",wallet_select.getList_value().getId_crypto());
+                        update_value_bdd(new_value,"BNB",wallet_select, part);
                         break;
                     case "ADA":
                         stock_v = wallet_select.getList_value().getADA();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setADA(new_value);
-                        update_value_bdd(new_value,"ADA",wallet_select.getList_value().getId_crypto());
+                        update_value_bdd(new_value,"ADA",wallet_select, part);
                         break;
                     case "SOL":
                         stock_v = wallet_select.getList_value().getSOL();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setSOL(new_value);
-                        update_value_bdd(new_value,"SOL",wallet_select.getList_value().getId_crypto());
+                        update_value_bdd(new_value,"SOL",wallet_select, part);
                         break;
                     case "XRP":
                         stock_v = wallet_select.getList_value().getXRP();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setXRP(new_value);
-                        update_value_bdd(new_value,"XRP",wallet_select.getList_value().getId_crypto());
+                        update_value_bdd(new_value,"XRP",wallet_select, part);
                         break;
                     case "DOT":
                         stock_v = wallet_select.getList_value().getDOT();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setDOT(new_value);
-                        update_value_bdd(new_value,"DOT",wallet_select.getList_value().getId_crypto());
+                        update_value_bdd(new_value,"DOT",wallet_select, part);
                         break;
                     case "DOGE":
                         stock_v = wallet_select.getList_value().getDOGE();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setDOGE(new_value);
-                        update_value_bdd(new_value,"DOGE",wallet_select.getList_value().getId_crypto());
+                        update_value_bdd(new_value,"DOGE",wallet_select, part);
                         break;
                     case "AVAX":
                         stock_v = wallet_select.getList_value().getAVAX();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setAVAX(new_value);
-                        update_value_bdd(new_value,"AVAX",wallet_select.getList_value().getId_crypto());
+                        update_value_bdd(new_value,"AVAX",wallet_select, part);
                         break;
                     case "LINK":
                         stock_v = wallet_select.getList_value().getLINK();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setLINK(new_value);
-                        update_value_bdd(new_value,"LINK",wallet_select.getList_value().getId_crypto());
+                        update_value_bdd(new_value,"LINK",wallet_select, part);
                         break;
-
-
                 }
+
+
+
+
             }
 
 
@@ -369,7 +369,7 @@ public class ControlleurCryptocurrency {
         }
     }
 
-    public void update_value_bdd(double value_amount, String value_name, int id_list_value) {
+    public void update_value_bdd(double value_amount, String value_name, Wallet wallet, double part) {
 
         if(value_amount<0){
             value_amount = 0;
@@ -384,11 +384,88 @@ public class ControlleurCryptocurrency {
         ) {
 
             preparedStatement.setDouble(1, value_amount);
-            preparedStatement.setInt(2, id_list_value);
+            preparedStatement.setInt(2, wallet.getList_value().getId_crypto());
 
             preparedStatement.executeUpdate();
+
+
+            createTransaction(wallet, value_name, part);
+
             System.out.println("modif ok");
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void createTransaction(Wallet wallet, String value_name, double part){
+
+        Transaction transaction = new Transaction(wallet, value_name, part);
+        Block block_last = blockchain.getLastBlock();
+        if (block_last.getTransactions().size() < 10) {
+            block_last.getTransactions().add(transaction);
+
+        }else{
+            String ancien_hash = block_last.getHash();
+            int ancien_index = block_last.getIndex() + 1;
+
+            Block new_block = new Block(ancien_index,ancien_hash );
+            blockchain.addBlock(new_block);
+            insert_block_bdd(new_block);
+
+        }
+        insert_transaction_bdd(transaction);
+
+    }
+
+    public void insert_block_bdd(Block new_block){
+
+        String query = "INSERT INTO blocks (indice, timestamp, previousHash, hash) VALUES ( ?, ?, ?, ?)";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, new_block.getIndex());
+            preparedStatement.setTimestamp(2, new_block.getTimestamp());
+            preparedStatement.setString(3, new_block.getPreviousHash());
+            preparedStatement.setString(4, new_block.getHash());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("L'insertion réussi.");
+            } else {
+                System.out.println("L'insertion a échoué.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insert_transaction_bdd(Transaction transaction){
+        String query = "INSERT INTO transactions (transactionId, originWalletId, value, amount, indice) VALUES (?, ?, ?, ?, ?)";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setString(1, transaction.getTransactionId());
+            preparedStatement.setInt(2, transaction.getOriginWallet().getId_wallet());
+            preparedStatement.setString(3, transaction.getValue());
+            preparedStatement.setDouble(4, transaction.getAmount());
+            preparedStatement.setInt(5, blockchain.getLastBlock().getIndex());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("L'insertion réussi.");
+            } else {
+                System.out.println("L'insertion a échoué.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -402,9 +479,11 @@ public class ControlleurCryptocurrency {
         double numberAmount = 0;
         Wallet wallet_select = new Wallet();
         double montant_investor = 0;
-        double stock_v;
         double new_value;
         double part_dispo = 0;
+        double stock_v = 0;
+
+
 
         // Essayer de convertir le montant en double
         try {
@@ -447,26 +526,30 @@ public class ControlleurCryptocurrency {
                 }
             }
 
+
             switch (selected){
 
             case "BTC":
+
+
                 stock_v = wallet_select.getList_value().getBTC();
                 new_value = stock_v - part_vendre;
 
                 if(part_vendre<stock_v){
                     wallet_select.getList_value().setBTC(new_value);
-                    update_value_bdd(new_value,"BTC",wallet_select.getList_value().getId_crypto());
+                    update_value_bdd(new_value,"BTC",wallet_select, part_vendre);
                 }else{
                     System.out.println("Part insufisante");
                 }
 
                 break;
             case "ETH":
+
                 stock_v = wallet_select.getList_value().getETH();
                 new_value = stock_v - part_vendre;
                 if(part_vendre<stock_v){
                     wallet_select.getList_value().setETH(new_value);
-                    update_value_bdd(new_value,"ETH",wallet_select.getList_value().getId_crypto());
+                    update_value_bdd(new_value,"ETH",wallet_select, part_vendre);
                 }else{
                     System.out.println("Part insufisante");
                 }
@@ -476,7 +559,7 @@ public class ControlleurCryptocurrency {
                 new_value = stock_v - part_vendre;
                 if(part_vendre<stock_v){
                     wallet_select.getList_value().setBNB(new_value);
-                    update_value_bdd(new_value,"BNB",wallet_select.getList_value().getId_crypto());
+                    update_value_bdd(new_value,"BNB",wallet_select, part_vendre);
                 }else{
                     System.out.println("Part insufisante");
                 }
@@ -486,7 +569,7 @@ public class ControlleurCryptocurrency {
                 new_value = stock_v - part_vendre;
                 if(part_vendre<stock_v){
                     wallet_select.getList_value().setADA(new_value);
-                    update_value_bdd(new_value,"ADA",wallet_select.getList_value().getId_crypto());
+                    update_value_bdd(new_value,"ADA",wallet_select, part_vendre);
                 }else{
                     System.out.println("Part insufisante");
                 }
@@ -494,9 +577,10 @@ public class ControlleurCryptocurrency {
             case "SOL":
                 stock_v = wallet_select.getList_value().getSOL();
                 new_value = stock_v - part_vendre;
+
                 if(part_vendre<stock_v){
                     wallet_select.getList_value().setSOL(new_value);
-                    update_value_bdd(new_value,"SOL",wallet_select.getList_value().getId_crypto());
+                    update_value_bdd(new_value,"SOL",wallet_select, part_vendre);
                 }else{
                     System.out.println("Part insufisante");
                 }
@@ -508,7 +592,7 @@ public class ControlleurCryptocurrency {
 
                 if(part_vendre<stock_v){
                     wallet_select.getList_value().setXRP(new_value);
-                    update_value_bdd(new_value,"XRP",wallet_select.getList_value().getId_crypto());
+                    update_value_bdd(new_value,"XRP",wallet_select, part_vendre);
                 }else{
                     System.out.println("Part insufisante");
                 }
@@ -518,7 +602,7 @@ public class ControlleurCryptocurrency {
                 new_value = stock_v - part_vendre;
                 if(part_vendre<stock_v){
                     wallet_select.getList_value().setDOT(new_value);
-                    update_value_bdd(new_value,"DOT",wallet_select.getList_value().getId_crypto());
+                    update_value_bdd(new_value,"DOT",wallet_select, part_vendre);
                 }else{
                     System.out.println("Part insufisante");
                 }
@@ -528,7 +612,7 @@ public class ControlleurCryptocurrency {
                 new_value = stock_v - part_vendre;
                 if(part_vendre<stock_v){
                     wallet_select.getList_value().setDOGE(new_value);
-                    update_value_bdd(new_value,"DOGE",wallet_select.getList_value().getId_crypto());
+                    update_value_bdd(new_value,"DOGE",wallet_select, part_vendre);
                 }else{
                     System.out.println("Part insufisante");
                 }
@@ -538,7 +622,7 @@ public class ControlleurCryptocurrency {
                 new_value = stock_v - part_vendre;
                 if(part_vendre<stock_v){
                     wallet_select.getList_value().setAVAX(new_value);
-                    update_value_bdd(new_value,"AVAX",wallet_select.getList_value().getId_crypto());
+                    update_value_bdd(new_value,"AVAX",wallet_select, part_vendre);
                 }else{
                     System.out.println("Part insufisante");
                 }
@@ -548,13 +632,13 @@ public class ControlleurCryptocurrency {
                 new_value = stock_v - part_vendre;
                 if(part_vendre<stock_v){
                     wallet_select.getList_value().setLINK(new_value);
-                    update_value_bdd(new_value,"LINK",wallet_select.getList_value().getId_crypto());
+                    update_value_bdd(new_value,"LINK",wallet_select, part_vendre);
                 }else{
                     System.out.println("Part insufisante");
                 }
                 break;
 
-        }
+            }
 
         }
     }

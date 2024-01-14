@@ -1,6 +1,7 @@
 package com.example.wallet_boa.controleur;
 
 import com.example.wallet_boa.HelloApplication;
+import com.example.wallet_boa.modele.Blockchaine;
 import com.example.wallet_boa.modele.Investor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class ControllerAccueil {
 
     private Investor investor;
+    private Blockchaine blockchain;
 
     @FXML
     Label label_name;
@@ -36,12 +38,13 @@ public class ControllerAccueil {
     */
 
 
-    public void setInvestor(Investor investor) {
+    public void setInvestor(Investor investor, Blockchaine blockchaine) {
         /*
             Affection d'un objet Investor
          */
 
         this.investor = investor;
+        this.blockchain = blockchaine;
         label_name.setText(investor.getName());
     }
 
@@ -51,22 +54,22 @@ public class ControllerAccueil {
     }
     public void l_help() throws Exception{
 
-        IntefaceFeatures.layout_help(this.investor);
+        IntefaceFeatures.layout_help(this.investor, this.blockchain);
     }
     public void l_wallet() throws Exception{
-        IntefaceFeatures.layout_wallet(this.investor);
+        IntefaceFeatures.layout_wallet(this.investor, this.blockchain);
     }
     public void l_action() throws Exception{
-        IntefaceFeatures.layout_stock(this.investor);
+        IntefaceFeatures.layout_stock(this.investor, this.blockchain);
     }
     public void l_transaction() throws Exception{
-        IntefaceFeatures.layout_transaction(this.investor);
+        IntefaceFeatures.layout_transaction(this.investor, this.blockchain);
     }
     public void l_crytpo() throws Exception{
-        IntefaceFeatures.layout_crypto(this.investor);
+        IntefaceFeatures.layout_crypto(this.investor, this.blockchain);
     }
     public void l_account() throws Exception{
-        IntefaceFeatures.layout_account(this.investor);
+        IntefaceFeatures.layout_account(this.investor, blockchain);
     }
 
 

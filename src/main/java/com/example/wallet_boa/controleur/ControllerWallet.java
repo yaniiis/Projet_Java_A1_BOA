@@ -1,9 +1,6 @@
 package com.example.wallet_boa.controleur;
 
-import com.example.wallet_boa.modele.Cryptocurrency;
-import com.example.wallet_boa.modele.Investor;
-import com.example.wallet_boa.modele.LigneCryptocurrency;
-import com.example.wallet_boa.modele.Wallet;
+import com.example.wallet_boa.modele.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.animation.PauseTransition;
@@ -39,7 +36,11 @@ import java.util.*;
 public class ControllerWallet {
 
     private Investor investor;
+    private Blockchaine blockchain;
     private int nb_wallet = 0;
+    private int indice_wallet_layout;
+    private double values_total_wallet;
+    private ArrayList<Wallet> list_wallet;
 
     @FXML
     Label label_name;
@@ -185,11 +186,15 @@ public class ControllerWallet {
     TextField txt_carde_payment_quatre;
     @FXML
     TextField txt_code_payment;
+    @FXML
+    TextField txt_annee_retraite;
+    @FXML
+    TextField txt_montant_ptf;
+    @FXML
+    VBox Vbox_retraite;
 
-    private int indice_wallet_layout;
 
 
-    ArrayList<Wallet> list_wallet;
 
 
 
@@ -312,28 +317,29 @@ public class ControllerWallet {
     }
 
     public void l_help() throws Exception{
-        IntefaceFeatures.layout_help(investor);
+        IntefaceFeatures.layout_help(investor, blockchain);
     }
     public void l_action() throws Exception{
-        IntefaceFeatures.layout_stock(investor);
+        IntefaceFeatures.layout_stock(investor, blockchain);
     }
     public void l_transaction() throws Exception{
-        IntefaceFeatures.layout_transaction(investor);
+        IntefaceFeatures.layout_transaction(investor, blockchain);
     }
     public void l_crytpo() throws Exception{
-        IntefaceFeatures.layout_crypto(investor);
+        IntefaceFeatures.layout_crypto(investor, blockchain);
     }
     public void l_account() throws Exception{
-        IntefaceFeatures.layout_account(investor);
+        IntefaceFeatures.layout_account(investor, blockchain);
     }
     public void l_accueil() throws Exception{
-        IntefaceFeatures.layout_accueil(investor);
+        IntefaceFeatures.layout_accueil(investor, blockchain);
     }
-    public void setInvestor(Investor investor) throws Exception {
+    public void setInvestor(Investor investor, Blockchaine blockchaine) throws Exception {
         /*
             Affection d'un objet Investor
          */
         this.investor = investor;
+        this.blockchain = blockchaine;
         label_name.setText(investor.getName());
         ajoutWallet();
         remplirCrypto();
@@ -525,52 +531,53 @@ public class ControllerWallet {
         }
     }
 
-    public void charger_graphique() throws Exception {
+    public void charger_graphique(List<String> symbolss) throws Exception {
 
         String apiKey = "O2VSXG62XNBFFJDL";
-        String symbol = "AAPL";
 
-        String apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + apiKey;
-
-        URL url = new URL(apiUrl);
-        URLConnection request = url.openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
-
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+        List<Double> closingPricesSum = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            closingPricesSum.add(0.0);
         }
-        in.close();
 
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
+        for (String symbol : symbolss) {
+            String apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + apiKey;
+            System.out.println(apiUrl);
 
-        HashMap<String, Object> root = mapper.readValue(response.toString(), typeRef);
-        HashMap<String, HashMap<String, String>> timeSeries = (HashMap<String, HashMap<String, String>>) root.get("Time Series (Daily)");
+            URL url = new URL(apiUrl);
+            URLConnection request = url.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
 
-        TreeMap<String, HashMap<String, String>> sortedData = new TreeMap<>(Collections.reverseOrder());
-        sortedData.putAll(timeSeries);
-
-        List<Double> closingPrices = new ArrayList<>();
-        int count = 0;
-
-        // Ici, nous avons corrigé la boucle pour utiliser les méthodes correctes.
-        for (Map.Entry<String, HashMap<String, String>> entry : sortedData.entrySet()) {
-            if (count++ == 10) {
-                break;
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
             }
-            double closePrice = Double.parseDouble(entry.getValue().get("4. close"));
-            closingPrices.add(closePrice);
+            in.close();
+
+            ObjectMapper mapper = new ObjectMapper();
+            TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
+            HashMap<String, Object> root = mapper.readValue(response.toString(), typeRef);
+            HashMap<String, HashMap<String, String>> timeSeries = (HashMap<String, HashMap<String, String>>) root.get("Time Series (Daily)");
+
+            TreeMap<String, HashMap<String, String>> sortedData = new TreeMap<>(Collections.reverseOrder());
+            sortedData.putAll(timeSeries);
+
+            int count = 0;
+            for (Map.Entry<String, HashMap<String, String>> entry : sortedData.entrySet()) {
+                if (count == 10) {
+                    break;
+                }
+                double closePrice = Double.parseDouble(entry.getValue().get("4. close"));
+                closingPricesSum.set(count, closingPricesSum.get(count) + closePrice);
+                count++;
+            }
         }
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName(symbol);
-        Collections.reverse(closingPrices);
-
-        for (int i = 0; i < closingPrices.size(); i++) {
-            series.getData().add(new XYChart.Data<>(i - 1, closingPrices.get(i)));
+        series.setName("AAPL & BTC Sum");
+        for (int i = 0; i < closingPricesSum.size(); i++) {
+            series.getData().add(new XYChart.Data<>(i + 1, closingPricesSum.get(i)));
         }
 
         Platform.runLater(() -> {
@@ -578,110 +585,110 @@ public class ControllerWallet {
         });
 
         xAxis.setLabel("Daily ");
-
     }
 
-    public void lancement_wallet(double total_montant) throws Exception {
+
+    public void lancement_wallet(List<String> list_crypto) throws Exception {
         vbox_wallet.setVisible(false);
         hbox_crypto.setVisible(false);
         btn_new_wallet.setVisible(false);
+        hbox_crypto.setVisible(false);
         btn_clone_wallet.setVisible(false);
         hbox_walet_list_values.setVisible(true);
         hbox_btn_action_wallet.setVisible(true);
-        label_wallet_name.setText("Wallet name");
-        String monString = String.valueOf(total_montant);
-        charger_graphique();
-        monString = formatPrice(monString);
-        lineChart.setTitle(monString);
+        investor.getList_wallet();
+        label_wallet_name.setText(list_wallet.get(indice_wallet_layout).getName());
+        //charger_graphique(list_crypto);
+
     }
 
     @FXML
     private void handlePaneClick1(MouseEvent event) throws Exception {
-        double total_montant;
+        List<String> list_crypto_presente;
         if (event.getSource() == pane_1) {
             indice_wallet_layout = 0;
-            total_montant = compte_total(list_wallet.get(0));
-            lancement_wallet(total_montant);
+            list_crypto_presente = compte_total(list_wallet.get(0));
+            lancement_wallet(list_crypto_presente);
         }
     }
 
     @FXML
     private void handlePaneClick2(MouseEvent event) throws Exception {
-        double total_montant;
+        List<String> list_crypto_presente;
 
         if (event.getSource() == pane_2) {
             indice_wallet_layout = 1;
-            total_montant = compte_total(list_wallet.get(1));
-            lancement_wallet(total_montant);
+            list_crypto_presente = compte_total(list_wallet.get(1));
+            lancement_wallet(list_crypto_presente);
         }
     }
 
     @FXML
     private void handlePaneClick3(MouseEvent event) throws Exception {
-        double total_montant;
+        List<String> list_crypto_presente;
 
         if (event.getSource() == pane_3) {
             indice_wallet_layout = 2;
-            total_montant = compte_total(list_wallet.get(2));
-            lancement_wallet(total_montant);
+            list_crypto_presente = compte_total(list_wallet.get(2));
+            lancement_wallet(list_crypto_presente);
         }
     }
     @FXML
     private void handlePaneClick4(MouseEvent event) throws Exception {
-        double total_montant;
+        List<String> list_crypto_presente;
 
         if (event.getSource() == pane_4) {
             indice_wallet_layout = 3;
-            total_montant = compte_total(list_wallet.get(3));
-            lancement_wallet(total_montant);
+            list_crypto_presente = compte_total(list_wallet.get(3));
+            lancement_wallet(list_crypto_presente);
         }
     }
     @FXML
     private void handlePaneClick5(MouseEvent event) throws Exception {
-        double total_montant;
+        List<String> list_crypto_presente;
 
         if (event.getSource() == pane_5) {
             indice_wallet_layout = 4;
-            total_montant = compte_total(list_wallet.get(4));
-            lancement_wallet(total_montant);        }
+            list_crypto_presente = compte_total(list_wallet.get(4));
+            lancement_wallet(list_crypto_presente);        }
     }
     @FXML
     private void handlePaneClick6(MouseEvent event) throws Exception {
-        double total_montant;
+        List<String> list_crypto_presente;
 
         if (event.getSource() == pane_6) {
             indice_wallet_layout = 5;
-            total_montant = compte_total(list_wallet.get(5));
-            lancement_wallet(total_montant);        }
+            list_crypto_presente = compte_total(list_wallet.get(5));
+            lancement_wallet(list_crypto_presente);        }
     }
     @FXML
     private void handlePaneClick7(MouseEvent event) throws Exception {
-        double total_montant;
+        List<String> list_crypto_presente;
 
         if (event.getSource() == pane_7) {
             indice_wallet_layout = 6;
-            total_montant = compte_total(list_wallet.get(6));
-            lancement_wallet(total_montant);
+            list_crypto_presente = compte_total(list_wallet.get(6));
+            lancement_wallet(list_crypto_presente);
         }
     }
     @FXML
     private void handlePaneClick8(MouseEvent event) throws Exception {
-        double total_montant;
+        List<String> list_crypto_presente;
 
         if (event.getSource() == pane_8) {
             indice_wallet_layout = 7;
-            total_montant = compte_total(list_wallet.get(7));
-            lancement_wallet(total_montant);
+            list_crypto_presente = compte_total(list_wallet.get(7));
+            lancement_wallet(list_crypto_presente);
         }
     }
     @FXML
     private void handlePaneClick9(MouseEvent event) throws Exception {
-        double total_montant;
+        List<String> list_crypto_presente;
 
         if (event.getSource() == pane_9) {
             indice_wallet_layout = 8;
-            total_montant = compte_total(list_wallet.get(8));
-            lancement_wallet(total_montant);        }
+            list_crypto_presente = compte_total(list_wallet.get(8));
+            lancement_wallet(list_crypto_presente);        }
     }
 
 
@@ -741,11 +748,14 @@ public class ControllerWallet {
     }
 
 
-    public double compte_total(Wallet wallet) throws Exception {
+
+    public List<String> compte_total(Wallet wallet) throws Exception {
 
         Cryptocurrency cryptocurrency = wallet.getList_value();
         double total_montant = 0;
         double montant;
+        String total_formater;
+        List<String> list_crypto_presente = new ArrayList<>();
 
 
         if(cryptocurrency.getADA()!=0){
@@ -757,6 +767,7 @@ public class ControllerWallet {
             montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
+            list_crypto_presente.add("ADA");
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
 
@@ -771,6 +782,7 @@ public class ControllerWallet {
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
+            list_crypto_presente.add("BTC");
         }
         if(cryptocurrency.getBNB()!=0){
             double valeur_dollar = cryptocurrency.getBNB();
@@ -782,6 +794,7 @@ public class ControllerWallet {
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
+            list_crypto_presente.add("BNB");
 
         }
         if(cryptocurrency.getETH()!=0){
@@ -794,6 +807,7 @@ public class ControllerWallet {
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
+            list_crypto_presente.add("ETH");
         }
         if(cryptocurrency.getSOL()!=0){
             double valeur_dollar = cryptocurrency.getSOL();
@@ -805,6 +819,7 @@ public class ControllerWallet {
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
+            list_crypto_presente.add("SOL");
         }
         if(cryptocurrency.getXRP()!=0){
             double valeur_dollar = cryptocurrency.getXRP();
@@ -816,6 +831,7 @@ public class ControllerWallet {
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
+            list_crypto_presente.add("XRP");
         }
         if(cryptocurrency.getDOT()!=0){
             double valeur_dollar = cryptocurrency.getDOT();
@@ -827,6 +843,7 @@ public class ControllerWallet {
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
+            list_crypto_presente.add("DOT");
         }
         if(cryptocurrency.getDOGE()!=0){
             double valeur_dollar = cryptocurrency.getDOGE();
@@ -838,6 +855,7 @@ public class ControllerWallet {
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
+            list_crypto_presente.add("DOGE");
         }
 
         if(cryptocurrency.getAVAX()!=0){
@@ -850,6 +868,7 @@ public class ControllerWallet {
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
+            list_crypto_presente.add("AVAX");
         }
         if(cryptocurrency.getLINK()!=0){
             double valeur_dollar = cryptocurrency.getLINK();
@@ -861,8 +880,12 @@ public class ControllerWallet {
             Label montantt = new Label(monString);
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
+            list_crypto_presente.add("LINK");
         }
-        return total_montant;
+        total_formater = formatPrice(String.valueOf(total_montant));
+        lineChart.setTitle(total_formater);
+        values_total_wallet = total_montant;
+        return list_crypto_presente;
     }
 
     public double recupere_valeur_crypto(String crypto) throws Exception {
@@ -988,8 +1011,6 @@ public class ControllerWallet {
             ArrayList<Wallet> list_wallet = investor.getList_wallet();
             Wallet wallet = list_wallet.get(indice_wallet_layout);
 
-            investor.getList_wallet();
-            indice_wallet_layout = 1;
             updateStmt.setDouble(1, Double.parseDouble(montant));
             updateStmt.setInt(2, wallet.getId_wallet());
 
@@ -1007,11 +1028,44 @@ public class ControllerWallet {
             e.printStackTrace();
         }
 
+    }
 
-
+    @FXML
+    public void retraite_layout(){
+        lineChart.setVisible(false);
+        hbox_insert_montant.setVisible(false);
+        Vbox_retraite.setVisible(true);
 
 
     }
+
+
+    @FXML
+    public void calcul_retraite() {
+
+        String txt_annee_retrait = txt_annee_retraite.getText();
+        String txt_montant_pt = txt_montant_ptf.getText();
+        int montant_final;
+
+        if (txt_annee_retrait.isEmpty() || txt_montant_pt.isEmpty()) {
+            System.out.println("Veuillez remplir tous les champs");
+        } else if (!txt_montant_pt.matches("\\d*(\\.\\d*)?")) {
+            System.out.println("Veuillez rentrer une valeur correcte dans le montant");
+        } else if (!txt_annee_retrait.matches("\\d*")) {
+            System.out.println("Veuillez entrer un nombre entier dans le nombre d'années");
+        } else {
+
+            double montant = Double.parseDouble(txt_montant_pt);
+            double annee = Double.parseDouble(txt_annee_retrait);
+
+            montant_final = (int) ((annee * 12 * montant * 1.001 * 1.03 * 0.98 + values_total_wallet ) * 0.98);
+
+            System.out.println(montant_final);
+
+
+        }
+    }
+
 
 
 }

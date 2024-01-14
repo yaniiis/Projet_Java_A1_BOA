@@ -1,9 +1,7 @@
 package com.example.wallet_boa.controleur;
 
 import com.example.wallet_boa.HelloApplication;
-import com.example.wallet_boa.modele.Cryptocurrency;
-import com.example.wallet_boa.modele.Investor;
-import com.example.wallet_boa.modele.Wallet;
+import com.example.wallet_boa.modele.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,15 +21,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Base64;
+import java.sql.Date;
+import java.util.*;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
-
-
 
 
 public class ControllerConnexion {
@@ -58,14 +54,15 @@ public class ControllerConnexion {
         Permettent la redirection vers une autre page
     */
 
-
-
-    public void layout_accueil(String name, String surname, String email, String phone_number, int id) throws IOException {
+    public void layout_accueil(String name, String surname, String email, String phone_number, int id) throws Exception {
 
         ArrayList<Wallet> list_wallet = charger_wallet(id);
 
         Investor investor = new Investor(name, surname, email, phone_number, id, list_wallet);
 
+
+        List<Block> blockchain = chargerBlockchaine(investor);
+        Blockchaine blockchaine = new Blockchaine(blockchain);
 
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("accueil.fxml"));
@@ -73,12 +70,81 @@ public class ControllerConnexion {
 
         ControllerAccueil accueilController = fxmlLoader.getController();
 
-        accueilController.setInvestor(investor);
+        accueilController.setInvestor(investor, blockchaine);
 
         Stage stage = HelloApplication.getPrimaryStage();
         stage.setTitle("Accueil");
         stage.setScene(new Scene(root, 900, 600));
         stage.show();
+    }
+
+    public List<Block> chargerBlockchaine(Investor investor) throws Exception {
+
+        List<Block> blockchaine = new ArrayList<>();
+
+        String query = "SELECT * FROM blocks;";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                ResultSet resultSet = preparedStatement.executeQuery();
+        ) {
+            while (resultSet.next()) {
+                int index = resultSet.getInt("indice");
+                Timestamp timestamp = resultSet.getTimestamp("timestamp");
+                String previousHash = resultSet.getString("previousHash");
+                String hash = resultSet.getString("hash");
+
+                Set<Transaction> list_transaction = recuper_transaction_block(index, investor);
+
+
+                Block block = new Block(index, timestamp, list_transaction, previousHash, hash);
+                blockchaine.add(block);
+            }
+
+        }
+
+        return blockchaine;
+    }
+
+    public Set<Transaction> recuper_transaction_block(int index, Investor investor) throws Exception {
+
+        Set<Transaction> list_transaction = new HashSet<>();
+
+        String query = "SELECT * FROM transactions where indice = ?;";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, index); // Set the value of the parameter in the query
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                String transactionId = resultSet.getString("transactionId");
+                int originWalletId = resultSet.getInt("originWalletId");
+                String value = resultSet.getString("value");
+                double amount = resultSet.getDouble("amount");
+
+                ArrayList<Wallet> list_wallet = investor.getList_wallet();
+
+                Wallet wallet_select = null;
+
+                for (Wallet wallet : list_wallet) {
+                    if (wallet.getId_wallet() == originWalletId) {
+                        wallet_select = wallet;
+                        break; // Exit the loop once the wallet is found
+                    }
+                }
+
+                if (wallet_select != null) {
+                    Transaction transaction = new Transaction(transactionId, wallet_select, value, amount);
+                    list_transaction.add(transaction);
+                }
+            }
+        }
+
+        return list_transaction;
     }
 
 

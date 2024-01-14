@@ -76,7 +76,7 @@ public class ControllerInscription {
                     System.out.println("Le format de l'email ne correspond pas !");
                     System.out.println("Ex : java@boa.fr");
                 }else{
-                    if(IntefaceFeatures.isValidPassword(mdp_no)){
+                    if(!IntefaceFeatures.isValidPassword(mdp_no)){
                         System.out.println("Veuillez vérifier le format de votre mot de passe !");
                         System.out.println("minimum 8 caractères");
                         System.out.println("minimum 1 majuscule");

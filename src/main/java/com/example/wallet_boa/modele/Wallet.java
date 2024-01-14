@@ -44,6 +44,7 @@ public class Wallet {
     public void setId_wallet(int id_wallet){
         this.id_wallet = id_wallet;
     }
+    public int getId(){return this.id_wallet;}
     public boolean getClone(){
         return this.clone;
     }

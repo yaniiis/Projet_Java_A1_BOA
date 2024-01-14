@@ -1,6 +1,7 @@
 package com.example.wallet_boa.controleur;
 
 import com.example.wallet_boa.HelloApplication;
+import com.example.wallet_boa.modele.Blockchaine;
 import com.example.wallet_boa.modele.Investor;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,14 +34,14 @@ public interface IntefaceFeatures {
         Permettent la redirection vers une autre page
     */
 
-    static void layout_wallet(Investor investor) throws Exception {
+    static void layout_wallet(Investor investor, Blockchaine blockchaine) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("wallet.fxml"));
         Parent root = fxmlLoader.load();
 
         ControllerWallet accueilController = fxmlLoader.getController();
 
-        accueilController.setInvestor(investor);
+        accueilController.setInvestor(investor,blockchaine);
 
         Stage stage = HelloApplication.getPrimaryStage();
         stage.setTitle("Wallet");
@@ -50,14 +51,14 @@ public interface IntefaceFeatures {
     }
 
 
-    static void layout_transaction(Investor investor) throws Exception {
+    static void layout_transaction(Investor investor, Blockchaine blockchaine) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("transactions.fxml"));
         Parent root = fxmlLoader.load();
 
         ControlleurTransactions accueilController = fxmlLoader.getController();
 
-        accueilController.setInvestor(investor);
+        accueilController.setInvestor(investor, blockchaine);
 
         Stage stage = HelloApplication.getPrimaryStage();
         stage.setTitle("Transactions");
@@ -67,14 +68,14 @@ public interface IntefaceFeatures {
 
 
 
-    static void layout_crypto(Investor investor) throws Exception {
+    static void layout_crypto(Investor investor, Blockchaine blockchaine) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("crypto.fxml"));
         Parent root = fxmlLoader.load();
 
         ControlleurCryptocurrency accueilController = fxmlLoader.getController();
 
-        accueilController.setInvestor(investor);
+        accueilController.setInvestor(investor, blockchaine);
 
         Stage stage = HelloApplication.getPrimaryStage();
         stage.setTitle("Cryptocurrenci");
@@ -83,14 +84,14 @@ public interface IntefaceFeatures {
     }
 
 
-    static void layout_stock(Investor investor) throws Exception {
+    static void layout_stock(Investor investor, Blockchaine blockchaine) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("action.fxml"));
         Parent root = fxmlLoader.load();
 
         ControlleurAction accueilController = fxmlLoader.getController();
 
-        accueilController.setInvestor(investor);
+        accueilController.setInvestor(investor,blockchaine);
 
         Stage stage = HelloApplication.getPrimaryStage();
         stage.setTitle("Stock");
@@ -99,14 +100,14 @@ public interface IntefaceFeatures {
     }
 
 
-    static void layout_help(Investor investor) throws Exception {
+    static void layout_help(Investor investor, Blockchaine blockchaine) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("help.fxml"));
         Parent root = fxmlLoader.load();
 
         ControlleurHelp accueilController = fxmlLoader.getController();
 
-        accueilController.setInvestor(investor);
+        accueilController.setInvestor(investor,blockchaine);
 
         Stage stage = HelloApplication.getPrimaryStage();
         stage.setTitle("Help");
@@ -115,14 +116,14 @@ public interface IntefaceFeatures {
     }
 
 
-    static void layout_account(Investor investor) throws Exception {
+    static void layout_account(Investor investor, Blockchaine blockchaine) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("account.fxml"));
         Parent root = fxmlLoader.load();
 
         ControlleurAccount accueilController = fxmlLoader.getController();
 
-        accueilController.setInvestor(investor);
+        accueilController.setInvestor(investor, blockchaine);
 
         Stage stage = HelloApplication.getPrimaryStage();
         stage.setTitle("Account");
@@ -131,14 +132,14 @@ public interface IntefaceFeatures {
     }
 
 
-    static void layout_accueil(Investor investor) throws Exception {
+    static void layout_accueil(Investor investor, Blockchaine blockchaine) throws Exception {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("accueil.fxml"));
         Parent root = fxmlLoader.load();
 
         ControllerAccueil accueilController = fxmlLoader.getController();
 
-        accueilController.setInvestor(investor);
+        accueilController.setInvestor(investor, blockchaine);
 
         Stage stage = HelloApplication.getPrimaryStage();
         stage.setTitle("Accueil");

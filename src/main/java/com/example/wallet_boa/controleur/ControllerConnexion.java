@@ -10,11 +10,14 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -48,11 +51,23 @@ public class ControllerConnexion {
     private TextField txt_email;
     @FXML
     private Pane pane_password;
+    @FXML
+    ImageView imageView;
 
     /*
         Toutes les fonctions commencant par l_
         Permettent la redirection vers une autre page
     */
+
+    public void initialize() {
+        /*
+        Cette fonction permet de charger une video automatiquement au chargement de la page
+         */
+
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
+
+    }
 
     public void layout_accueil(String name, String surname, String email, String phone_number, int id) throws Exception {
 

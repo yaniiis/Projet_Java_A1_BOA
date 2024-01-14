@@ -8,8 +8,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,6 +39,8 @@ public class ControllerInscription {
     PasswordField i_mdp;
     @FXML
     PasswordField i_mdp2;
+    @FXML
+    ImageView imageView;
 
 
     /*
@@ -41,6 +48,16 @@ public class ControllerInscription {
         Permettent la redirection vers une autre page
     */
 
+    public void initialize() {
+        /*
+        Cette fonction permet de charger une video automatiquement au chargement de la page
+         */
+
+
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
+
+    }
 
     @FXML
     public void l_connection() throws Exception {

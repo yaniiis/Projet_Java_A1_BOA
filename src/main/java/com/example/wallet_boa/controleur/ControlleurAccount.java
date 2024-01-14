@@ -11,9 +11,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -30,6 +34,8 @@ public class ControlleurAccount {
 
     @FXML
     Label label_name;
+    @FXML
+    ImageView imageView;
 
     @FXML
     TextField txt_name;
@@ -276,6 +282,9 @@ public class ControlleurAccount {
         /*
             Affection d'un objet Investor
          */
+
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
 
         this.investor = investor;
         this.blockchain = blockchaine;

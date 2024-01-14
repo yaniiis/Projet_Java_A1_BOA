@@ -8,8 +8,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class ControlleurAction {
@@ -17,6 +20,8 @@ public class ControlleurAction {
     private Investor investor;
     private Blockchaine blockchain;
 
+    @FXML
+    ImageView imageView;
     @FXML
     Label label_name;
     /*
@@ -50,6 +55,9 @@ public class ControlleurAction {
         /*
             Affection d'un objet Investor
          */
+
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
 
         this.investor = investor;
         this.blockchain = blockchaine;

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -14,6 +15,8 @@
                         <Font size="18.0" />
                     </font></Label>
                 <Button fx:id="btn_logout" layoutX="550.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
+                <ImageView fx:id="imageView" fitHeight="34.0" fitWidth="34.0" layoutX="70.0" layoutY="1.0" />
+
             </children></Pane>
     </top>
     <left>

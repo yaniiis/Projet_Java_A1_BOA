@@ -13,6 +13,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -23,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -54,6 +57,8 @@ public class ControllerWallet {
     HBox hbox_crypto;
     @FXML
     TextField txt_wallet;
+    @FXML
+    ImageView imageView;
     @FXML
     TextArea txt_description;
     @FXML
@@ -338,6 +343,10 @@ public class ControllerWallet {
         /*
             Affection d'un objet Investor
          */
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
+
+
         this.investor = investor;
         this.blockchain = blockchaine;
         label_name.setText(investor.getName());

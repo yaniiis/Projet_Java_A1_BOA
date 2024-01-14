@@ -8,8 +8,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class ControlleurHelp {
@@ -19,6 +22,9 @@ public class ControlleurHelp {
 
     @FXML
     Label label_name;
+    @FXML
+    ImageView imageView;
+
     /*
         Toutes les fonctions commencant par l_
         Permettent la redirection vers une autre page
@@ -48,6 +54,10 @@ public class ControlleurHelp {
         /*
             Affection d'un objet Investor
          */
+
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
+
 
         this.investor = investor;
         this.blockchain = blockchaine;

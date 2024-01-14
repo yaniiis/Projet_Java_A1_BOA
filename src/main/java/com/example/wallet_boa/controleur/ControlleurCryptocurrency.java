@@ -10,11 +10,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -38,6 +41,8 @@ public class ControlleurCryptocurrency {
 
     @FXML
     Label label_name;
+    @FXML
+    ImageView imageView;
     @FXML
     Button btn_buy_crypto;
     @FXML
@@ -95,6 +100,8 @@ public class ControlleurCryptocurrency {
             Affection d'un objet Investor
          */
 
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
 
         md_wallet_sell.valueProperty().addListener((obs, oldVal, newVal) -> {
             md_crypto_sell.getItems().clear();
@@ -387,7 +394,6 @@ public class ControlleurCryptocurrency {
             preparedStatement.setInt(2, wallet.getList_value().getId_crypto());
 
             preparedStatement.executeUpdate();
-
 
             createTransaction(wallet, value_name, part);
 

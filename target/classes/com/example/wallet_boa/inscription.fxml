@@ -8,7 +8,11 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.wallet_boa.controleur.ControllerInscription">
     <top>
-        <Pane prefHeight="35.0" prefWidth="669.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER" />
+        <Pane prefHeight="35.0" prefWidth="669.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fx:id="imageView" fitHeight="34.0" fitWidth="34.0" layoutX="70.0" layoutY="1.0" />
+            </children>
+        </Pane>
     </top>
     <center>
         <HBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
@@ -16,7 +20,10 @@
 
                 <Pane prefHeight="200.0" prefWidth="300.0">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                   <Label fx:id="area_mdp" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="182.0" prefWidth="232.0" style="-fx-background-color: none;">
+
+
+                   </Label>
                </children></Pane>
 
 
@@ -140,10 +147,17 @@
                                        <Insets left="10.0" top="15.0" />
                                     </HBox.margin>
                                             </Button>
+
                                         </children>
                                     </HBox>
+                                    <Label fx:id="label_erreur" alignment="CENTER" prefHeight="17.0" prefWidth="307.0" text="" textFill="RED">
+                              <VBox.margin>
+                                 <Insets top="30.0" />
+                              </VBox.margin></Label>
+
                                 </children>
                             </VBox>
+
 
                         </children>
                   <VBox.margin>
@@ -151,6 +165,7 @@
                   </VBox.margin>
 
                     </Pane>
+
 
                     <Pane prefHeight="100.0" prefWidth="100.0">
                         <opaqueInsets>

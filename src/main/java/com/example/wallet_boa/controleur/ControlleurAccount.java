@@ -7,13 +7,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,6 +23,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 public class ControlleurAccount {
 
@@ -30,6 +32,8 @@ public class ControlleurAccount {
 
     @FXML
     Label label_name;
+    @FXML
+    ImageView imageView;
 
     @FXML
     TextField txt_name;
@@ -55,6 +59,10 @@ public class ControlleurAccount {
     PasswordField txt_p_n;
     @FXML
     PasswordField txt_p_actu;
+    @FXML
+    Label label_solde;
+    @FXML
+    Label label_erreur;
 
     /*
         Toutes les fonctions commencant par l_
@@ -83,6 +91,19 @@ public class ControlleurAccount {
     public void l_crytpo() throws Exception{
         IntefaceFeatures.layout_crypto(investor, blockchain);
     }
+
+
+    public void initialize_investor(){
+        /*
+            Cette fonction permet d'ajouter dans les champs les valeurs de l'investisseur
+         */
+
+        txt_name.setText(investor.getName());
+        txt_surname.setText(investor.getSurname());
+        txt_phone_number.setText(investor.getPhone_number());
+        txt_email.setText(investor.getEmail());
+    }
+
     @FXML
     public void edit_fields () {
         /*
@@ -157,27 +178,58 @@ public class ControlleurAccount {
         }else{
             txt_surname.setText(investor.getSurname());
         }
-        if(!email.isEmpty() && IntefaceFeatures.isValidEmail(email) && IntefaceFeatures.isEmailUnique(email)){
-            if(first) requeteBuilder.append(", ");
-            requeteBuilder.append("email = ?");
-            investor.setEmail(email);
-            txt_email.setText(email);
-            values.add(email);
-            first = true;
+        if(!email.isEmpty()){
+            if(IntefaceFeatures.isValidEmail(email)){
+                if(IntefaceFeatures.isEmailUnique(email)){
+                    if(first) requeteBuilder.append(", ");
+                    requeteBuilder.append("email = ?");
+                    investor.setEmail(email);
+                    txt_email.setText(email);
+                    values.add(email);
+                    first = true;
+                }else{
+                    label_erreur.setText("L'email est déjà utilisé !");
+                }
+            }else{
+                label_erreur.setText("Format de l'email ne correspond pas ! Ex : java@boa.fr");
+            }
+
         }else{
             txt_email.setText(investor.getEmail());
         }
-        if(!phone_number.isEmpty() && IntefaceFeatures.isValidPhone(phone_number)){
-            if(first) requeteBuilder.append(", ");
-            requeteBuilder.append("phone_number = ?");
-            investor.setPhone_number(phone_number);
-            txt_phone_number.setText(phone_number);
-            values.add(phone_number);
-            first = true;
+        if(!phone_number.isEmpty() ){
+            if(IntefaceFeatures.isValidPhone(phone_number)){
+                if(first) requeteBuilder.append(", ");
+                requeteBuilder.append("phone_number = ?");
+                investor.setPhone_number(phone_number);
+                txt_phone_number.setText(phone_number);
+                values.add(phone_number);
+                first = true;
+            }else{
+                label_erreur.setText("Le format du numéro de téléphone est incorrecte ! Ex : 0728213087");
+            }
+
         }else{
             txt_phone_number.setText(investor.getPhone_number());
         }
 
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Update field");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            if(!first){
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                alert2.setTitle("Confirmation");
+                alert2.setHeaderText(null);
+                alert2.setContentText("no fields modified\n");
+                alert2.showAndWait();
+            }
+        } else {
+            first = false;
+
+        }
         if(first){
             requeteBuilder.append(" WHERE id_investor = ?");
             values.add(String.valueOf(investor.getId()));
@@ -194,17 +246,13 @@ public class ControlleurAccount {
 
                 int affectedRows = statement.executeUpdate();
                 if(affectedRows > 0) {
-                    System.out.println("Mise à jour réussie.");
-                } else {
-                    System.out.println("Aucune ligne affectée.");
+
                 }
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
-        } else{
-            System.out.println("Aucun champ modifié.");
         }
         edit_fields2();
     }
@@ -224,13 +272,13 @@ public class ControlleurAccount {
         String txt_mdp3 = txt_p_n.getText();
 
         if(txt_mdp2.equals("") || txt_mdp3.equals("") || txt_mdp1.equals("")){
-            System.out.println("Veuillez remplir tous les champs !");
+            label_erreur.setText("Veuillez remplir tous les champs !");
         }else{
             if(!txt_mdp2.equals(txt_mdp3)){
-                System.out.println("Les deux nouveaux mots de passe sont différents");
+                label_erreur.setText("Les deux nouveaux mots de passe sont différents");
             }else{
                 if(!IntefaceFeatures.isValidPassword(txt_mdp2)){
-                    System.out.println("Le format du nouveau mot de passe est incorrect");
+                    label_erreur.setText("Le format du nouveau mot de passe est incorrect");
                 }else{
                     String id = String.valueOf(investor.getId());
                     txt_mdp1 = IntefaceFeatures.encryptPassword(txt_p_actu.getText());
@@ -255,13 +303,16 @@ public class ControlleurAccount {
 
                                     int rowsAffected = updateStmt.executeUpdate();
                                     if(rowsAffected > 0) {
-                                        System.out.println("Le mot de passe a été changé avec succès!");
-                                    } else {
-                                        System.out.println("Erreur lors de la mise à jour du mot de passe.");
+                                        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                                        alert2.setTitle("Confirmation");
+                                        alert2.setHeaderText(null);
+                                        alert2.setContentText("Password update \n");
+                                        alert2.showAndWait();
+
                                     }
                                 }
                             }else{
-                                System.out.println("Votre mot de passe actuel est faux !");
+                                label_erreur.setText("Votre mot de passe actuel est faux !");
                             }
                         }
                     } catch (SQLException e) {
@@ -277,8 +328,14 @@ public class ControlleurAccount {
             Affection d'un objet Investor
          */
 
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
+
+        String solde = "Solde : " + IntefaceFeatures.compter_montant(investor) + " $";
+        label_solde.setText(solde);
         this.investor = investor;
         this.blockchain = blockchaine;
+        initialize_investor();
         label_name.setText(investor.getName());
     }
 

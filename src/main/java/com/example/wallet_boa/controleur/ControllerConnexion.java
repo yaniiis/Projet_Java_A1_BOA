@@ -1,34 +1,33 @@
 package com.example.wallet_boa.controleur;
 
+
 import com.example.wallet_boa.HelloApplication;
 import com.example.wallet_boa.modele.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javax.crypto.*;
-import javax.crypto.spec.SecretKeySpec;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.io.File;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
-
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class ControllerConnexion {
 
@@ -48,11 +47,25 @@ public class ControllerConnexion {
     private TextField txt_email;
     @FXML
     private Pane pane_password;
+    @FXML
+    ImageView imageView;
+    @FXML
+    Label label_erreur;
 
     /*
         Toutes les fonctions commencant par l_
         Permettent la redirection vers une autre page
     */
+
+    public void initialize() {
+        /*
+        Cette fonction permet de charger une video automatiquement au chargement de la page
+         */
+
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
+
+    }
 
     public void layout_accueil(String name, String surname, String email, String phone_number, int id) throws Exception {
 
@@ -182,8 +195,6 @@ public class ControllerConnexion {
                         Wallet new_wallet = new Wallet(id_wallet, name, date, description, amount, clone, cryptocurrency);
                         list_wallets.add(new_wallet);
 
-                    } else {
-                        System.out.println("Mettre une alerte pour créer un wallet");
                     }
                 }
             }
@@ -241,7 +252,7 @@ public class ControllerConnexion {
         String mdp = txt_mdp.getText();
 
         if(mdp.equals("") || email.equals("") ){
-            System.out.println("Veuillez remplir les champs");
+            label_erreur.setText("Veuillez remplir tous les champs");
         }else{
             mdp = IntefaceFeatures.encryptPassword(mdp);
 
@@ -265,7 +276,7 @@ public class ControllerConnexion {
                         if (name != null && !name.isEmpty()) {
                             layout_accueil(name, surname, email, phone_number, id);
                         } else {
-                            System.out.println("Aucun utilisateur trouvé avec ces identifiants.");
+                            label_erreur.setText("Aucun utilisateur trouvé avec ces identifiants.");
                         }
                     }
                 }
@@ -292,17 +303,111 @@ public class ControllerConnexion {
     protected void display_fields_password() {
 
         // afficher le Pane pour le mot de passe oublié
-
+        label_erreur.setText("");
         pane_password.setVisible(true);
     }
 
     @FXML
-    public void sendMail(){
+    public void sendMail() throws Exception{
 
-        // Envoi d'un email in progress
+        label_erreur.setText("");
 
-        System.out.println("Erreur envoi mail !");
-        pane_password.setVisible(false);
+        String toEmail = field_forget.getText();
+        if(!IntefaceFeatures.isValidEmail(toEmail)){
+            System.out.println("Format email incorrecte !");
+        }else {
+            List<String> infor_user = trouver_email(toEmail);
+            if (infor_user.get(0) == "") {
+                System.out.println("Aucun email correspondant !");
+            } else {
+
+
+                final String username = "boa75000@outlook.com";
+                final String password = "boa12345";
+
+                Properties props = new Properties();
+                props.put("mail.smtp.auth", "true");
+                props.put("mail.smtp.starttls.enable", "true");
+                props.put("mail.smtp.host", "smtp-mail.outlook.com");
+                props.put("mail.smtp.port", "587");
+
+                Session session = Session.getInstance(props, new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+
+                try {
+                    Message message = new MimeMessage(session);
+                    message.setFrom(new InternetAddress(username));
+                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
+                    message.setSubject("Subject: Bienvenue sur notre plateforme de crypto-monnaies et d'actions !");
+
+                    message.setText("Cher(e)" + infor_user.get(0) + ",\n\n"
+                            + "\n\n"
+                            + "Vous avez demandé la réinitialisation de votre mot de passe pour notre plateforme.\n\n"
+                            + "Votre mot de passe : " + infor_user.get(1) + "\n\n"
+                            + "Pensez à créer un nouveau mot de passe.\n\n"
+                            + "\n\n"
+                            + "Revolutionize your investment strategy ! \n\n"
+                            + "BOA Team.");
+
+                    Transport.send(message);
+
+                    System.out.println("Email envoyé à : " + toEmail);
+
+
+
+    /*                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("E-mail envoyé");
+                    alert.setHeaderText(null);
+                    alert.setContentText("L'e-mail a été envoyé avec succès !");
+                    alert.showAndWait();
+
+     */
+
+
+            } catch(MessagingException e){
+                e.printStackTrace();
+
+            }
+            pane_password.setVisible(false);
+            }
+        }
+
+    }
+
+    public List<String> trouver_email(String email){
+
+        List<String> l = new ArrayList<>();
+
+
+        String query = "SELECT name, mdp FROM investor WHERE email = ? ;";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true";
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+
+                    String name = resultSet.getString("name");
+                    String mdp = resultSet.getString("mdp");
+                    l.add(name);
+                    l.add(mdp);
+
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        l.add("");
+        l.add("");
+        return l;
     }
 
 

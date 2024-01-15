@@ -13,6 +13,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -23,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -55,6 +58,8 @@ public class ControllerWallet {
     @FXML
     TextField txt_wallet;
     @FXML
+    ImageView imageView;
+    @FXML
     TextArea txt_description;
     @FXML
     Pane pane_1;
@@ -80,6 +85,8 @@ public class ControllerWallet {
     Label label_2;
     @FXML
     Label label_3;
+    @FXML
+    Label label_solde;
     @FXML
     Label label_4;
     @FXML
@@ -338,17 +345,27 @@ public class ControllerWallet {
         /*
             Affection d'un objet Investor
          */
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
+
+
         this.investor = investor;
         this.blockchain = blockchaine;
         label_name.setText(investor.getName());
         ajoutWallet();
         remplirCrypto();
+        String solde = "Solde : " + IntefaceFeatures.compter_montant(investor) + " $";
+        label_solde.setText(solde);
     }
 
     @FXML
     public void layout_new_wallet(){
         if(this.nb_wallet>9){
-            System.out.println("Le nombre de wallet maximum est atteint");
+            Alert alert2 = new Alert(Alert.AlertType.ERROR);
+            alert2.setTitle("Error");
+            alert2.setHeaderText(null);
+            alert2.setContentText("Le nombre de wallet maximum est atteint \n");
+            alert2.showAndWait();
         }else{
             vbox_clone.setVisible(false);
             vbox_wallet.setVisible(false);
@@ -359,7 +376,11 @@ public class ControllerWallet {
     @FXML
     public void layout_clone_wallet(){
         if(this.nb_wallet>9){
-            System.out.println("Le nombre de wallet maximum est atteint");
+            Alert alert2 = new Alert(Alert.AlertType.ERROR);
+            alert2.setTitle("Error");
+            alert2.setHeaderText(null);
+            alert2.setContentText("Le nombre de wallet maximum est atteint \n");
+            alert2.showAndWait();
         }else{
             vbox_clone.setVisible(true);
             vbox_wallet.setVisible(false);
@@ -389,10 +410,18 @@ public class ControllerWallet {
 
         Wallet wallet = new Wallet(0,wallet_name, dateSQL, description_wallet, 0, false, cryptocurrency );
 
+
         insert_wallet_bdd(wallet,0);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Create Wallet");
+        alert.setHeaderText(null);
+        alert.setContentText("Creation done \n");
+        alert.showAndWait();
+
     }
 
-
+    @FXML
     public void insert_wallet_clone() throws Exception {
         /*
             Cette fonction permet de récupérer les valeurs du wallet a cloner
@@ -418,7 +447,6 @@ public class ControllerWallet {
                     int amount = resultSet.getInt("amount");
                     int id_list_valeur = resultSet.getInt("id_list_valeur");
 
-                    System.out.println(id_list_valeur);
 
                     java.util.Date dateActuelle = new java.util.Date();
                     Date dateSQL = new Date(dateActuelle.getTime());
@@ -427,9 +455,13 @@ public class ControllerWallet {
 
                     Wallet wallet = new Wallet(0,name, dateSQL, description, amount, true,cryptocurrency);
 
+                    Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                    alert2.setTitle("Clone Wallet");
+                    alert2.setHeaderText(null);
+                    alert2.setContentText("Clone done \n");
+                    alert2.showAndWait();
 
                     insert_wallet_bdd(wallet, id_list_valeur);
-                    System.out.println(cryptocurrency.getId_crypto());
 
                 }
             }
@@ -598,7 +630,7 @@ public class ControllerWallet {
         hbox_btn_action_wallet.setVisible(true);
         investor.getList_wallet();
         label_wallet_name.setText(list_wallet.get(indice_wallet_layout).getName());
-        //charger_graphique(list_crypto);
+        charger_graphique(list_crypto);
 
     }
 
@@ -954,7 +986,11 @@ public class ControllerWallet {
         int carde_un_, carde_deux_, carde_trois_, carde_quatre_, code_, montant_int;
 
         if (montant.isEmpty() || name.isEmpty() || carde_un.isEmpty() || carde_deux.isEmpty() || carde_trois.isEmpty() || carde_quatre.isEmpty() || code.isEmpty()) {
-            System.out.println("Veuillez remplir tous les champs.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Complete all fields");
+            alert.setContentText(null);
+            alert.showAndWait();
         } else {
             try {
                 montant_int = Integer.parseInt(montant);
@@ -992,7 +1028,11 @@ public class ControllerWallet {
                 update_montant(montant);
 
             } catch (NumberFormatException e) {
-                System.err.println("La valeur du montant, les numéros de carte ou le code de sécurité ne sont pas valides.");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText("Verify your informations");
+                alert.setContentText(null);
+                alert.showAndWait();
             }
         }
 
@@ -1016,13 +1056,17 @@ public class ControllerWallet {
 
             int rowsAffected = updateStmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("La quantité dans le portefeuille a été mise à jour avec succès!");
-            } else {
-                System.out.println("Erreur lors de la mise à jour du portefeuille.");
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Insertion");
+                alert.setHeaderText("Payment validated");
+                alert.setContentText(null);
+                alert.showAndWait();
             }
             Double new_amount_ = investor.getList_wallet().get(indice_wallet_layout).getAmount() + Double.parseDouble(montant);
             investor.getList_wallet().get(indice_wallet_layout).setAmount(new_amount_);
             close_insert_montant();
+            String solde = "Solde : " + IntefaceFeatures.compter_montant(investor) + " $";
+            label_solde.setText(solde);
 
         } catch (SQLException e) {
             e.printStackTrace();

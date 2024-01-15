@@ -2,13 +2,18 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.wallet_boa.controleur.ControllerConnexion">
     <top>
-        <VBox prefHeight="154.0" prefWidth="600.0">
-            <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER" />
+        <VBox prefHeight="139.0" prefWidth="600.0">
+            <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
+                <children>
+                    <ImageView fx:id="imageView" fitHeight="34.0" fitWidth="34.0" layoutX="70.0" layoutY="1.0" />
+                </children>
+            </Pane>
         </VBox>
 
     </top>
@@ -23,11 +28,15 @@
 
 
                 <VBox prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER">
-                    <Pane prefHeight="10.0" prefWidth="350.0" />
+                    <Pane prefHeight="10.0" prefWidth="305.0">
+                  <children>
+                  </children></Pane>
                     <Pane prefHeight="300.0" prefWidth="238.0" style="-fx-background-color: lightblue; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
                         <children>
+
                             <VBox alignment="CENTER_LEFT" prefHeight="228.0" prefWidth="307.0">
                                 <children>
+
                                     <Label text="Connexion">
                                         <font>
                                             <Font name="JetBrains Mono Bold" size="30.0" />
@@ -96,6 +105,11 @@
                                             <Insets left="20.0" top="-5.0" />
                                         </VBox.margin>
                                     </HBox>
+                                    <Label fx:id="label_erreur" alignment="CENTER" prefHeight="17.0" prefWidth="313.0" text="" textFill="RED">
+                              <VBox.margin>
+                                 <Insets top="30.0" />
+                              </VBox.margin></Label>
+
                                 </children>
                             </VBox>
 
@@ -135,7 +149,7 @@
                             <Insets />
                         </opaqueInsets>
                         <VBox.margin>
-                            <Insets top="10.0" />
+                            <Insets top="50.0" />
                         </VBox.margin>
                     </Pane>
                 </VBox>

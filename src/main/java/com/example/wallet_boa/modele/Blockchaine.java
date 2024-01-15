@@ -13,6 +13,7 @@ public class Blockchaine {
 
     }
 
+
     public void addBlock(Block block){
         blockchain.add(block);
     }

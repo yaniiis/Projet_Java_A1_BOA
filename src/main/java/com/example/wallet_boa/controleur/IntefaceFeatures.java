@@ -3,10 +3,12 @@ package com.example.wallet_boa.controleur;
 import com.example.wallet_boa.HelloApplication;
 import com.example.wallet_boa.modele.Blockchaine;
 import com.example.wallet_boa.modele.Investor;
+import com.example.wallet_boa.modele.Wallet;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import javax.crypto.Cipher;
@@ -131,6 +133,25 @@ public interface IntefaceFeatures {
         stage.show();
     }
 
+
+    static String formatPrice(String price) {
+        try {
+            double priceValue = Double.parseDouble(price);
+            return String.format("%.2f", priceValue);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    static double compter_montant (Investor investor){
+        double total = 0;
+        for (Wallet wallet : investor.getList_wallet()) {
+            total += wallet.getAmount();
+        }
+        return total;
+
+    }
 
     static void layout_accueil(Investor investor, Blockchaine blockchaine) throws Exception {
 

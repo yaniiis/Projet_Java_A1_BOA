@@ -1,5 +1,7 @@
 package com.example.wallet_boa.controleur;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.*;
 
 import java.io.File;
@@ -8,6 +10,8 @@ public class ControllerPresentation {
 
     @FXML
     MediaView mediaView;
+    @FXML
+    ImageView imageView;
 
     /*
         Toutes les fonctions commencant par l_
@@ -25,6 +29,9 @@ public class ControllerPresentation {
         mediaView.setMediaPlayer(mediaPlayer);
 
         mediaPlayer.play();
+        Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
+        imageView.setImage(image);
+
     }
 
     @FXML

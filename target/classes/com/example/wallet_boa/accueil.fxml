@@ -2,18 +2,25 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.wallet_boa.controleur.ControllerAccueil">
     <top>
-        <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
+        <Pane prefHeight="35.0" prefWidth="700.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="label_name" layoutX="612.0" layoutY="4.0" text="Name">
+            <Label fx:id="label_name" layoutX="780.0" layoutY="4.0" text="Name">
                <font>
                   <Font size="18.0" />
                </font></Label>
-             <Button fx:id="btn_logout" layoutX="550.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
+             <Button fx:id="btn_logout" layoutX="700.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
+             <Label fx:id="label_solde" layoutX="490.0" layoutY="5.0" text="Solde">
+                 <font>
+                     <Font size="18.0" />
+                 </font></Label>
+             <ImageView fx:id="imageView" fitHeight="34.0" fitWidth="34.0" layoutX="70.0" layoutY="1.0" />
+
          </children></Pane>
     </top>
    <left>
@@ -72,14 +79,105 @@
                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
            <children>
-               <Label text="Accueil" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+               <Label fx:id="label_welcolm" text="Welcolm" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
                    <font>
-                       <Font size="36.0" />
+                       <Font size="24.0" />
                    </font>
                <GridPane.margin>
-                  <Insets left="200.0" />
+                  <Insets bottom="65.0" left="220.0" />
                </GridPane.margin>
                </Label>
+               <Label text="Revolutionize your investment strategy !" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                   <font>
+                       <Font size="18.0" />
+                   </font>
+                   <GridPane.margin>
+                       <Insets left="200.0" top="20.0" />
+                   </GridPane.margin>
+               </Label>
+               <Label fx:id="label_balance" text="" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                   <font>
+                       <Font size="18.0" />
+                   </font>
+                   <GridPane.margin>
+                       <Insets left="275.0" top="120.0" />
+                   </GridPane.margin>
+               </Label>
+               <Label fx:id="label_cac" text="" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                   <font>
+                       <Font size="18.0" />
+                   </font>
+                   <GridPane.margin>
+                       <Insets left="310.0" top="200.0" />
+                   </GridPane.margin>
+               </Label>
+               <Pane maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#l_crytpo" prefHeight="234.0" prefWidth="205.0" style="-fx-background-color: #417DDA;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                    <children>
+                  <HBox prefHeight="234.0" prefWidth="200.0">
+                     <children>
+      
+                              <VBox prefHeight="234.0" prefWidth="101.0">
+                                  <children>
+                                      <ImageView fx:id="image4" fitHeight="60.0" fitWidth="60.0" layoutX="0.0" layoutY="0.0">
+                                 <VBox.margin>
+                                    <Insets left="15.0" top="15.0" />
+                                 </VBox.margin></ImageView>
+                                      <ImageView fx:id="image5" fitHeight="60.0" fitWidth="60.0" layoutX="0.0" layoutY="0.0">
+                                 <VBox.margin>
+                                    <Insets left="15.0" top="10.0" />
+                                 </VBox.margin></ImageView>
+                                      <ImageView fx:id="image6" fitHeight="60.0" fitWidth="60.0" layoutX="0.0" layoutY="0.0">
+                                 <VBox.margin>
+                                    <Insets left="15.0" top="10.0" />
+                                 </VBox.margin></ImageView>
+                                  </children>
+                              </VBox>
+                              <VBox prefHeight="234.0" prefWidth="100.0">
+                                  <children>
+                                      <ImageView fx:id="image1" fitHeight="60.0" fitWidth="60.0" layoutX="0.0" layoutY="0.0">
+                                 <VBox.margin>
+                                    <Insets left="5.0" top="15.0" />
+                                 </VBox.margin></ImageView>
+                                      <ImageView fx:id="image2" fitHeight="60.0" fitWidth="60.0" layoutX="0.0" layoutY="0.0">
+                                 <VBox.margin>
+                                    <Insets left="5.0" top="10.0" />
+                                 </VBox.margin></ImageView>
+                                      <ImageView fx:id="image3" fitHeight="60.0" fitWidth="60.0" layoutX="0.0" layoutY="0.0">
+                                 <VBox.margin>
+                                    <Insets left="5.0" top="10.0" />
+                                 </VBox.margin></ImageView>
+                                  </children>
+                              </VBox>
+                     </children>
+                  </HBox>
+                    </children>
+               <GridPane.margin>
+                  <Insets left="140.0" />
+               </GridPane.margin>
+               </Pane>
+
+
+               <Pane maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#l_wallet" prefHeight="234.0" prefWidth="205.0" style="-fx-background-color: orange;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                   <children>
+                       <VBox fx:id="vbox_wallet" alignment="TOP_CENTER" prefHeight="234.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Wallet">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="15.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                       </VBox>
+                   </children>
+                   <GridPane.margin>
+                       <Insets left="390.0" />
+                   </GridPane.margin>
+               </Pane>
+
+
            </children>
        </GridPane>
    </center>

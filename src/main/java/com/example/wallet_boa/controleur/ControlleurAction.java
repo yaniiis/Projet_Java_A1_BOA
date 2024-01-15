@@ -24,6 +24,8 @@ public class ControlleurAction {
     ImageView imageView;
     @FXML
     Label label_name;
+    @FXML
+    Label label_solde;
     /*
         Toutes les fonctions commencant par l_
         Permettent la redirection vers une autre page
@@ -58,7 +60,8 @@ public class ControlleurAction {
 
         Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
         imageView.setImage(image);
-
+        String solde = "Solde : " + IntefaceFeatures.compter_montant(investor) + " $";
+        label_solde.setText(solde);
         this.investor = investor;
         this.blockchain = blockchaine;
         label_name.setText(investor.getName());

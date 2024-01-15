@@ -1,6 +1,7 @@
 package com.example.wallet_boa.controleur;
 
 import com.example.wallet_boa.modele.Blockchaine;
+import com.example.wallet_boa.modele.Evenements;
 import com.example.wallet_boa.modele.Investor;
 import com.example.wallet_boa.modele.Wallet;
 import javafx.fxml.FXML;
@@ -60,7 +61,8 @@ public class ControllerAccueil {
     Label label_cac;
     @FXML
     VBox vbox_wallet;
-
+    @FXML
+    Label label_solde;
 
     /*
         Toutes les fonctions commencant par l_
@@ -73,6 +75,8 @@ public class ControllerAccueil {
             Affection d'un objet Investor
          */
 
+        Evenements.lance();
+
         Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
         imageView.setImage(image);
         this.investor = investor;
@@ -80,7 +84,8 @@ public class ControllerAccueil {
         label_name.setText(investor.getName());
         String title = "Welcolm " + investor.getSurname() + " " + investor.getName();
         label_welcolm.setText(title);
-
+        String solde = "Solde : " + IntefaceFeatures.compter_montant(investor) + " $";
+        label_solde.setText(solde);
         remplir_image();
         remplir_wallet();
     }
@@ -104,7 +109,6 @@ public class ControllerAccueil {
     public void remplir_image() throws IOException {
         List<String> list_crypto = new ArrayList<>();
 
-        // Ajouter les éléments un par un
         list_crypto.add("btc.svg");
         list_crypto.add("eth.svg");
         list_crypto.add("bnb.png");

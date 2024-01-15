@@ -10,6 +10,7 @@ module com.example.wallet_boa {
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
+    requires jakarta.mail;
 
 
 

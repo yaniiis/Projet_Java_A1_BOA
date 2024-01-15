@@ -3,21 +3,26 @@
 <?import java.lang.*?>
 <?import javafx.collections.*?>
 <?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import javafx.scene.image.ImageView?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.wallet_boa.controleur.ControlleurCryptocurrency">
     <top>
         <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
             <children>
-                <Label fx:id="label_name" layoutX="612.0" layoutY="4.0" text="Name">
+                <Label fx:id="label_name" layoutX="780.0" layoutY="4.0" text="Name">
                     <font>
                         <Font size="18.0" />
                     </font></Label>
-                <Button fx:id="btn_logout" layoutX="550.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
+                <Button fx:id="btn_logout" layoutX="700.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
+                <Label fx:id="label_solde" layoutX="490.0" layoutY="5.0" text="Solde">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
                 <ImageView fx:id="imageView" fitHeight="34.0" fitWidth="34.0" layoutX="70.0" layoutY="1.0" />
             </children></Pane>
     </top>
@@ -89,12 +94,12 @@
                 </Label>
             <Button fx:id="btn_buy_crypto" maxWidth="-Infinity" mnemonicParsing="false" onAction="#buy_crypto_layout" text="Buy" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets left="150.0" />
+                  <Insets bottom="180.0" left="150.0" />
                </GridPane.margin>
             </Button>
             <Button fx:id="btn_sell_crypto" maxWidth="-Infinity" mnemonicParsing="false" onAction="#sell_crypto_layout" text="Sell" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets left="40.0" />
+                  <Insets bottom="180.0" left="40.0" />
                </GridPane.margin>
             </Button>
             <Pane fx:id="layout_buy" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="360.0" prefWidth="400.0" style="-fx-background-color: lightblue; -fx-background-radius: 10;" visible="false" BorderPane.alignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
@@ -219,31 +224,41 @@
                     </VBox>
                 </children></Pane>
 
-                <TableView fx:id="tableview_value" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="329.0" prefWidth="550.0" style="    -fx-font-size: 16pt;     -fx-base: #4682B4;     -fx-table-cell-border-color: derive(-fx-base, -30%);     -fx-text-fill: #333333;     -fx-background-color: #F0F8FF;     -fx-control-inner-background: #F0F8FF;     -fx-background-insets: 0, 1, 2;     -fx-table-header-border-color: #000000; " visible="true" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2">
+
+                <LineChart fx:id="lineChartcrypto" prefHeight="292.0" prefWidth="325.0" title="" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                    <xAxis>
+                        <NumberAxis autoRanging="true" label="X Label" fx:id="xAxis" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis autoRanging="true" label="Value $ " />
+                    </yAxis>
+                </LineChart>
+
+                <TableView fx:id="tableview_value" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="390.0" prefWidth="403.0" style="-fx-font-size: 10pt; -fx-base: #4682B4; -fx-table-cell-border-color: derive(-fx-base, -30%); -fx-text-fill: #333333; -fx-background-color: #F0F8FF; -fx-control-inner-background: #F0F8FF; -fx-table-header-border-color: #000000;-fx-alignment: CENTER;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
                     <columns>
-                        <TableColumn prefWidth="123.66667938232422" text="Nom">
+                        <TableColumn prefWidth="100" style="-fx-alignment: CENTER;" text="Nom">
                             <cellValueFactory>
                                 <PropertyValueFactory property="nom" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="123.33335876464844" text="Prix">
+                        <TableColumn prefWidth="100" style="-fx-alignment: CENTER;" text="Prix">
                             <cellValueFactory>
                                 <PropertyValueFactory property="prix" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="161.33328247070312" text="Variation">
+                        <TableColumn prefWidth="100" style="-fx-alignment: CENTER;" text="Variation">
                             <cellValueFactory>
                                 <PropertyValueFactory property="variation" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn minWidth="8.0" prefWidth="121.00003051757812" text="Graphique">
+                        <TableColumn prefWidth="100" style="-fx-alignment: CENTER;" text="Graph">
                             <cellValueFactory>
                                 <PropertyValueFactory property="graphique" />
                             </cellValueFactory>
                         </TableColumn>
                     </columns>
                     <GridPane.margin>
-                        <Insets left="100.0" />
+                        <Insets left="150.0" top="30.0" />
                     </GridPane.margin>
                 </TableView>
 

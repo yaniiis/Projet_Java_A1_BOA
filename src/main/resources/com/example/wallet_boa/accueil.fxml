@@ -8,13 +8,17 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.wallet_boa.controleur.ControllerAccueil">
     <top>
-        <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
+        <Pane prefHeight="35.0" prefWidth="700.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="label_name" layoutX="612.0" layoutY="4.0" text="Name">
+            <Label fx:id="label_name" layoutX="780.0" layoutY="4.0" text="Name">
                <font>
                   <Font size="18.0" />
                </font></Label>
-             <Button fx:id="btn_logout" layoutX="550.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
+             <Button fx:id="btn_logout" layoutX="700.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
+             <Label fx:id="label_solde" layoutX="490.0" layoutY="5.0" text="Solde">
+                 <font>
+                     <Font size="18.0" />
+                 </font></Label>
              <ImageView fx:id="imageView" fitHeight="34.0" fitWidth="34.0" layoutX="70.0" layoutY="1.0" />
 
          </children></Pane>
@@ -96,7 +100,7 @@
                        <Font size="18.0" />
                    </font>
                    <GridPane.margin>
-                       <Insets left="270.0" top="120.0" />
+                       <Insets left="275.0" top="120.0" />
                    </GridPane.margin>
                </Label>
                <Label fx:id="label_cac" text="" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
@@ -104,10 +108,10 @@
                        <Font size="18.0" />
                    </font>
                    <GridPane.margin>
-                       <Insets left="270.0" top="200.0" />
+                       <Insets left="310.0" top="200.0" />
                    </GridPane.margin>
                </Label>
-               <Pane onMouseClicked="#l_crytpo" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="234.0" prefWidth="205.0" style="-fx-background-color: #417DDA;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+               <Pane maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#l_crytpo" prefHeight="234.0" prefWidth="205.0" style="-fx-background-color: #417DDA;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
                     <children>
                   <HBox prefHeight="234.0" prefWidth="200.0">
                      <children>
@@ -146,16 +150,14 @@
                               </VBox>
                      </children>
                   </HBox>
-
-
                     </children>
                <GridPane.margin>
-                  <Insets left="30.0" />
+                  <Insets left="140.0" />
                </GridPane.margin>
                </Pane>
 
 
-               <Pane onMouseClicked="#l_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="234.0" prefWidth="205.0" style="-fx-background-color: orange;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+               <Pane maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#l_wallet" prefHeight="234.0" prefWidth="205.0" style="-fx-background-color: orange;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
                    <children>
                        <VBox fx:id="vbox_wallet" alignment="TOP_CENTER" prefHeight="234.0" prefWidth="200.0">
                      <children>
@@ -171,7 +173,7 @@
                        </VBox>
                    </children>
                    <GridPane.margin>
-                       <Insets left="350.0" />
+                       <Insets left="390.0" />
                    </GridPane.margin>
                </Pane>
 

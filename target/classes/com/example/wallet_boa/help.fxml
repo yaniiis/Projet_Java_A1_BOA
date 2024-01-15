@@ -10,11 +10,16 @@
     <top>
         <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
             <children>
-                <Label fx:id="label_name" layoutX="612.0" layoutY="4.0" text="Name">
+                <Label fx:id="label_name" layoutX="780.0" layoutY="4.0" text="Name">
                     <font>
                         <Font size="18.0" />
                     </font></Label>
-                <Button fx:id="btn_logout" layoutX="550.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
+                <Button fx:id="btn_logout" layoutX="700.0" layoutY="5.0" mnemonicParsing="false" onAction="#l_logout" text="log out" />
+                <Label fx:id="label_solde" layoutX="490.0" layoutY="5.0" text="Solde">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+
                 <ImageView fx:id="imageView" fitHeight="34.0" fitWidth="34.0" layoutX="70.0" layoutY="1.0" />
 
             </children></Pane>

@@ -102,9 +102,9 @@
                   <Insets bottom="180.0" left="40.0" />
                </GridPane.margin>
             </Button>
-            <Pane fx:id="layout_buy" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="360.0" prefWidth="400.0" style="-fx-background-color: lightblue; -fx-background-radius: 10;" visible="false" BorderPane.alignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <Pane fx:id="layout_buy" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="360.0" prefWidth="400.0" style="-fx-background-color: lightblue; -fx-background-radius: 10;" visible="false" BorderPane.alignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
                <GridPane.margin>
-                  <Insets bottom="50.0" left="100.0" />
+                  <Insets left="150.0" top="50.0" />
                </GridPane.margin>
                <children>
                   <VBox prefHeight="313.0" prefWidth="401.0">
@@ -168,9 +168,9 @@
                   </VBox>
                </children>
             </Pane>
-            <Pane fx:id="layout_sell" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="360.0" prefWidth="400.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10;" visible="false" BorderPane.alignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <Pane fx:id="layout_sell" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="360.0" prefWidth="400.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10;" visible="false" BorderPane.alignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
                 <GridPane.margin>
-                    <Insets bottom="50.0" left="100.0" />
+                    <Insets left="150.0" top="50.0" />
                 </GridPane.margin>
                 <children>
                     <VBox layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="313.0" prefWidth="401.0">
@@ -224,15 +224,46 @@
                     </VBox>
                 </children></Pane>
 
+               <Button fx:id="btn_back_graph" mnemonicParsing="false" onAction="#back_layout" style="-fx-background-color: none;" text="Back" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="100.0" left="100.0" />
+               </GridPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
 
-                <LineChart fx:id="lineChartcrypto" prefHeight="292.0" prefWidth="325.0" title="" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                <LineChart fx:id="lineChartcrypto" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="302.0" prefWidth="620.0" title="" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1">
                     <xAxis>
-                        <NumberAxis autoRanging="true" label="X Label" fx:id="xAxis" />
+                        <NumberAxis autoRanging="true" label="X Label" prefWidth="203.0" fx:id="xAxis" />
                     </xAxis>
                     <yAxis>
-                        <NumberAxis autoRanging="true" label="Value $ " />
+                        <NumberAxis autoRanging="true" label="Value $ " prefWidth="49.0" />
                     </yAxis>
+               <GridPane.margin>
+                  <Insets left="30.0" top="260.0" />
+               </GridPane.margin>
                 </LineChart>
+
+                <HBox fx:id="btn_graph" style="-fx-background-color: none" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                    <children>
+                        <Button onAction="#graph_hour" text="hour" />
+                        <Button onAction="#graph_daily" text="Daily">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin></Button>
+                        <Button onAction="#graph_month" text="month">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin></Button>
+                        <Button onAction="#graph_year" text="year">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin></Button>
+                    </children>
+               <GridPane.margin>
+                  <Insets left="180.0" top="610.0" />
+               </GridPane.margin>
+                </HBox>
 
                 <TableView fx:id="tableview_value" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="390.0" prefWidth="403.0" style="-fx-font-size: 10pt; -fx-base: #4682B4; -fx-table-cell-border-color: derive(-fx-base, -30%); -fx-text-fill: #333333; -fx-background-color: #F0F8FF; -fx-control-inner-background: #F0F8FF; -fx-table-header-border-color: #000000;-fx-alignment: CENTER;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
                     <columns>

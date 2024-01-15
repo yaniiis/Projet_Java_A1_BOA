@@ -20,7 +20,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,9 +46,13 @@ public class ControlleurCryptocurrency {
 
     private Investor investor;
     private Blockchaine blockchain;
+    private String value_graph;
+    private int time_graph;
 
     @FXML
     Label label_name;
+    @FXML
+    HBox btn_graph;
     @FXML
     ImageView imageView;
     @FXML
@@ -79,6 +85,8 @@ public class ControlleurCryptocurrency {
     LineChart lineChartcrypto;
     @FXML
     NumberAxis xAxis;
+    @FXML
+    Button btn_back_graph;
 
     /*
         Toutes les fonctions commencant par l_
@@ -163,15 +171,23 @@ public class ControlleurCryptocurrency {
 
             Button button = new Button("G");
             button.setOnAction(new EventHandler<ActionEvent>() {
+
                 @Override
                 public void handle(ActionEvent event) {
                     tableview_value.setVisible(false);
+                    layout_buy.setVisible(false);
+                    layout_sell.setVisible(false);
+                    lineChartcrypto.setVisible(true);
+                    btn_back_graph.setVisible(true);
+                    btn_graph.setVisible(true);
+                    value_graph = value;
+                    time_graph = 1;
+
                     try {
                         affiche_graphique(value);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
             });
 
@@ -184,7 +200,7 @@ public class ControlleurCryptocurrency {
 
     public void affiche_graphique(String value)throws Exception{
         try {
-            lineChartcrypto.setVisible(true);
+
             String url = "https://api.binance.com/api/v3/klines?symbol="+ value + "USDT&interval=1d&limit=10";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -220,6 +236,7 @@ public class ControlleurCryptocurrency {
             }
 
             Platform.runLater(() -> {
+                lineChartcrypto.getData().clear();
                 lineChartcrypto.getData().add(series);
             });
 
@@ -302,24 +319,40 @@ public class ControlleurCryptocurrency {
 
     @FXML
     public void back_layout(){
-        layout_buy.setVisible(false);layout_sell.setVisible(false);
+        layout_buy.setVisible(false);
+        layout_sell.setVisible(false);
         tableview_value.setVisible(true);
+        lineChartcrypto.setVisible(false);
+        btn_back_graph.setVisible(false);
+        btn_graph.setVisible(false);
     }
     @FXML
     public void buy_crypto_layout() {
-        layout_buy.setVisible(true);layout_sell.setVisible(false);
+        layout_buy.setVisible(true);
+        lineChartcrypto.setVisible(false);
+        layout_sell.setVisible(false);
+        btn_back_graph.setVisible(false);
         tableview_value.setVisible(false);
+        btn_graph.setVisible(false);
     }
 
     @FXML
     public void sell_crypto_layout(){
-        layout_sell.setVisible(true);layout_buy.setVisible(false);
+        lineChartcrypto.setVisible(false);
+        layout_sell.setVisible(true);
+        layout_buy.setVisible(false);
+        btn_back_graph.setVisible(false);
         tableview_value.setVisible(false);
+        btn_graph.setVisible(false);
     }
 
     @FXML
     public void buy_crypto() throws Exception {
         String amount = txt_amount.getText();
+        String selected = md_crypto.getSelectionModel().getSelectedItem();
+        String wallet_selected = md_wallet.getSelectionModel().getSelectedItem();
+        if (wallet_selected != null && !wallet_selected.isEmpty() && selected != null && !selected.isEmpty()) {
+
         boolean nb = false;
         double numberAmount = 0;
         double montant_investor = 0;
@@ -329,11 +362,14 @@ public class ControlleurCryptocurrency {
             numberAmount = Double.parseDouble(amount);
             nb = true;
         } catch (NumberFormatException e) {
-            System.out.println("Le montant n'est pas un nombre valide.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur sell");
+            alert.setHeaderText("Amount not valided");
+            alert.setContentText(null);
+            alert.showAndWait();
         }
 
         if(nb) {
-            String selected = md_crypto.getSelectionModel().getSelectedItem();
             String api_url = "https://api.binance.com/api/v3/ticker/price?symbol=";
             api_url += selected + "USDT";
 
@@ -355,7 +391,6 @@ public class ControlleurCryptocurrency {
             double numberPrice = Double.parseDouble(price);
 
             double part = numberAmount / numberPrice;
-            String wallet_selected = md_wallet.getSelectionModel().getSelectedItem();
 
             for(Wallet wallet : investor.getList_wallet()){
                 if(wallet.getName()==wallet_selected){
@@ -365,7 +400,13 @@ public class ControlleurCryptocurrency {
             }
 
             if(numberAmount  > montant_investor){
-                System.out.println("Vous n'avez pas assez de sous !");
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur buy");
+                alert.setHeaderText("Not enough amount");
+                alert.setContentText(null);
+                alert.showAndWait();
+
             }else{
                 double stock_v;
                 double new_value;
@@ -447,6 +488,13 @@ public class ControlleurCryptocurrency {
 
 
         }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur sell");
+            alert.setHeaderText("Wallet ou Cryptoccurency not selected");
+            alert.setContentText(null);
+            alert.showAndWait();
+        }
     }
 
     public void update_value_bdd(double value_amount, String value_name, Wallet wallet, double part) {
@@ -470,7 +518,6 @@ public class ControlleurCryptocurrency {
 
             createTransaction(wallet, value_name, part);
 
-            System.out.println("modif ok");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -514,11 +561,6 @@ public class ControlleurCryptocurrency {
 
             int rowsAffected = preparedStatement.executeUpdate();
 
-            if (rowsAffected > 0) {
-                System.out.println("L'insertion réussi.");
-            } else {
-                System.out.println("L'insertion a échoué.");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -540,11 +582,6 @@ public class ControlleurCryptocurrency {
 
             int rowsAffected = preparedStatement.executeUpdate();
 
-            if (rowsAffected > 0) {
-                System.out.println("L'insertion réussi.");
-            } else {
-                System.out.println("L'insertion a échoué.");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -554,217 +591,453 @@ public class ControlleurCryptocurrency {
     @FXML
     public void sell_crypto() throws Exception {
         String amount = txt_amount_sell.getText();
-        boolean nb = false;
-        double numberAmount = 0;
-        Wallet wallet_select = new Wallet();
-        double montant_investor = 0;
-        double new_value;
-        double part_dispo = 0;
-        double stock_v = 0;
+        String wallet_selected = md_wallet_sell.getSelectionModel().getSelectedItem();
+        String selected = md_crypto_sell.getSelectionModel().getSelectedItem();
+
+        if (wallet_selected != null && !wallet_selected.isEmpty() && selected != null && !selected.isEmpty()) {
 
 
+            boolean nb = false;
+            double numberAmount = 0;
+            Wallet wallet_select = new Wallet();
+            double montant_investor = 0;
+            double new_value;
+            double part_dispo = 0;
+            double stock_v = 0;
 
-        // Essayer de convertir le montant en double
-        try {
-            numberAmount = Double.parseDouble(amount);
-            nb = true;
-        } catch (NumberFormatException e) {
-            System.out.println("Le montant n'est pas un nombre valide.");
-        }
-
-        if(nb) {
-            String selected = md_crypto_sell.getSelectionModel().getSelectedItem();
-            String api_url = "https://api.binance.com/api/v3/ticker/price?symbol=";
-            api_url += selected + "USDT";
-
-            URL url = new URL(api_url);
-            URLConnection conn = url.openConnection();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String inputLine;
-
-            while ((inputLine = reader.readLine()) != null) {
-                response.append(inputLine);
-            }
-            reader.close();
-
-            JSONObject json = new JSONObject(response.toString());
-            String price = json.getString("price");
-            double numberPrice = Double.parseDouble(price);
-
-            double part_vendre = numberAmount / numberPrice;
-
-
-
-            String wallet_selected = md_wallet_sell.getSelectionModel().getSelectedItem();
-
-            for(Wallet wallet : investor.getList_wallet()){
-                if(wallet.getName()==wallet_selected){
-                    wallet_select = wallet;
-                }
+            try {
+                numberAmount = Double.parseDouble(amount);
+                nb = true;
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur sell");
+                alert.setHeaderText("Amount not valided");
+                alert.setContentText(null);
+                alert.showAndWait();
             }
 
+            if(nb) {
+                String api_url = "https://api.binance.com/api/v3/ticker/price?symbol=";
+                api_url += selected + "USDT";
 
-            switch (selected){
+                URL url = new URL(api_url);
+                URLConnection conn = url.openConnection();
 
-            case "BTC":
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String inputLine;
+
+                while ((inputLine = reader.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                reader.close();
+
+                JSONObject json = new JSONObject(response.toString());
+                String price = json.getString("price");
+                double numberPrice = Double.parseDouble(price);
+
+                double part_vendre = numberAmount / numberPrice;
 
 
-                stock_v = wallet_select.getList_value().getBTC();
-                new_value = (stock_v - part_vendre) * 0.995;
 
-                if(part_vendre<stock_v){
-                    wallet_select.getList_value().setBTC(new_value);
-                    update_value_bdd(new_value,"BTC",wallet_select, part_vendre);
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur sell");
-                    alert.setHeaderText("not enough cryptocurrency");
-                    alert.setContentText(null);
-                    alert.showAndWait();
+
+                for(Wallet wallet : investor.getList_wallet()){
+                    if(wallet.getName()==wallet_selected){
+                        wallet_select = wallet;
+                    }
                 }
 
-                break;
-            case "ETH":
 
-                stock_v = wallet_select.getList_value().getETH();
-                new_value = (stock_v - part_vendre) * 0.995;
-                if(part_vendre<stock_v){
-                    wallet_select.getList_value().setETH(new_value);
-                    update_value_bdd(new_value,"ETH",wallet_select, part_vendre);
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur sell");
-                    alert.setHeaderText("not enough cryptocurrency");
-                    alert.setContentText(null);
-                    alert.showAndWait();
-                }
-                break;
-            case "BNB":
-                stock_v = wallet_select.getList_value().getBNB();
-                new_value = (stock_v - part_vendre) * 0.995;
-                if(part_vendre<stock_v){
-                    wallet_select.getList_value().setBNB(new_value);
-                    update_value_bdd(new_value,"BNB",wallet_select, part_vendre);
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur sell");
-                    alert.setHeaderText("not enough cryptocurrency");
-                    alert.setContentText(null);
-                    alert.showAndWait();
-                }
-                break;
-            case "ADA":
-                stock_v = wallet_select.getList_value().getADA();
-                new_value = (stock_v - part_vendre) * 0.995;
-                if(part_vendre<stock_v){
-                    wallet_select.getList_value().setADA(new_value);
-                    update_value_bdd(new_value,"ADA",wallet_select, part_vendre);
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur sell");
-                    alert.setHeaderText("not enough cryptocurrency");
-                    alert.setContentText(null);
-                    alert.showAndWait();
-                }
-                break;
-            case "SOL":
-                stock_v = wallet_select.getList_value().getSOL();
-                new_value = (stock_v - part_vendre) * 0.995;
+                switch (selected){
 
-                if(part_vendre<stock_v){
-                    wallet_select.getList_value().setSOL(new_value);
-                    update_value_bdd(new_value,"SOL",wallet_select, part_vendre);
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur sell");
-                    alert.setHeaderText("not enough cryptocurrency");
-                    alert.setContentText(null);
-                    alert.showAndWait();
-                }
-                break;
-            case "XRP":
-                stock_v = wallet_select.getList_value().getXRP();
-                new_value = (stock_v - part_vendre) * 0.995;
+                case "BTC":
 
-                if(part_vendre<stock_v){
-                    wallet_select.getList_value().setXRP(new_value);
-                    update_value_bdd(new_value,"XRP",wallet_select, part_vendre);
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur sell");
-                    alert.setHeaderText("not enough cryptocurrency");
-                    alert.setContentText(null);
-                    alert.showAndWait();
-                }
-                break;
-            case "DOT":
-                stock_v = wallet_select.getList_value().getDOT();
-                new_value = (stock_v - part_vendre) * 0.995;
-                if(part_vendre<stock_v){
-                    wallet_select.getList_value().setDOT(new_value);
-                    update_value_bdd(new_value,"DOT",wallet_select, part_vendre);
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur sell");
-                    alert.setHeaderText("not enough cryptocurrency");
-                    alert.setContentText(null);
-                    alert.showAndWait();
-                }
-                break;
-            case "DOGE":
-                stock_v = wallet_select.getList_value().getDOGE();
-                new_value = (stock_v - part_vendre) * 0.995;
-                if(part_vendre<stock_v){
-                    wallet_select.getList_value().setDOGE(new_value);
-                    update_value_bdd(new_value,"DOGE",wallet_select, part_vendre);
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur sell");
-                    alert.setHeaderText("not enough cryptocurrency");
-                    alert.setContentText(null);
-                    alert.showAndWait();
-                }
-                break;
-            case "AVAX":
-                stock_v = wallet_select.getList_value().getAVAX();
-                new_value = (stock_v - part_vendre) * 0.995;
-                if(part_vendre<stock_v){
-                    wallet_select.getList_value().setAVAX(new_value);
-                    update_value_bdd(new_value,"AVAX",wallet_select, part_vendre);
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur sell");
-                    alert.setHeaderText("not enough cryptocurrency");
-                    alert.setContentText(null);
-                    alert.showAndWait();
-                }
-                break;
-            case "LINK":
-                stock_v = wallet_select.getList_value().getLINK();
-                new_value = (stock_v - part_vendre) * 0.995;
-                if(part_vendre<stock_v){
-                    wallet_select.getList_value().setLINK(new_value);
-                    update_value_bdd(new_value,"LINK",wallet_select, part_vendre);
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur sell");
-                    alert.setHeaderText("not enough cryptocurrency");
-                    alert.setContentText(null);
-                    alert.showAndWait();
-                }
-                break;
+                    stock_v = wallet_select.getList_value().getBTC();
+                    new_value = (stock_v - part_vendre) * 0.995;
 
+                    if(part_vendre<stock_v){
+                        wallet_select.getList_value().setBTC(new_value);
+                        update_value_bdd(new_value,"BTC",wallet_select, part_vendre);
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur sell");
+                        alert.setHeaderText("not enough cryptocurrency");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                    }
+
+                    break;
+                case "ETH":
+
+                    stock_v = wallet_select.getList_value().getETH();
+                    new_value = (stock_v - part_vendre) * 0.995;
+                    if(part_vendre<stock_v){
+                        wallet_select.getList_value().setETH(new_value);
+                        update_value_bdd(new_value,"ETH",wallet_select, part_vendre);
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur sell");
+                        alert.setHeaderText("not enough cryptocurrency");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                    }
+                    break;
+                case "BNB":
+                    stock_v = wallet_select.getList_value().getBNB();
+                    new_value = (stock_v - part_vendre) * 0.995;
+                    if(part_vendre<stock_v){
+                        wallet_select.getList_value().setBNB(new_value);
+                        update_value_bdd(new_value,"BNB",wallet_select, part_vendre);
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur sell");
+                        alert.setHeaderText("not enough cryptocurrency");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                    }
+                    break;
+                case "ADA":
+                    stock_v = wallet_select.getList_value().getADA();
+                    new_value = (stock_v - part_vendre) * 0.995;
+                    if(part_vendre<stock_v){
+                        wallet_select.getList_value().setADA(new_value);
+                        update_value_bdd(new_value,"ADA",wallet_select, part_vendre);
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur sell");
+                        alert.setHeaderText("not enough cryptocurrency");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                    }
+                    break;
+                case "SOL":
+                    stock_v = wallet_select.getList_value().getSOL();
+                    new_value = (stock_v - part_vendre) * 0.995;
+
+                    if(part_vendre<stock_v){
+                        wallet_select.getList_value().setSOL(new_value);
+                        update_value_bdd(new_value,"SOL",wallet_select, part_vendre);
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur sell");
+                        alert.setHeaderText("not enough cryptocurrency");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                    }
+                    break;
+                case "XRP":
+                    stock_v = wallet_select.getList_value().getXRP();
+                    new_value = (stock_v - part_vendre) * 0.995;
+
+                    if(part_vendre<stock_v){
+                        wallet_select.getList_value().setXRP(new_value);
+                        update_value_bdd(new_value,"XRP",wallet_select, part_vendre);
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur sell");
+                        alert.setHeaderText("not enough cryptocurrency");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                    }
+                    break;
+                case "DOT":
+                    stock_v = wallet_select.getList_value().getDOT();
+                    new_value = (stock_v - part_vendre) * 0.995;
+                    if(part_vendre<stock_v){
+                        wallet_select.getList_value().setDOT(new_value);
+                        update_value_bdd(new_value,"DOT",wallet_select, part_vendre);
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur sell");
+                        alert.setHeaderText("not enough cryptocurrency");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                    }
+                    break;
+                case "DOGE":
+                    stock_v = wallet_select.getList_value().getDOGE();
+                    new_value = (stock_v - part_vendre) * 0.995;
+                    if(part_vendre<stock_v){
+                        wallet_select.getList_value().setDOGE(new_value);
+                        update_value_bdd(new_value,"DOGE",wallet_select, part_vendre);
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur sell");
+                        alert.setHeaderText("not enough cryptocurrency");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                    }
+                    break;
+                case "AVAX":
+                    stock_v = wallet_select.getList_value().getAVAX();
+                    new_value = (stock_v - part_vendre) * 0.995;
+                    if(part_vendre<stock_v){
+                        wallet_select.getList_value().setAVAX(new_value);
+                        update_value_bdd(new_value,"AVAX",wallet_select, part_vendre);
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur sell");
+                        alert.setHeaderText("not enough cryptocurrency");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                    }
+                    break;
+                case "LINK":
+                    stock_v = wallet_select.getList_value().getLINK();
+                    new_value = (stock_v - part_vendre) * 0.995;
+                    if(part_vendre<stock_v){
+                        wallet_select.getList_value().setLINK(new_value);
+                        update_value_bdd(new_value,"LINK",wallet_select, part_vendre);
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur sell");
+                        alert.setHeaderText("not enough cryptocurrency");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                    }
+                    break;
+
+                }
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("sell");
+                alert.setHeaderText("Sale validated");
+                alert.setContentText(null);
+                alert.showAndWait();
             }
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("sell");
-            alert.setHeaderText("Sale validated");
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur sell");
+            alert.setHeaderText("Wallet ou Cryptoccurency not selected");
             alert.setContentText(null);
             alert.showAndWait();
         }
     }
 
+    @FXML
+    public void graph_hour(){
+        if(time_graph==0){
 
+        }else{
+            String value_etudier = value_graph;
+            try {
+
+                String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1h&limit=10";
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+                con.setRequestMethod("GET");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference<List<List<Object>>> typeRef = new TypeReference<>() {};
+                List<List<Object>> data = mapper.readValue(response.toString(), typeRef);
+
+                List<Double> closingPrices = new ArrayList<>();
+                for (List<Object> dayData : data) {
+                    closingPrices.add(Double.parseDouble(dayData.get(4).toString()));
+                }
+
+                XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                series.setName(value_etudier);
+
+                // Créez un nouvel axe si nécessaire ou réinitialisez-le.
+                xAxis = new NumberAxis(0, 11, 1);
+                xAxis.setLabel("Hour");
+
+                for (int i = 0; i < closingPrices.size(); i++) {
+                    series.getData().add(new XYChart.Data<>(i, closingPrices.get(i)));
+                }
+
+                Platform.runLater(() -> {
+                    lineChartcrypto.getData().clear(); // Effacez toutes les séries existantes.
+                    lineChartcrypto.getData().add(series); // Ajoutez la nouvelle série.
+                });
+                time_graph=0;
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }
+    @FXML
+    public void graph_daily(){
+
+        if(time_graph==1){
+
+        }else{
+            String value_etudier = value_graph;
+            try {
+
+                String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1d&limit=10";
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+                con.setRequestMethod("GET");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference<List<List<Object>>> typeRef = new TypeReference<>() {};
+                List<List<Object>> data = mapper.readValue(response.toString(), typeRef);
+                List<Double> closingPrices = new ArrayList<>();
+                for (List<Object> dayData : data) {
+                    closingPrices.add(Double.parseDouble(dayData.get(4).toString()));
+                }
+
+                XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                series.setName(value_etudier);
+
+                xAxis = new NumberAxis(0, 11, 1);
+                xAxis.setLabel("Daily");
+
+                for (int i = 0; i < closingPrices.size(); i++) {
+                    series.getData().add(new XYChart.Data<>(i, closingPrices.get(i)));
+                }
+
+                Platform.runLater(() -> {
+                    lineChartcrypto.getData().clear(); // Effacez toutes les séries existantes.
+                    lineChartcrypto.getData().add(series); // Ajoutez la nouvelle série.
+                });
+                time_graph=1;
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }
+    @FXML
+    public void graph_month(){
+        if(time_graph==2){
+
+        }else{
+            String value_etudier = value_graph;
+            try {
+
+                String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1M&limit=10";
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+                con.setRequestMethod("GET");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference<List<List<Object>>> typeRef = new TypeReference<>() {};
+                List<List<Object>> data = mapper.readValue(response.toString(), typeRef);
+
+                List<Double> closingPrices = new ArrayList<>();
+                for (List<Object> dayData : data) {
+                    closingPrices.add(Double.parseDouble(dayData.get(4).toString()));
+                }
+
+                XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                series.setName(value_etudier);
+
+                xAxis = new NumberAxis(0, 11, 1);
+                xAxis.setLabel("Month");
+
+
+                for (int i = 0; i < closingPrices.size(); i++) {
+                    series.getData().add(new XYChart.Data<>(i, closingPrices.get(i)));
+                }
+
+                Platform.runLater(() -> {
+                    lineChartcrypto.getData().clear(); // Effacez toutes les séries existantes.
+                    lineChartcrypto.getData().add(series); // Ajoutez la nouvelle série.
+                });
+                time_graph=2;
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }
+    @FXML
+    public void graph_year() {
+        if (time_graph == 3) {
+
+        } else {
+            String value_etudier = value_graph;
+            try {
+
+                String url = "https://api.binance.com/api/v3/klines?symbol=" + value_etudier + "USDT&interval=1M&limit=120"; // Obtenir 120 mois (10 ans)
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+                con.setRequestMethod("GET");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference<List<List<Object>>> typeRef = new TypeReference<>() {};
+                List<List<Object>> data = mapper.readValue(response.toString(), typeRef);
+
+                List<Double> closingPrices = new ArrayList<>();
+                for (List<Object> dayData : data) {
+                    closingPrices.add(Double.parseDouble(dayData.get(4).toString()));
+                }
+
+                XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                series.setName(value_etudier);
+
+                xAxis = new NumberAxis(0, 11, 1);
+                xAxis.setLabel("Years");
+
+                List<Double> lastValues = new ArrayList<>();
+                int interval = data.size() / 10;
+                for (int i = 0; i < 10; i++) {
+
+                    int startIndex = i * interval;
+                    int endIndex = startIndex + interval;
+                    List<Double> subList = closingPrices.subList(startIndex, endIndex);
+                    double lastValue = subList.get(subList.size() - 1);
+                    lastValues.add(lastValue);
+                }
+
+                for (int i = 0; i < lastValues.size(); i++) {
+                    series.getData().add(new XYChart.Data<>(i * interval, lastValues.get(i)));
+                }
+
+                Platform.runLater(() -> {
+                    lineChartcrypto.getData().clear();
+                    lineChartcrypto.getData().add(series);
+                });
+                time_graph=3;
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }
 
 }

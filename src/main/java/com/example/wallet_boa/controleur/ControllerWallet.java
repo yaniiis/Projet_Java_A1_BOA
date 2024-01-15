@@ -630,7 +630,7 @@ public class ControllerWallet {
         hbox_btn_action_wallet.setVisible(true);
         investor.getList_wallet();
         label_wallet_name.setText(list_wallet.get(indice_wallet_layout).getName());
-        //charger_graphique(list_crypto);
+        charger_graphique(list_crypto);
 
     }
 

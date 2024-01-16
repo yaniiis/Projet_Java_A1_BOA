@@ -3,12 +3,8 @@ package com.example.wallet_boa.controleur;
 import com.example.wallet_boa.modele.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -19,21 +15,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
-import javafx.util.Pair;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.*;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ControllerWallet {
@@ -563,60 +555,85 @@ public class ControllerWallet {
         }
     }
 
-    public void charger_graphique(List<String> symbolss) throws Exception {
+    public void charger_graphique(List<String> symbolss, String name) throws Exception {
 
-        String apiKey = "O2VSXG62XNBFFJDL";
+        List<Double> closingPrices = new ArrayList<>(Collections.nCopies(10, 0.0));
+        Wallet wallet = investor.getList_wallet().get(indice_wallet_layout);
+        for(String value_etudier : symbolss){
+            String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1d&limit=10";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-        List<Double> closingPricesSum = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            closingPricesSum.add(0.0);
-        }
+            con.setRequestMethod("GET");
 
-        for (String symbol : symbolss) {
-            String apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + apiKey;
-            System.out.println(apiUrl);
-
-            URL url = new URL(apiUrl);
-            URLConnection request = url.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
-
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
-            StringBuilder response = new StringBuilder();
+            StringBuffer response = new StringBuffer();
+
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
             in.close();
 
             ObjectMapper mapper = new ObjectMapper();
-            TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
-            HashMap<String, Object> root = mapper.readValue(response.toString(), typeRef);
-            HashMap<String, HashMap<String, String>> timeSeries = (HashMap<String, HashMap<String, String>>) root.get("Time Series (Daily)");
-
-            TreeMap<String, HashMap<String, String>> sortedData = new TreeMap<>(Collections.reverseOrder());
-            sortedData.putAll(timeSeries);
-
-            int count = 0;
-            for (Map.Entry<String, HashMap<String, String>> entry : sortedData.entrySet()) {
-                if (count == 10) {
+            TypeReference<List<List<Object>>> typeRef = new TypeReference<>() {};
+            List<List<Object>> data = mapper.readValue(response.toString(), typeRef);
+            double part = 1;
+            switch (value_etudier){
+                case "BTC":
+                    part = wallet.getList_value().getBTC();
                     break;
-                }
-                double closePrice = Double.parseDouble(entry.getValue().get("4. close"));
-                closingPricesSum.set(count, closingPricesSum.get(count) + closePrice);
-                count++;
+                case "ETH":
+                    part = wallet.getList_value().getETH();
+                    break;
+                case "BNB":
+                    part = wallet.getList_value().getBNB();
+                    break;
+                case "ADA":
+                    part = wallet.getList_value().getADA();
+                    break;
+                case "SOL":
+                    part = wallet.getList_value().getSOL();
+                    break;
+                case "XRP":
+                    part = wallet.getList_value().getXRP();
+                    break;
+                case "DOT":
+                    part = wallet.getList_value().getDOT();
+                    break;
+                case "DOGE":
+                    part = wallet.getList_value().getDOGE();
+                    break;
+                case "AVAX":
+                    part = wallet.getList_value().getAVAX();
+                    break;
+                case "LINK":
+                    part = wallet.getList_value().getLINK();
+                    break;
             }
+
+            for (int i = 0; i < data.size(); i++) {
+                List<Object> dayData = data.get(i);
+                double newPrice = Double.parseDouble(dayData.get(4).toString());
+                double contenu = closingPrices.get(i) * part;
+                closingPrices.set(i, contenu + newPrice);
+            }
+
         }
 
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName("AAPL & BTC Sum");
-        for (int i = 0; i < closingPricesSum.size(); i++) {
-            series.getData().add(new XYChart.Data<>(i + 1, closingPricesSum.get(i)));
-        }
+            XYChart.Series<Number, Number> series = new XYChart.Series<>();
+            series.setName(name);
+            xAxis = new NumberAxis(0, 11, 1);
+            xAxis.setLabel("Daily");
 
-        Platform.runLater(() -> {
-            lineChart.getData().add(series);
-        });
+            for (int i = 0; i < closingPrices.size(); i++) {
+                series.getData().add(new XYChart.Data<>(i, closingPrices.get(i)));
+            }
 
-        xAxis.setLabel("Daily ");
+            Platform.runLater(() -> {
+                lineChart.getData().clear();
+                lineChart.getData().add(series);
+            });
     }
 
 
@@ -628,9 +645,9 @@ public class ControllerWallet {
         btn_clone_wallet.setVisible(false);
         hbox_walet_list_values.setVisible(true);
         hbox_btn_action_wallet.setVisible(true);
-        investor.getList_wallet();
-        label_wallet_name.setText(list_wallet.get(indice_wallet_layout).getName());
-        charger_graphique(list_crypto);
+        String name_wallet = list_wallet.get(indice_wallet_layout).getName();
+        label_wallet_name.setText(name_wallet);
+        charger_graphique(list_crypto,name_wallet);
 
     }
 

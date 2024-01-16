@@ -13,7 +13,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="7c9276f1-059a-4b8f-a053-2e94eca0a619">
-      <console name="Connection" type="STANDARD" schema="boa_database" session="Main"><![CDATA[drop table list_value;]]></console>
+      <console name="Connection" type="STANDARD" schema="database_boa_java" session="Main"><![CDATA[select * from wallet;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">

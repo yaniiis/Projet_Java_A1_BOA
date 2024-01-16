@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -49,7 +50,6 @@ public class HelloApplication extends Application {
         primaryStage.setTitle("Votre Application");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
-
 
 
     }

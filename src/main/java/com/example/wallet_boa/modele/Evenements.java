@@ -111,7 +111,7 @@ public class Evenements<T> {
             case 3:
                 Random random4 = new Random();
                 int intervalMin4 = random4.nextInt(5);
-                msg = topCompanies.get(intervalMin4) + " vas faire des annonces dans quelques instants";
+                msg = topCompanies.get(intervalMin4) + " va faire des annonces dans quelques instants";
 
                 Evenements<String> intLogger3 = new Evenements<>("724", msg);
                 random = new Random();

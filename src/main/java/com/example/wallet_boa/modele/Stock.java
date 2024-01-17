@@ -5,11 +5,53 @@ public class Stock {
     private double AMSZN;
     private double AAPL;
     private double MSFT;
-    private double FB;
-    private double TSLA;
-    private double BRK;
-    private double INTC;
-    private double PFE;
-    private double NVDA;
-    private double MCD;
+    private double GOOGL;
+
+    public Stock(int id_stock, double AMSZN, double AAPL, double MSFT, double GOOGL) {
+        this.id_stock = id_stock;
+        this.AMSZN = AMSZN;
+        this.AAPL = AAPL;
+        this.MSFT = MSFT;
+        this.GOOGL = GOOGL;
+    }
+
+    public int getId_stock() {
+        return id_stock;
+    }
+
+    public void setId_stock(int id_stock) {
+        this.id_stock = id_stock;
+    }
+
+    public double getAMSZN() {
+        return AMSZN;
+    }
+
+    public void setAMSZN(double AMSZN) {
+        this.AMSZN = AMSZN;
+    }
+
+    public double getAAPL() {
+        return AAPL;
+    }
+
+    public void setAAPL(double AAPL) {
+        this.AAPL = AAPL;
+    }
+
+    public double getMSFT() {
+        return MSFT;
+    }
+
+    public void setMSFT(double MSFT) {
+        this.MSFT = MSFT;
+    }
+
+    public double getGOOGL() {
+        return GOOGL;
+    }
+
+    public void setGOOGL(double GOOGL) {
+        this.GOOGL = GOOGL;
+    }
 }

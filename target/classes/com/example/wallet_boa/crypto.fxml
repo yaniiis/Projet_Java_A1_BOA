@@ -231,10 +231,9 @@
                <font>
                   <Font size="14.0" />
                </font></Button>
-
                 <LineChart fx:id="lineChartcrypto" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="302.0" prefWidth="620.0" title="" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1">
                     <xAxis>
-                        <NumberAxis autoRanging="true" label="X Label" prefWidth="203.0" fx:id="xAxis" />
+                        <NumberAxis autoRanging="true" label="dza" prefWidth="203.0" fx:id="xAxis" />
                     </xAxis>
                     <yAxis>
                         <NumberAxis autoRanging="true" label="Value $ " prefWidth="49.0" />
@@ -243,7 +242,6 @@
                   <Insets left="30.0" top="260.0" />
                </GridPane.margin>
                 </LineChart>
-
                 <HBox fx:id="btn_graph" style="-fx-background-color: none" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1">
                     <children>
                         <Button onAction="#graph_hour" text="hour" />

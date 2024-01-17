@@ -1,5 +1,7 @@
 package com.example.wallet_boa;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -25,8 +27,7 @@ import java.sql.*;
 
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class HelloApplication extends Application {
@@ -53,8 +54,6 @@ public class HelloApplication extends Application {
 
 
     }
-
-
 
 
     public static Stage getPrimaryStage() {

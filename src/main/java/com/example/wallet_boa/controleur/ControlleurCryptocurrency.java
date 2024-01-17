@@ -140,111 +140,6 @@ public class ControlleurCryptocurrency {
 
     }
 
-
-    public void remplirtableau() throws Exception {
-
-        ArrayList<String> list_value = new ArrayList<String>(Arrays.asList("BTC", "ETH", "BNB", "ADA", "SOL", "XRP", "DOT", "DOGE", "AVAX", "LINK"));
-
-        ObservableList<LigneCryptocurrency> list = FXCollections.observableArrayList();
-
-        for(int i = 0; i < 10; i++) {
-
-
-            String value = list_value.get(i);
-
-            String api_url = "https://api.binance.com/api/v3/ticker/price?symbol=" + value + "USDT";
-            URL url = new URL(api_url);
-            URLConnection conn = url.openConnection();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String inputLine;
-
-            while ((inputLine = reader.readLine()) != null) {
-                response.append(inputLine);
-            }
-            reader.close();
-
-            JSONObject json = new JSONObject(response.toString());
-            String price = json.getString("price");
-            double priceAsDouble = Double.parseDouble(price);
-
-            Button button = new Button("G");
-            button.setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent event) {
-                    tableview_value.setVisible(false);
-                    layout_buy.setVisible(false);
-                    layout_sell.setVisible(false);
-                    lineChartcrypto.setVisible(true);
-                    btn_back_graph.setVisible(true);
-                    btn_graph.setVisible(true);
-                    value_graph = value;
-                    time_graph = 1;
-
-                    try {
-                        affiche_graphique(value);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            LigneCryptocurrency ligne = new LigneCryptocurrency(value, priceAsDouble, 10,button );
-            list.add(ligne);
-        }
-
-        tableview_value.setItems(list);
-    }
-
-    public void affiche_graphique(String value)throws Exception{
-        try {
-
-            String url = "https://api.binance.com/api/v3/klines?symbol="+ value + "USDT&interval=1d&limit=10";
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-            con.setRequestMethod("GET");
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            ObjectMapper mapper = new ObjectMapper();
-            TypeReference<List<List<Object>>> typeRef = new TypeReference<>() {};
-            List<List<Object>> data = mapper.readValue(response.toString(), typeRef);
-
-            List<Double> closingPrices = new ArrayList<>();
-            for (List<Object> dayData : data) {
-                closingPrices.add(Double.parseDouble(dayData.get(4).toString()));
-            }
-
-            XYChart.Series<Number, Number> series = new XYChart.Series<>();
-            series.setName(value);
-            Collections.reverse(closingPrices);
-            xAxis = new NumberAxis(0, 11, 1);
-            xAxis.setLabel("Daily ");
-
-            for (int i = 0; i < closingPrices.size(); i++) {
-                series.getData().add(new XYChart.Data<>(i , closingPrices.get(i)));
-            }
-
-            Platform.runLater(() -> {
-                lineChartcrypto.getData().clear();
-                lineChartcrypto.getData().add(series);
-            });
-
-        }catch (Exception e){
-            System.out.println(e);
-        }
-    }
-
     public void remplirWallet(){
         ArrayList<Wallet> list_wallet = this.investor.getList_wallet();
         for(Wallet wallet : list_wallet) {
@@ -486,7 +381,7 @@ public class ControlleurCryptocurrency {
                         wallet_select.getList_value().setLINK(new_value);
                         break;
                 }
-                System.out.println(montant_investor);
+
                 double new_montant = montant_investor - numberAmount ;
                 wallet_select.setAmount(new_montant);
                 double montant_label = IntefaceFeatures.compter_montant(investor);
@@ -499,6 +394,7 @@ public class ControlleurCryptocurrency {
                 alert.setHeaderText("Purchase validated");
                 alert.setContentText(null);
                 alert.showAndWait();
+                back_layout();
 
             }
 
@@ -845,7 +741,7 @@ public class ControlleurCryptocurrency {
 
                 }
 
-                double new_montant = montant_investor + numberAmount ;
+                double new_montant = montant_investor + (numberAmount * 0.995) ;
                 wallet_select.setAmount(new_montant);
                 double montant_label = IntefaceFeatures.compter_montant(investor);
                 String mont = "Solde " + montant_label + " $";
@@ -858,6 +754,7 @@ public class ControlleurCryptocurrency {
                 alert.setHeaderText("Sale validated");
                 alert.setContentText(null);
                 alert.showAndWait();
+                back_layout();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -876,7 +773,7 @@ public class ControlleurCryptocurrency {
             String value_etudier = value_graph;
             try {
 
-                String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1h&limit=10";
+                String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1h&limit=20";
                 URL obj = new URL(url);
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -903,9 +800,8 @@ public class ControlleurCryptocurrency {
                 XYChart.Series<Number, Number> series = new XYChart.Series<>();
                 series.setName(value_etudier);
 
-                // Créez un nouvel axe si nécessaire ou réinitialisez-le.
-                xAxis = new NumberAxis(0, 11, 1);
                 xAxis.setLabel("Hour");
+
 
                 for (int i = 0; i < closingPrices.size(); i++) {
                     series.getData().add(new XYChart.Data<>(i, closingPrices.get(i)));
@@ -931,7 +827,7 @@ public class ControlleurCryptocurrency {
             String value_etudier = value_graph;
             try {
 
-                String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1d&limit=10";
+                String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1d&limit=20";
                 URL obj = new URL(url);
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -958,16 +854,16 @@ public class ControlleurCryptocurrency {
                 XYChart.Series<Number, Number> series = new XYChart.Series<>();
                 series.setName(value_etudier);
 
-                xAxis = new NumberAxis(0, 11, 1);
                 xAxis.setLabel("Daily");
+
 
                 for (int i = 0; i < closingPrices.size(); i++) {
                     series.getData().add(new XYChart.Data<>(i, closingPrices.get(i)));
                 }
 
                 Platform.runLater(() -> {
-                    lineChartcrypto.getData().clear(); // Effacez toutes les séries existantes.
-                    lineChartcrypto.getData().add(series); // Ajoutez la nouvelle série.
+                    lineChartcrypto.getData().clear();
+                    lineChartcrypto.getData().add(series);
                 });
                 time_graph=1;
 
@@ -984,7 +880,7 @@ public class ControlleurCryptocurrency {
             String value_etudier = value_graph;
             try {
 
-                String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1M&limit=10";
+                String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1M&limit=20";
                 URL obj = new URL(url);
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -1011,8 +907,8 @@ public class ControlleurCryptocurrency {
                 XYChart.Series<Number, Number> series = new XYChart.Series<>();
                 series.setName(value_etudier);
 
-                xAxis = new NumberAxis(0, 11, 1);
                 xAxis.setLabel("Month");
+
 
 
                 for (int i = 0; i < closingPrices.size(); i++) {
@@ -1065,12 +961,11 @@ public class ControlleurCryptocurrency {
                 XYChart.Series<Number, Number> series = new XYChart.Series<>();
                 series.setName(value_etudier);
 
-                xAxis = new NumberAxis(0, 11, 1);
                 xAxis.setLabel("Years");
 
                 List<Double> lastValues = new ArrayList<>();
                 int interval = data.size() / 10;
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 20; i++) {
 
                     int startIndex = i * interval;
                     int endIndex = startIndex + interval;
@@ -1092,6 +987,151 @@ public class ControlleurCryptocurrency {
             } catch (Exception e) {
                 System.out.println(e);
             }
+        }
+    }
+
+    public Label getCryptoData(String symbol) throws Exception {
+
+        String apiUrl = "https://api.binance.com/api/v3/ticker/24hr?symbol=" + symbol + "USDT";
+
+        URL url = new URL(apiUrl);
+        URLConnection connection = url.openConnection();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String line;
+        StringBuilder response = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> map = mapper.readValue(response.toString(), new TypeReference<Map<String, Object>>() {});
+
+        double change = Double.parseDouble(map.get("priceChangePercent").toString());
+
+        return updatePriceLabels(change);
+    }
+
+    private Label updatePriceLabels(double change) {
+        Label label_variation = new Label();
+        Platform.runLater(() -> {
+
+            label_variation.setText(String.format("%.2f%%", change));
+
+            if (change >= 0) {
+                label_variation.setStyle("-fx-text-fill: green;");
+            } else {
+                label_variation.setStyle("-fx-text-fill: red;");
+            }
+        });
+        return label_variation;
+    }
+    public void remplirtableau() throws Exception {
+
+        ArrayList<String> list_value = new ArrayList<String>(Arrays.asList("BTC", "ETH", "BNB", "ADA", "SOL", "XRP", "DOT", "DOGE", "AVAX", "LINK"));
+
+        ObservableList<LigneCryptocurrency> list = FXCollections.observableArrayList();
+
+        for(int i = 0; i < 10; i++) {
+
+
+            String value = list_value.get(i);
+
+            String api_url = "https://api.binance.com/api/v3/ticker/price?symbol=" + value + "USDT";
+            URL url = new URL(api_url);
+            URLConnection conn = url.openConnection();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+
+            while ((inputLine = reader.readLine()) != null) {
+                response.append(inputLine);
+            }
+            reader.close();
+
+            JSONObject json = new JSONObject(response.toString());
+            String price = json.getString("price");
+            double priceAsDouble = Double.parseDouble(price);
+
+            Label variationn;
+            variationn = getCryptoData(value);
+
+            Button button = new Button("G");
+            button.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent event) {
+                    tableview_value.setVisible(false);
+                    layout_buy.setVisible(false);
+                    layout_sell.setVisible(false);
+                    lineChartcrypto.setVisible(true);
+                    btn_back_graph.setVisible(true);
+                    btn_graph.setVisible(true);
+                    value_graph = value;
+                    time_graph = 1;
+
+                    try {
+                        affiche_graphique(value);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+            LigneCryptocurrency ligne = new LigneCryptocurrency(value, priceAsDouble,variationn ,button );
+            list.add(ligne);
+        }
+
+        tableview_value.setItems(list);
+    }
+
+    public void affiche_graphique(String value)throws Exception{
+        try {
+
+            String url = "https://api.binance.com/api/v3/klines?symbol="+ value + "USDT&interval=1d&limit=20";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+            con.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            ObjectMapper mapper = new ObjectMapper();
+            TypeReference<List<List<Object>>> typeRef = new TypeReference<>() {};
+            List<List<Object>> data = mapper.readValue(response.toString(), typeRef);
+
+            List<Double> closingPrices = new ArrayList<>();
+            for (List<Object> dayData : data) {
+                closingPrices.add(Double.parseDouble(dayData.get(4).toString()));
+            }
+
+            XYChart.Series<Number, Number> series = new XYChart.Series<>();
+            series.setName(value);
+            Collections.reverse(closingPrices);
+
+            xAxis.setLabel("Daily ");
+            xAxis = new NumberAxis(0, 21, 1);
+            xAxis.setLabel("Daily ");
+
+
+            for (int i = 0; i < closingPrices.size(); i++) {
+                series.getData().add(new XYChart.Data<>(i , closingPrices.get(i)));
+            }
+
+            Platform.runLater(() -> {
+                lineChartcrypto.getData().clear();
+                lineChartcrypto.getData().add(series);
+            });
+
+        }catch (Exception e){
+            System.out.println(e);
         }
     }
 

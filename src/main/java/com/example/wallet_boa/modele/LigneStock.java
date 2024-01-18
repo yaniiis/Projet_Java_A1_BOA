@@ -3,17 +3,14 @@ package com.example.wallet_boa.modele;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class LigneCryptocurrency {
-
+public class LigneStock {
     private String nom;
     private double prix;
-    private Label variation;
     private Button graphique;
 
-    public LigneCryptocurrency(String nom, double prix, Label variation, Button graphique) {
+    public LigneStock(String nom, double prix, Button graphique) {
         this.nom = nom;
         this.prix = prix;
-        this.variation = variation;
         this.graphique = graphique;
     }
 
@@ -39,14 +36,6 @@ public class LigneCryptocurrency {
 
     public void setGraphique(Button graphe) {
         this.graphique = graphe;
-    }
-
-    public Label getVariation() {
-        return this.variation;
-    }
-
-    public void setVariation(Label variation) {
-        this.variation = variation;
     }
 
 }

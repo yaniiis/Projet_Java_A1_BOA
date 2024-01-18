@@ -3,12 +3,8 @@ package com.example.wallet_boa.controleur;
 import com.example.wallet_boa.modele.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -19,21 +15,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
-import javafx.util.Pair;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.*;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ControllerWallet {
@@ -44,7 +36,16 @@ public class ControllerWallet {
     private int indice_wallet_layout;
     private double values_total_wallet;
     private ArrayList<Wallet> list_wallet;
+    private ArrayList<Double> list_value;
 
+    @FXML
+    Button btn_back;
+    @FXML
+    Label label_conseil1;
+    @FXML
+    Label label_conseil2;
+    @FXML
+    Label label_conseil3;
     @FXML
     Label label_name;
     @FXML
@@ -118,6 +119,8 @@ public class ControllerWallet {
     @FXML
     Label amount_9;
     @FXML
+    Label label_retraite_resultat;
+    @FXML
     TextField txt_wallet_clone;
     @FXML
     ComboBox<String> cb_wallet_clone;
@@ -178,6 +181,8 @@ public class ControllerWallet {
     @FXML
     NumberAxis xAxis;
     @FXML
+    VBox Vbox_conseil;
+    @FXML
     Button btn_conseil;
     @FXML
     TextField txt_montant_payment;
@@ -199,12 +204,10 @@ public class ControllerWallet {
     TextField txt_montant_ptf;
     @FXML
     VBox Vbox_retraite;
-
-
-
-
-
-
+    @FXML
+    VBox Vbox_impot;
+    @FXML
+    Label label_impot;
 
 
 
@@ -396,6 +399,11 @@ public class ControllerWallet {
         vbox_wallet.setVisible(true);
         vbox_new_wallet.setVisible(false);
         hbox_crypto.setVisible(true);
+        lineChart.setVisible(false);
+        hbox_insert_montant.setVisible(false);
+        Vbox_retraite.setVisible(false);
+        Vbox_conseil.setVisible(false);
+        btn_back.setVisible(false);
     }
 
     @FXML
@@ -407,8 +415,9 @@ public class ControllerWallet {
         Date dateSQL = new Date(dateActuelle.getTime());
 
         Cryptocurrency cryptocurrency = new Cryptocurrency();
+        Stock stock = new Stock();
 
-        Wallet wallet = new Wallet(0,wallet_name, dateSQL, description_wallet, 0, false, cryptocurrency );
+        Wallet wallet = new Wallet(0,wallet_name, dateSQL, description_wallet, 0, false, cryptocurrency, stock );
 
 
         insert_wallet_bdd(wallet,0);
@@ -430,7 +439,7 @@ public class ControllerWallet {
         String name = txt_wallet_clone.getText();
         String selected = cb_wallet_clone.getSelectionModel().getSelectedItem();
 
-        String query = "SELECT description, id_list_valeur, id_wallet,amount FROM wallet WHERE id_investor = ? and name = ?; ";
+        String query = "SELECT description, id_list_valeur, id_wallet,amount, id_list_action FROM wallet WHERE id_investor = ? and name = ?; ";
         String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
         try (
                 Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
@@ -446,14 +455,16 @@ public class ControllerWallet {
                     String description = resultSet.getString("description");
                     int amount = resultSet.getInt("amount");
                     int id_list_valeur = resultSet.getInt("id_list_valeur");
+                    int id_list_value = resultSet.getInt("id_list_action");
 
 
                     java.util.Date dateActuelle = new java.util.Date();
                     Date dateSQL = new Date(dateActuelle.getTime());
 
                     Cryptocurrency cryptocurrency = list_value_clone(id_list_valeur);
+                    Stock stock = list_action_clone(id_list_value);
 
-                    Wallet wallet = new Wallet(0,name, dateSQL, description, amount, true,cryptocurrency);
+                    Wallet wallet = new Wallet(0,name, dateSQL, description, amount, true,cryptocurrency, stock);
 
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                     alert2.setTitle("Clone Wallet");
@@ -510,6 +521,39 @@ public class ControllerWallet {
 
     }
 
+    public Stock list_action_clone(int id_list_valeur){
+        /*
+            Cette fonction permet de récupérer les valeurs cryptomonnaie d'un wallet
+         */
+        String query = "SELECT AMSZN, AAPL, GOOGL, MSFT FROM actions WHERE id_list_valeur = ? ;";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+        Stock stock = new Stock();
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, id_list_valeur);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = IntefaceFeatures.random_id();
+
+                    int AMSZN = resultSet.getInt("AMSZN");
+                    int AAPL = resultSet.getInt("AAPL");
+                    int GOOGL = resultSet.getInt("GOOGL");
+                    int MSFT = resultSet.getInt("MSFT");
+                    stock = new Stock(id,AMSZN, AAPL, MSFT, GOOGL);
+                    return stock;
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stock;
+
+    }
+
 
     public void insert_wallet_bdd(Wallet wallet, int id_list_valeur_) throws Exception {
         /*
@@ -521,7 +565,7 @@ public class ControllerWallet {
 
             Connection connexion = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
 
-            String requeteSQL = "INSERT INTO wallet (id_wallet ,name, description, amount, date, id_investor, clone, id_list_valeur) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String requeteSQL = "INSERT INTO wallet (id_wallet ,name, description, amount, date, id_investor, clone, id_list_valeur, id_list_action ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connexion.prepareStatement(requeteSQL);
             int id = IntefaceFeatures.random_id();
             preparedStatement.setInt(1, id);
@@ -540,8 +584,20 @@ public class ControllerWallet {
                 pstmt.executeUpdate();
                 preparedStatement.setInt(8, id_list_value);
 
-                Cryptocurrency new_values = new Cryptocurrency(0,0,0,0,0,0,0,0,0,0);
+                Cryptocurrency new_values = new Cryptocurrency(id_list_value,0,0,0,0,0,0,0,0,0, 0);
                 wallet.setList_value(new_values);
+
+
+                int id_list_action = IntefaceFeatures.random_id();
+                String sql_ = "INSERT INTO actions (id_list_valeur, AMSZN, AAPL, GOOGL, MSFT ) VALUES (?, 0, 0, 0, 0)";
+                PreparedStatement pstmt_ = connexion.prepareStatement(sql_);
+                pstmt_.setInt(1, id_list_action);
+                pstmt_.executeUpdate();
+                preparedStatement.setInt(9, id_list_value);
+
+                Stock stock = new Stock(id_list_action,0,0,0,0);
+
+                wallet.setList_action(stock);
 
 
             }else{
@@ -556,67 +612,92 @@ public class ControllerWallet {
 
             wallet.setId_wallet(id);
             investor.ajouterWallet(wallet);
-            System.out.println("L'objet Wallet a été inséré dans la base de données.");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void charger_graphique(List<String> symbolss) throws Exception {
+    public void charger_graphique(List<String> symbolss, String name) throws Exception {
 
-        String apiKey = "O2VSXG62XNBFFJDL";
+        List<Double> closingPrices = new ArrayList<>(Collections.nCopies(20, 0.0));
+        Wallet wallet = investor.getList_wallet().get(indice_wallet_layout);
+        for(String value_etudier : symbolss){
+            String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1d&limit=20";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-        List<Double> closingPricesSum = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            closingPricesSum.add(0.0);
-        }
+            con.setRequestMethod("GET");
 
-        for (String symbol : symbolss) {
-            String apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + apiKey;
-            System.out.println(apiUrl);
-
-            URL url = new URL(apiUrl);
-            URLConnection request = url.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
-
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
-            StringBuilder response = new StringBuilder();
+            StringBuffer response = new StringBuffer();
+
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
             in.close();
 
             ObjectMapper mapper = new ObjectMapper();
-            TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
-            HashMap<String, Object> root = mapper.readValue(response.toString(), typeRef);
-            HashMap<String, HashMap<String, String>> timeSeries = (HashMap<String, HashMap<String, String>>) root.get("Time Series (Daily)");
-
-            TreeMap<String, HashMap<String, String>> sortedData = new TreeMap<>(Collections.reverseOrder());
-            sortedData.putAll(timeSeries);
-
-            int count = 0;
-            for (Map.Entry<String, HashMap<String, String>> entry : sortedData.entrySet()) {
-                if (count == 10) {
+            TypeReference<List<List<Object>>> typeRef = new TypeReference<>() {};
+            List<List<Object>> data = mapper.readValue(response.toString(), typeRef);
+            double part = 1;
+            switch (value_etudier){
+                case "BTC":
+                    part = wallet.getList_value().getBTC();
                     break;
-                }
-                double closePrice = Double.parseDouble(entry.getValue().get("4. close"));
-                closingPricesSum.set(count, closingPricesSum.get(count) + closePrice);
-                count++;
+                case "ETH":
+                    part = wallet.getList_value().getETH();
+                    break;
+                case "BNB":
+                    part = wallet.getList_value().getBNB();
+                    break;
+                case "ADA":
+                    part = wallet.getList_value().getADA();
+                    break;
+                case "SOL":
+                    part = wallet.getList_value().getSOL();
+                    break;
+                case "XRP":
+                    part = wallet.getList_value().getXRP();
+                    break;
+                case "DOT":
+                    part = wallet.getList_value().getDOT();
+                    break;
+                case "DOGE":
+                    part = wallet.getList_value().getDOGE();
+                    break;
+                case "AVAX":
+                    part = wallet.getList_value().getAVAX();
+                    break;
+                case "LINK":
+                    part = wallet.getList_value().getLINK();
+                    break;
             }
+
+
+            for (int i = 0; i < data.size(); i++) {
+                List<Object> dayData = data.get(i);
+                double newPrice = Double.parseDouble(dayData.get(4).toString()) * part;
+                double contenu = closingPrices.get(i);
+                closingPrices.set(i, contenu + newPrice);
+            }
+
         }
 
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName("AAPL & BTC Sum");
-        for (int i = 0; i < closingPricesSum.size(); i++) {
-            series.getData().add(new XYChart.Data<>(i + 1, closingPricesSum.get(i)));
-        }
+            XYChart.Series<Number, Number> series = new XYChart.Series<>();
+            series.setName(name);
+            xAxis = new NumberAxis(0, 20, 1);
 
-        Platform.runLater(() -> {
-            lineChart.getData().add(series);
-        });
 
-        xAxis.setLabel("Daily ");
+            for (int i = 0; i < closingPrices.size(); i++) {
+                series.getData().add(new XYChart.Data<>(i, closingPrices.get(i)));
+            }
+
+            Platform.runLater(() -> {
+                lineChart.getData().clear();
+                lineChart.getData().add(series);
+            });
     }
 
 
@@ -628,9 +709,9 @@ public class ControllerWallet {
         btn_clone_wallet.setVisible(false);
         hbox_walet_list_values.setVisible(true);
         hbox_btn_action_wallet.setVisible(true);
-        investor.getList_wallet();
-        label_wallet_name.setText(list_wallet.get(indice_wallet_layout).getName());
-        charger_graphique(list_crypto);
+        String name_wallet = list_wallet.get(indice_wallet_layout).getName();
+        label_wallet_name.setText(name_wallet);
+        charger_graphique(list_crypto,name_wallet);
 
     }
 
@@ -774,6 +855,8 @@ public class ControllerWallet {
                     montant_pane5.setText(price);
                     break;
             }
+            list_value.remove(randomInt);
+
 
         }
 
@@ -788,21 +871,21 @@ public class ControllerWallet {
         double montant;
         String total_formater;
         List<String> list_crypto_presente = new ArrayList<>();
-
+        list_value = new ArrayList<>();
 
         if(cryptocurrency.getADA()!=0){
 
             double valeur_dollar = cryptocurrency.getADA();
             montant = recupere_valeur_crypto("ADA") * valeur_dollar;
             total_montant += montant ;
-            Label label = new Label("ADA");
             montant = IntefaceFeatures.cut_nombre(montant);
             String monString = String.valueOf(montant);
             Label montantt = new Label(monString);
             list_crypto_presente.add("ADA");
+            Label label = new Label("ADA");
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
-
+            list_value.add(montant);
         }
         if(cryptocurrency.getBTC()!=0){
             double valeur_dollar = cryptocurrency.getBTC();
@@ -815,6 +898,7 @@ public class ControllerWallet {
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
             list_crypto_presente.add("BTC");
+            list_value.add(montant);
         }
         if(cryptocurrency.getBNB()!=0){
             double valeur_dollar = cryptocurrency.getBNB();
@@ -827,7 +911,7 @@ public class ControllerWallet {
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
             list_crypto_presente.add("BNB");
-
+            list_value.add(montant);
         }
         if(cryptocurrency.getETH()!=0){
             double valeur_dollar = cryptocurrency.getETH();
@@ -840,6 +924,7 @@ public class ControllerWallet {
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
             list_crypto_presente.add("ETH");
+            list_value.add(montant);
         }
         if(cryptocurrency.getSOL()!=0){
             double valeur_dollar = cryptocurrency.getSOL();
@@ -852,6 +937,7 @@ public class ControllerWallet {
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
             list_crypto_presente.add("SOL");
+            list_value.add(montant);
         }
         if(cryptocurrency.getXRP()!=0){
             double valeur_dollar = cryptocurrency.getXRP();
@@ -864,6 +950,7 @@ public class ControllerWallet {
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
             list_crypto_presente.add("XRP");
+            list_value.add(montant);
         }
         if(cryptocurrency.getDOT()!=0){
             double valeur_dollar = cryptocurrency.getDOT();
@@ -876,6 +963,7 @@ public class ControllerWallet {
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
             list_crypto_presente.add("DOT");
+            list_value.add(montant);
         }
         if(cryptocurrency.getDOGE()!=0){
             double valeur_dollar = cryptocurrency.getDOGE();
@@ -888,6 +976,7 @@ public class ControllerWallet {
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
             list_crypto_presente.add("DOGE");
+            list_value.add(montant);
         }
 
         if(cryptocurrency.getAVAX()!=0){
@@ -901,6 +990,7 @@ public class ControllerWallet {
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
             list_crypto_presente.add("AVAX");
+            list_value.add(montant);
         }
         if(cryptocurrency.getLINK()!=0){
             double valeur_dollar = cryptocurrency.getLINK();
@@ -913,10 +1003,31 @@ public class ControllerWallet {
             vbox_value_wallet.getChildren().add(label);
             vbox_name_wallet.getChildren().add(montantt);
             list_crypto_presente.add("LINK");
+            list_value.add(montant);
         }
         total_formater = formatPrice(String.valueOf(total_montant));
-        lineChart.setTitle(total_formater);
+        if(total_montant==0){
+            lineChart.setTitle("empthy");
+        }else{
+            lineChart.setTitle(total_formater);
+        }
         values_total_wallet = total_montant;
+
+        double impot = total_montant * 0.05;
+        if(impot>1000){
+            impot = impot * 0.05;
+        }else if(impot>5000){
+            impot = impot * 0.06;
+        }else if(impot>10000){
+            impot = impot * 0.07;
+        }else{
+            impot = 0;
+        }
+
+        impot = IntefaceFeatures.cut_nombre(impot);
+
+        label_impot.setText("Montant approximatif 2024 :  " + impot + " $");
+
         return list_crypto_presente;
     }
 
@@ -944,6 +1055,59 @@ public class ControllerWallet {
 
     }
 
+    @FXML
+    public void impot_layout(){
+        Vbox_impot.setVisible(true);
+        lineChart.setVisible(false);
+        hbox_insert_montant.setVisible(false);
+        Vbox_conseil.setVisible(false);
+        btn_back.setVisible(true);
+    }
+
+    @FXML
+    public void layout_conseil(){
+        Vbox_impot.setVisible(false);
+        lineChart.setVisible(false);
+        hbox_insert_montant.setVisible(false);
+        Vbox_conseil.setVisible(true);
+        btn_back.setVisible(true);
+        int y = 0;
+        int z = 0;
+        int c = 0;
+        for(int i=0; i<list_value.size(); i++){
+
+            if(i<10){
+                if(list_value.get(i)!=0){
+                    y++;
+                    c++;
+                }
+            }else{
+                if(list_value.get(i)!=0){
+                    z++;
+                    c++;
+                }
+            }
+            if(values_total_wallet > 0.10 * list_value.get(i)){
+                label_conseil1.setText("Pensez à ne pas mettre plus de 10% sur une seul valeur !");
+            }else{
+                label_conseil1.setText("Bien joué, vous n'avez aucune valeur imposante !");
+            }
+
+        }
+
+        if(y==0 || z==0){
+            label_conseil2.setText("Pensez à divisersition entre action et cryptomonnaie !");
+        }else if(z*3<y || y*3<z){
+            label_conseil2.setText("Bonne répartition entre action et cryptomonnaie !");
+        }
+
+
+        if(c>8){
+            label_conseil3.setText("Pensez à différencier les valeurs long terme et court terme entre vos wallet !");
+        }
+
+    }
+
     public String formatPrice(String price) {
         try {
             double priceValue = Double.parseDouble(price);
@@ -958,9 +1122,13 @@ public class ControllerWallet {
     public void inserer_montant_layout(){
         lineChart.setVisible(false);
         hbox_insert_montant.setVisible(true);
+        Vbox_impot.setVisible(false);
+        Vbox_conseil.setVisible(false);
     }
 
     public void close_insert_montant(){
+        Vbox_conseil.setVisible(false);
+        Vbox_impot.setVisible(false);
         lineChart.setVisible(true);
         hbox_insert_montant.setVisible(false);
         txt_montant_payment.setText("");
@@ -1079,7 +1247,7 @@ public class ControllerWallet {
         lineChart.setVisible(false);
         hbox_insert_montant.setVisible(false);
         Vbox_retraite.setVisible(true);
-
+        Vbox_conseil.setVisible(false);
 
     }
 
@@ -1092,11 +1260,23 @@ public class ControllerWallet {
         int montant_final;
 
         if (txt_annee_retrait.isEmpty() || txt_montant_pt.isEmpty()) {
-            System.out.println("Veuillez remplir tous les champs");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Veuillez remplir tous les champs");
+            alert.setContentText(null);
+            alert.showAndWait();
         } else if (!txt_montant_pt.matches("\\d*(\\.\\d*)?")) {
-            System.out.println("Veuillez rentrer une valeur correcte dans le montant");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Montant incorrecte");
+            alert.setContentText(null);
+            alert.showAndWait();
         } else if (!txt_annee_retrait.matches("\\d*")) {
-            System.out.println("Veuillez entrer un nombre entier dans le nombre d'années");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Nombre d'année incorrecte");
+            alert.setContentText(null);
+            alert.showAndWait();
         } else {
 
             double montant = Double.parseDouble(txt_montant_pt);
@@ -1104,7 +1284,7 @@ public class ControllerWallet {
 
             montant_final = (int) ((annee * 12 * montant * 1.001 * 1.03 * 0.98 + values_total_wallet ) * 0.98);
 
-            System.out.println(montant_final);
+            label_retraite_resultat.setText("Vous disposerez de " + String.valueOf(montant_final) + " $");
 
 
         }

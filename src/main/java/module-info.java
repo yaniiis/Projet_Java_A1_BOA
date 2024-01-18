@@ -13,7 +13,6 @@ module com.example.wallet_boa {
     requires jakarta.mail;
 
 
-
     opens com.example.wallet_boa to javafx.fxml;
     exports com.example.wallet_boa;
     exports com.example.wallet_boa.controleur;

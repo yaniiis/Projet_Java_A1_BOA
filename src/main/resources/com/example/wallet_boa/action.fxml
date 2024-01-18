@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.wallet_boa.controleur.ControlleurAction">
     <top>
         <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
@@ -119,11 +120,11 @@
                         </TableColumn>
                     </columns>
                     <GridPane.margin>
-                        <Insets left="150.0" top="30.0" />
+                        <Insets bottom="50.0" left="180.0" />
                     </GridPane.margin>
                 </TableView>
 
-                <VBox fx:id="layout_sell" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="313.0" prefWidth="401.0" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3" visible="false">
+                <VBox fx:id="layout_sell" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="313.0" prefWidth="401.0" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
                     <children>
                         <Button fx:id="btn_back" mnemonicParsing="false" onAction="#back_layout" style="-fx-background-color: none;" text="Back" />
                         <Label text="Sell">
@@ -173,7 +174,7 @@
                     </children>
                 </VBox>
 
-                <VBox fx:id="layout_buy" visible="false" prefHeight="313.0" prefWidth="401.0" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
+                <VBox fx:id="layout_buy" prefHeight="313.0" prefWidth="401.0" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
                     <children>
                         <Button mnemonicParsing="false" onAction="#back_layout" style="-fx-background-color: none;" text="Back" />
                         <Label text="Purchase">
@@ -226,7 +227,21 @@
                             </VBox.margin></Button>
                     </children>
                 </VBox>
-
+                <Button fx:id="btn_back_graphe" mnemonicParsing="false" onAction="#back_layout" style="-fx-background-color: none;" text="Back" GridPane.columnIndex="0" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="150.0" left="50.0" />
+               </GridPane.margin></Button>
+                <LineChart fx:id="lineChart" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="302.0" prefWidth="500.0" title="" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
+                    <xAxis>
+                        <NumberAxis autoRanging="true" label="Daily" prefWidth="203.0" fx:id="xAxis" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis autoRanging="true" label="Value $ " prefWidth="49.0" />
+                    </yAxis>
+                    <GridPane.margin>
+                        <Insets left="30.0" top="20.0" />
+                    </GridPane.margin>
+                </LineChart>
 
             </children>
         </GridPane>

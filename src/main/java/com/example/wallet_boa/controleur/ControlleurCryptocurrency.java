@@ -312,70 +312,60 @@ public class ControlleurCryptocurrency {
                         new_value = stock_v + part;
                         wallet_select.getList_value().setBTC(new_value);
                         update_value_bdd(new_value,"BTC",wallet_select, part);
-                        wallet_select.getList_value().setBTC(new_value);
                         break;
                     case "ETH":
                         stock_v = wallet_select.getList_value().getETH();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setETH(new_value);
                         update_value_bdd(new_value,"ETH",wallet_select, part);
-                        wallet_select.getList_value().setETH(new_value);
                         break;
                     case "BNB":
                         stock_v = wallet_select.getList_value().getBNB();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setBNB(new_value);
                         update_value_bdd(new_value,"BNB",wallet_select, part);
-                        wallet_select.getList_value().setBNB(new_value);
                         break;
                     case "ADA":
                         stock_v = wallet_select.getList_value().getADA();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setADA(new_value);
                         update_value_bdd(new_value,"ADA",wallet_select, part);
-                        wallet_select.getList_value().setADA(new_value);
                         break;
                     case "SOL":
                         stock_v = wallet_select.getList_value().getSOL();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setSOL(new_value);
                         update_value_bdd(new_value,"SOL",wallet_select, part);
-                        wallet_select.getList_value().setSOL(new_value);
                         break;
                     case "XRP":
                         stock_v = wallet_select.getList_value().getXRP();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setXRP(new_value);
                         update_value_bdd(new_value,"XRP",wallet_select, part);
-                        wallet_select.getList_value().setXRP(new_value);
                         break;
                     case "DOT":
                         stock_v = wallet_select.getList_value().getDOT();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setDOT(new_value);
                         update_value_bdd(new_value,"DOT",wallet_select, part);
-                        wallet_select.getList_value().setDOT(new_value);
                         break;
                     case "DOGE":
                         stock_v = wallet_select.getList_value().getDOGE();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setDOGE(new_value);
                         update_value_bdd(new_value,"DOGE",wallet_select, part);
-                        wallet_select.getList_value().setDOGE(new_value);
                         break;
                     case "AVAX":
                         stock_v = wallet_select.getList_value().getAVAX();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setAVAX(new_value);
                         update_value_bdd(new_value,"AVAX",wallet_select, part);
-                        wallet_select.getList_value().setAVAX(new_value);
                         break;
                     case "LINK":
                         stock_v = wallet_select.getList_value().getLINK();
                         new_value = stock_v + part;
                         wallet_select.getList_value().setLINK(new_value);
                         update_value_bdd(new_value,"LINK",wallet_select, part);
-                        wallet_select.getList_value().setLINK(new_value);
                         break;
                 }
 

@@ -1,7 +1,9 @@
 package com.example.wallet_boa.controleur;
 
+import com.binance.connector.client.utils.JSONParser;
 import com.example.wallet_boa.HelloApplication;
 import com.example.wallet_boa.modele.*;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
@@ -13,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
@@ -21,23 +24,30 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.json.JSONObject;
+import org.json.*;
+
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 
 public class ControlleurAction {
 
     private Investor investor;
     private Blockchaine blockchain;
 
+
+    @FXML
+    Button btn_back_graphe;
     @FXML
     ImageView imageView;
     @FXML
@@ -60,6 +70,14 @@ public class ControlleurAction {
     ComboBox md_wallet;
     @FXML
     ComboBox md_crypto_sell;
+    @FXML
+    TextField txt_amount_sell;
+    @FXML
+    LineChart lineChart;
+    @FXML
+    TextField txt_amount;
+    @FXML
+    ComboBox md_crypto;
 
 
     /*
@@ -195,7 +213,15 @@ public class ControlleurAction {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    // Gérer l'action du bouton ici.
+                    try {
+                        lineChart.setVisible(true);
+                        tableview_value.setVisible(false);
+                        btn_back_graphe.setVisible(true);
+                        graphe_action(symbol);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
             });
             Map.Entry<String, HashMap<String, String>> latestEntry = timeSeries.entrySet().iterator().next(); // Récupère la première entrée (la plus récente)
@@ -203,20 +229,76 @@ public class ControlleurAction {
             HashMap<String, String> data = latestEntry.getValue();
             String closePrice = data.get("4. close");
             double closePriceAsDouble = Double.parseDouble(closePrice);
-            System.out.println(closePriceAsDouble);
             LigneStock ligne = new LigneStock(symbol, closePriceAsDouble, button);
             list.add(ligne);
+
+        }
+        tableview_value.setItems(list);
+
+    }
+
+    public void graphe_action(String symbol) throws Exception {
+
+        String apiKey = "RGMOA4EPC2N6MFF9";
+
+        String apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + apiKey;
+
+        URL url = new URL(apiUrl);
+        URLConnection request = url.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
+
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        ObjectMapper mapper = new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
+
+        HashMap<String, Object> root = mapper.readValue(response.toString(), typeRef);
+        HashMap<String, HashMap<String, String>> timeSeries = (HashMap<String, HashMap<String, String>>) root.get("Time Series (Daily)");
+
+        TreeMap<String, HashMap<String, String>> sortedData = new TreeMap<>(Collections.reverseOrder());
+        sortedData.putAll(timeSeries);
+
+        List<Double> closingPrices = new ArrayList<>();
+        int count = 0;
+
+        for (Map.Entry<String, HashMap<String, String>> entry : sortedData.entrySet()) {
+            if (count++ == 10) {
+                break;
+            }
+            double closePrice = Double.parseDouble(entry.getValue().get("4. close"));
+            closingPrices.add(closePrice);
         }
 
-        tableview_value.setItems(list);
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.setName(symbol);
+        Collections.reverse(closingPrices);
+
+
+        for (int i = 0; i < closingPrices.size(); i++) {
+            series.getData().add(new XYChart.Data<>(i , closingPrices.get(i)));
+        }
+
+        xAxis = new NumberAxis(0, 10, 1);
+
+        Platform.runLater(() -> {
+            lineChart.getData().clear();
+            lineChart.getData().add(series);
+        });
 
     }
 
     public void layout_buy(){
         tableview_value.setVisible(false);
-        layout_buy.setVisible(false);
-        layout_sell.setVisible(true);
+        layout_buy.setVisible(true);
+        layout_sell.setVisible(false);
     }
+
     public void layout_sell(){
         tableview_value.setVisible(false);
         layout_buy.setVisible(false);
@@ -228,14 +310,18 @@ public class ControlleurAction {
         layout_buy.setVisible(false);
         layout_sell.setVisible(false);
         tableview_value.setVisible(true);
-        //lineChartcrypto.setVisible(false);
+        lineChart.setVisible(false);
         btn_back.setVisible(false);
+        btn_back_graphe.setVisible(false);
     }
 
-    public void buy_crypto(){
+
+    public void buy_crypto() throws Exception {
+
         String amount = txt_amount.getText();
-        String selected = md_crypto.getSelectionModel().getSelectedItem();
-        String wallet_selected = md_wallet.getSelectionModel().getSelectedItem();
+        String selected = (String) md_crypto.getSelectionModel().getSelectedItem();
+        String wallet_selected = (String) md_wallet.getSelectionModel().getSelectedItem();
+
         if (wallet_selected != null && !wallet_selected.isEmpty() && selected != null && !selected.isEmpty()) {
 
             boolean nb = false;
@@ -254,142 +340,300 @@ public class ControlleurAction {
                 alert.showAndWait();
             }
 
+            if (nb) {
+
+                String apiKey = "RGMOA4EPC2N6MFF9";
+                String apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + selected + "&outputsize=compact&apikey=" + apiKey;
+
+                URL url = new URL(apiUrl);
+                URLConnection request = url.openConnection();
+                BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+
+                    String json = response.toString();
+                    JSONObject jsonObject = new JSONObject(json);
+
+                    JSONObject timeSeries = jsonObject.getJSONObject("Time Series (Daily)");
+                    // Assuming that the first key is the most recent date
+                    String latestDate = timeSeries.keys().next();
+                    JSONObject latestData = timeSeries.getJSONObject(latestDate);
+                    double price = latestData.getDouble("4. close");
+
+
+                    double numberPrice = Double.parseDouble(String.valueOf(price));
+
+                    double part = numberAmount / numberPrice;
+
+                    for (Wallet wallet : investor.getList_wallet()) {
+                        if (wallet.getName() == wallet_selected) {
+                            montant_investor = wallet.getAmount();
+                            wallet_select = wallet;
+                        }
+                    }
+
+                    if (numberAmount > montant_investor) {
+
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erreur buy");
+                        alert.setHeaderText("Not enough amount");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+
+                    } else {
+                        double stock_v;
+                        double new_value;
+
+                        switch (selected) {
+
+                            case "AMSZN":
+                                stock_v = wallet_select.getList_value().getBTC();
+                                new_value = stock_v + part;
+                                wallet_select.getList_action().setAMSZN(new_value);
+                                update_value_bdd(new_value, "AMSZN", wallet_select);
+                                break;
+                            case "AAPL":
+                                stock_v = wallet_select.getList_value().getETH();
+                                new_value = stock_v + part;
+                                wallet_select.getList_action().setAAPL(new_value);
+                                update_value_bdd(new_value, "AAPL", wallet_select);
+                                break;
+                            case "MSFT":
+                                stock_v = wallet_select.getList_value().getBNB();
+                                new_value = stock_v + part;
+                                wallet_select.getList_action().setMSFT(new_value);
+                                update_value_bdd(new_value, "MSFT", wallet_select);
+                                break;
+                            case "GOOGL":
+                                stock_v = wallet_select.getList_value().getADA();
+                                new_value = stock_v + part;
+                                wallet_select.getList_action().setGOOGL(new_value);
+                                update_value_bdd(new_value, "GOOGL", wallet_select);
+                                break;
+                        }
+
+                        double new_montant = montant_investor - numberAmount;
+                        wallet_select.setAmount(new_montant);
+                        double montant_label = IntefaceFeatures.compter_montant(investor);
+                        String mont = "Solede : " + montant_label + " $";
+                        label_solde.setText(mont);
+                        update_montant_bdd(wallet_select, new_montant);
+
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Payment");
+                        alert.setHeaderText("Purchase validated");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                        back_layout();
+
+                    }
+
+            }else{
+
+            }
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur sell");
+            alert.setHeaderText("Wallet ou Stock not selected");
+            alert.setContentText(null);
+            alert.showAndWait();
+        }
+    }
+
+    private void update_montant_bdd(Wallet wallet, double value_amount) {
+
+        String updateQuery = "UPDATE wallet SET amount = ? WHERE id_wallet = ?";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+        ) {
+
+            preparedStatement.setDouble(1, value_amount);
+            preparedStatement.setInt(2, wallet.getId_wallet());
+
+            preparedStatement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update_value_bdd(double value_amount, String value_name, Wallet wallet) {
+
+        if(value_amount<0){
+            value_amount = 0;
+        }
+
+        String updateQuery = "UPDATE actions SET " + value_name + " = ? WHERE id_list_valeur = ?";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+        ) {
+
+            preparedStatement.setDouble(1, value_amount);
+            preparedStatement.setInt(2, wallet.getList_action().getId_stock());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sell_crypto() throws Exception{
+        String amount = txt_amount_sell.getText();
+        String wallet_selected = (String) md_wallet_sell.getSelectionModel().getSelectedItem();
+        String selected = (String) md_crypto_sell.getSelectionModel().getSelectedItem();
+
+        if (wallet_selected != null && !wallet_selected.isEmpty() && selected != null && !selected.isEmpty()) {
+
+
+            boolean nb = false;
+            double numberAmount = 0;
+            Wallet wallet_select = new Wallet();
+            double montant_investor = 0;
+            double new_value;
+            double part_dispo = 0;
+            double stock_v = 0;
+
+            try {
+                numberAmount = Double.parseDouble(amount);
+                nb = true;
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur sell");
+                alert.setHeaderText("Amount not valided");
+                alert.setContentText(null);
+                alert.showAndWait();
+            }
+
             if(nb) {
-                String api_url = "https://api.binance.com/api/v3/ticker/price?symbol=";
-                api_url += selected + "USDT";
 
 
-                URL url = new URL(api_url);
-                URLConnection conn = url.openConnection();
+                String apiKey = "RGMOA4EPC2N6MFF9";
+                String apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + selected + "&outputsize=compact&apikey=" + apiKey;
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder response = new StringBuilder();
+                URL url = new URL(apiUrl);
+                URLConnection request = url.openConnection();
+                BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
                 String inputLine;
+                StringBuilder response = new StringBuilder();
 
-                while ((inputLine = reader.readLine()) != null) {
+                while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
                 }
-                reader.close();
 
-                JSONObject json = new JSONObject(response.toString());
-                String price = json.getString("price");
-                double numberPrice = Double.parseDouble(price);
+                String json = response.toString();
+                JSONObject jsonObject = new JSONObject(json);
 
-                double part = numberAmount / numberPrice;
+                JSONObject timeSeries = jsonObject.getJSONObject("Time Series (Daily)");
+                // Assuming that the first key is the most recent date
+                String latestDate = timeSeries.keys().next();
+                JSONObject latestData = timeSeries.getJSONObject(latestDate);
+                double price = latestData.getDouble("4. close");
+
+                double numberPrice = Double.parseDouble(String.valueOf(price));
+
+                double part_vendre = numberAmount / numberPrice;
+
 
                 for(Wallet wallet : investor.getList_wallet()){
                     if(wallet.getName()==wallet_selected){
-                        montant_investor = wallet.getAmount();
                         wallet_select = wallet;
                     }
                 }
 
-                if(numberAmount  > montant_investor){
 
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur buy");
-                    alert.setHeaderText("Not enough amount");
-                    alert.setContentText(null);
-                    alert.showAndWait();
+                switch (selected){
 
-                }else{
-                    double stock_v;
-                    double new_value;
+                    case "AMSZN":
 
+                        stock_v = wallet_select.getList_value().getBTC();
+                        new_value = (stock_v - part_vendre) * 0.995;
 
+                        if(part_vendre<stock_v){
+                            update_value_bdd(new_value,"AMSZN",wallet_select);
+                            wallet_select.getList_action().setAMSZN(new_value);
+                        }else{
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Erreur sell");
+                            alert.setHeaderText("not enough cryptocurrency");
+                            alert.setContentText(null);
+                            alert.showAndWait();
+                        }
 
-                    switch (selected){
+                        break;
+                    case "AAPL":
 
-                        case "BTC":
-                            stock_v = wallet_select.getList_value().getBTC();
-                            new_value = stock_v + part;
-                            wallet_select.getList_value().setBTC(new_value);
-                            update_value_bdd(new_value,"BTC",wallet_select, part);
-                            wallet_select.getList_value().setBTC(new_value);
-                            break;
-                        case "ETH":
-                            stock_v = wallet_select.getList_value().getETH();
-                            new_value = stock_v + part;
-                            wallet_select.getList_value().setETH(new_value);
-                            update_value_bdd(new_value,"ETH",wallet_select, part);
-                            wallet_select.getList_value().setETH(new_value);
-                            break;
-                        case "BNB":
-                            stock_v = wallet_select.getList_value().getBNB();
-                            new_value = stock_v + part;
-                            wallet_select.getList_value().setBNB(new_value);
-                            update_value_bdd(new_value,"BNB",wallet_select, part);
-                            wallet_select.getList_value().setBNB(new_value);
-                            break;
-                        case "ADA":
-                            stock_v = wallet_select.getList_value().getADA();
-                            new_value = stock_v + part;
+                        stock_v = wallet_select.getList_value().getETH();
+                        new_value = (stock_v - part_vendre) * 0.995;
+                        if(part_vendre<stock_v){
+                            wallet_select.getList_action().setAAPL(new_value);
+                            update_value_bdd(new_value,"AAPL",wallet_select);
+                        }else{
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Erreur sell");
+                            alert.setHeaderText("not enough cryptocurrency");
+                            alert.setContentText(null);
+                            alert.showAndWait();
+                        }
+                        break;
+                    case "MSFT":
+                        stock_v = wallet_select.getList_value().getBNB();
+                        new_value = (stock_v - part_vendre) * 0.995;
+                        if(part_vendre<stock_v){
+                            wallet_select.getList_action().setMSFT(new_value);
+                            update_value_bdd(new_value,"MSFT",wallet_select);
+                        }else{
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Erreur sell");
+                            alert.setHeaderText("not enough cryptocurrency");
+                            alert.setContentText(null);
+                            alert.showAndWait();
+                        }
+                        break;
+                    case "GOOGL":
+                        stock_v = wallet_select.getList_value().getADA();
+                        new_value = (stock_v - part_vendre) * 0.995;
+                        if(part_vendre<stock_v){
                             wallet_select.getList_value().setADA(new_value);
-                            update_value_bdd(new_value,"ADA",wallet_select, part);
-                            wallet_select.getList_value().setADA(new_value);
-                            break;
-                        case "SOL":
-                            stock_v = wallet_select.getList_value().getSOL();
-                            new_value = stock_v + part;
-                            wallet_select.getList_value().setSOL(new_value);
-                            update_value_bdd(new_value,"SOL",wallet_select, part);
-                            wallet_select.getList_value().setSOL(new_value);
-                            break;
-                        case "XRP":
-                            stock_v = wallet_select.getList_value().getXRP();
-                            new_value = stock_v + part;
-                            wallet_select.getList_value().setXRP(new_value);
-                            update_value_bdd(new_value,"XRP",wallet_select, part);
-                            wallet_select.getList_value().setXRP(new_value);
-                            break;
-                        case "DOT":
-                            stock_v = wallet_select.getList_value().getDOT();
-                            new_value = stock_v + part;
-                            wallet_select.getList_value().setDOT(new_value);
-                            update_value_bdd(new_value,"DOT",wallet_select, part);
-                            wallet_select.getList_value().setDOT(new_value);
-                            break;
-                        case "DOGE":
-                            stock_v = wallet_select.getList_value().getDOGE();
-                            new_value = stock_v + part;
-                            wallet_select.getList_value().setDOGE(new_value);
-                            update_value_bdd(new_value,"DOGE",wallet_select, part);
-                            wallet_select.getList_value().setDOGE(new_value);
-                            break;
-                        case "AVAX":
-                            stock_v = wallet_select.getList_value().getAVAX();
-                            new_value = stock_v + part;
-                            wallet_select.getList_value().setAVAX(new_value);
-                            update_value_bdd(new_value,"AVAX",wallet_select, part);
-                            wallet_select.getList_value().setAVAX(new_value);
-                            break;
-                        case "LINK":
-                            stock_v = wallet_select.getList_value().getLINK();
-                            new_value = stock_v + part;
-                            wallet_select.getList_value().setLINK(new_value);
-                            update_value_bdd(new_value,"LINK",wallet_select, part);
-                            wallet_select.getList_value().setLINK(new_value);
-                            break;
-                    }
+                            update_value_bdd(new_value,"GOOGL",wallet_select);
+                            wallet_select.getList_action().setGOOGL(new_value);
+                        }else{
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Erreur sell");
+                            alert.setHeaderText("not enough cryptocurrency");
+                            alert.setContentText(null);
+                            alert.showAndWait();
+                        }
+                        break;
 
-                    double new_montant = montant_investor - numberAmount ;
-                    wallet_select.setAmount(new_montant);
-                    double montant_label = IntefaceFeatures.compter_montant(investor);
-                    String mont = "Solede : " + montant_label + " $";
-                    label_solde.setText(mont);
-                    update_montant_bdd(wallet_select, new_montant);
-
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Payment");
-                    alert.setHeaderText("Purchase validated");
-                    alert.setContentText(null);
-                    alert.showAndWait();
-                    back_layout();
 
                 }
 
+                double new_montant = montant_investor + (numberAmount * 0.995) ;
+                wallet_select.setAmount(new_montant);
+                double montant_label = IntefaceFeatures.compter_montant(investor);
+                String mont = "Solde " + montant_label + " $";
+                label_solde.setText(mont);
+                update_montant_bdd(wallet_select, new_montant);
 
 
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("sell");
+                alert.setHeaderText("Sale validated");
+                alert.setContentText(null);
+                alert.showAndWait();
+                back_layout();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -398,10 +642,6 @@ public class ControlleurAction {
             alert.setContentText(null);
             alert.showAndWait();
         }
-    }
-
-    public void sell_crypto(){
-
     }
 
 }

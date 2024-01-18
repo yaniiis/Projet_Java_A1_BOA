@@ -82,6 +82,14 @@
             <RowConstraints />
             </rowConstraints>
             <children>
+                <Button onAction="#layout_buy" text="buy" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+               <GridPane.margin>
+                  <Insets left="200.0" top="100.0" />
+               </GridPane.margin></Button>
+                <Button onAction="#layout_sell" text="sell" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                    <GridPane.margin>
+                        <Insets left="300.0" top="100.0" />
+                    </GridPane.margin></Button>
                 <Label text="Stock" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
                     <font>
                         <Font size="36.0" />
@@ -90,7 +98,7 @@
                         <Insets left="210.0" />
                     </GridPane.margin>
                 </Label>
-                <TableView fx:id="tableview_value" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="297.0" prefWidth="302.0" style="-fx-font-size: 10pt; -fx-base: #4682B4; -fx-table-cell-border-color: derive(-fx-base, -30%); -fx-text-fill: #333333; -fx-background-color: #F0F8FF; -fx-control-inner-background: #F0F8FF; -fx-table-header-border-color: #000000;-fx-alignment: CENTER;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
+                <TableView fx:id="tableview_value" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="180.0" prefWidth="302.0" style="-fx-font-size: 10pt; -fx-base: #4682B4; -fx-table-cell-border-color: derive(-fx-base, -30%); -fx-text-fill: #333333; -fx-background-color: #F0F8FF; -fx-control-inner-background: #F0F8FF; -fx-table-header-border-color: #000000;-fx-alignment: CENTER;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
                     <columns>
                         <TableColumn prefWidth="100" style="-fx-alignment: CENTER;" text="Nom">
                             <cellValueFactory>
@@ -112,6 +120,56 @@
                         <Insets left="150.0" top="30.0" />
                     </GridPane.margin>
                 </TableView>
+
+                <VBox layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="313.0" prefWidth="401.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#back_layout" style="-fx-background-color: none;" text="Back" />
+                        <Label text="Sell">
+                            <VBox.margin>
+                                <Insets left="180.0" top="5.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <Label text="Select amung your wallets">
+                            <VBox.margin>
+                                <Insets left="130.0" top="20.0" />
+                            </VBox.margin></Label>
+                        <ComboBox fx:id="md_wallet_sell" prefWidth="150.0">
+                            <VBox.margin>
+                                <Insets left="130.0" top="10.0" />
+                            </VBox.margin>
+                        </ComboBox>
+                        <Label text="Select your cryptocurrency">
+                            <VBox.margin>
+                                <Insets left="130.0" top="20.0" />
+                            </VBox.margin></Label>
+                        <ComboBox fx:id="md_crypto_sell" prefWidth="150.0">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                </FXCollections>
+                            </items>
+                            <VBox.margin>
+                                <Insets left="130.0" top="10.0" />
+                            </VBox.margin>
+                        </ComboBox>
+                        <Label text="Amount">
+                            <VBox.margin>
+                                <Insets left="180.0" top="20.0" />
+                            </VBox.margin>
+                        </Label>
+                        <TextField fx:id="txt_amount_sell" maxWidth="-Infinity" prefHeight="25.0" prefWidth="62.0">
+                            <VBox.margin>
+                                <Insets left="170.0" top="10.0" />
+                            </VBox.margin>
+                        </TextField>
+                        <Button fx:id="btn_sell" mnemonicParsing="false" onAction="#sell_crypto" text="Sell">
+                            <VBox.margin>
+                                <Insets left="183.0" top="20.0" />
+                            </VBox.margin></Button>
+                    </children>
+                </VBox>
 
 
             </children>

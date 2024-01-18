@@ -90,7 +90,7 @@
                         <Insets left="210.0" />
                     </GridPane.margin>
                 </Label>
-                <TableView fx:id="tableview_value" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="297.0" prefWidth="302.0" style="-fx-font-size: 10pt; -fx-base: #4682B4; -fx-table-cell-border-color: derive(-fx-base, -30%); -fx-text-fill: #333333; -fx-background-color: #F0F8FF; -fx-control-inner-background: #F0F8FF; -fx-table-header-border-color: #000000;-fx-alignment: CENTER;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
+                <TableView fx:id="tableview_value" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="180.0" prefWidth="302.0" style="-fx-font-size: 10pt; -fx-base: #4682B4; -fx-table-cell-border-color: derive(-fx-base, -30%); -fx-text-fill: #333333; -fx-background-color: #F0F8FF; -fx-control-inner-background: #F0F8FF; -fx-table-header-border-color: #000000;-fx-alignment: CENTER;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
                     <columns>
                         <TableColumn prefWidth="100" style="-fx-alignment: CENTER;" text="Nom">
                             <cellValueFactory>

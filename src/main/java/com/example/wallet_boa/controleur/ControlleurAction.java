@@ -144,4 +144,16 @@ public class ControlleurAction {
 
     }
 
+    public void layout_buy(){
+        tableview_value.setVisible(false);
+        .setVisible(false);
+        .setVisible(true);
+    }
+    public void layout_sell(){
+        tableview_value.setVisible(false);
+        .setVisible(false);
+        .setVisible(true);
+
+    }
+
 }

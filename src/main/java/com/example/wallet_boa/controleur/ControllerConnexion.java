@@ -166,7 +166,7 @@ public class ControllerConnexion {
 
         ArrayList <Wallet> list_wallets = new ArrayList<>();
 
-        String query = "SELECT id_wallet, name, date, description, id_list_valeur, amount, clone FROM wallet WHERE id_investor = ? ;";
+        String query = "SELECT id_wallet, name, date, description, id_list_valeur, amount, clone, id_list_action FROM wallet WHERE id_investor = ? ;";
         String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
         try (
                 Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
@@ -183,6 +183,7 @@ public class ControllerConnexion {
                         Date date = resultSet.getDate("date");
                         int id_wallet = resultSet.getInt("id_wallet");
                         int id_list_value = resultSet.getInt("id_list_valeur");
+                        int id_list_action = resultSet.getInt("id_list_action");
 
                         String description = resultSet.getString("description");
 
@@ -192,7 +193,8 @@ public class ControllerConnexion {
 
 
                         Cryptocurrency cryptocurrency = charger_value(id_list_value);
-                        Wallet new_wallet = new Wallet(id_wallet, name, date, description, amount, clone, cryptocurrency);
+                        Stock stock = charger_action(id_list_action);
+                        Wallet new_wallet = new Wallet(id_wallet, name, date, description, amount, clone, cryptocurrency, stock);
                         list_wallets.add(new_wallet);
 
                     }
@@ -203,6 +205,34 @@ public class ControllerConnexion {
         }
         return list_wallets;
 
+    }
+
+    public Stock charger_action(int id_list_action){
+        Stock stock = new Stock();
+        String query = "SELECT id_list_valeur, AMSZN, GOOGL, AAPL, MSFT FROM actions WHERE id_list_valeur = ? ;";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, id_list_action);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int AMSZN = resultSet.getInt("AMSZN");
+                    int AAPL = resultSet.getInt("AAPL");
+                    int GOOGL = resultSet.getInt("GOOGL");
+                    int MSFT = resultSet.getInt("MSFT");
+                    int id_list_valeur = resultSet.getInt("id_list_valeur");
+
+                    stock = new Stock(id_list_valeur, AMSZN,AAPL,MSFT,GOOGL);
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stock;
     }
 
     public Cryptocurrency charger_value(int id_list_value){

@@ -11,12 +11,13 @@ public class Wallet {
     private double amount;
     private boolean clone;
     private Cryptocurrency list_value;
+    private Stock list_action;
 
     public Wallet(){
 
     }
 
-    public Wallet(int id_wallet, String name, Date date, String description, double amount, boolean clone, Cryptocurrency list_value){
+    public Wallet(int id_wallet, String name, Date date, String description, double amount, boolean clone, Cryptocurrency list_value, Stock stock){
         this.id_wallet = id_wallet;
         this.name = name;
         this.date = date;
@@ -24,8 +25,8 @@ public class Wallet {
         this.amount = amount;
         this.clone = clone;
         this.list_value = list_value;
+        this.list_action = stock;
     }
-
 
 
     public String getName(){
@@ -59,5 +60,13 @@ public class Wallet {
 
     public int getId_wallet() {
         return id_wallet;
+    }
+
+    public Stock getList_action() {
+        return list_action;
+    }
+
+    public void setList_action(Stock list_action) {
+        this.list_action = list_action;
     }
 }

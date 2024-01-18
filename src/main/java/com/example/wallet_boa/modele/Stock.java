@@ -15,6 +15,9 @@ public class Stock {
         this.GOOGL = GOOGL;
     }
 
+    public Stock(){
+
+    }
     public int getId_stock() {
         return id_stock;
     }

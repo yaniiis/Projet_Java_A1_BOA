@@ -209,9 +209,6 @@ public class ControlleurCryptocurrency {
 
         }
     }
-
-
-
     @FXML
     public void back_layout(){
         layout_buy.setVisible(false);
@@ -520,6 +517,7 @@ public class ControlleurCryptocurrency {
             e.printStackTrace();
         }
     }
+
 
 
     @FXML

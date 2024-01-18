@@ -415,8 +415,9 @@ public class ControllerWallet {
         Date dateSQL = new Date(dateActuelle.getTime());
 
         Cryptocurrency cryptocurrency = new Cryptocurrency();
+        Stock stock = new Stock();
 
-        Wallet wallet = new Wallet(0,wallet_name, dateSQL, description_wallet, 0, false, cryptocurrency );
+        Wallet wallet = new Wallet(0,wallet_name, dateSQL, description_wallet, 0, false, cryptocurrency, stock );
 
 
         insert_wallet_bdd(wallet,0);
@@ -438,7 +439,7 @@ public class ControllerWallet {
         String name = txt_wallet_clone.getText();
         String selected = cb_wallet_clone.getSelectionModel().getSelectedItem();
 
-        String query = "SELECT description, id_list_valeur, id_wallet,amount FROM wallet WHERE id_investor = ? and name = ?; ";
+        String query = "SELECT description, id_list_valeur, id_wallet,amount, id_list_action FROM wallet WHERE id_investor = ? and name = ?; ";
         String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
         try (
                 Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
@@ -454,14 +455,16 @@ public class ControllerWallet {
                     String description = resultSet.getString("description");
                     int amount = resultSet.getInt("amount");
                     int id_list_valeur = resultSet.getInt("id_list_valeur");
+                    int id_list_value = resultSet.getInt("id_list_action");
 
 
                     java.util.Date dateActuelle = new java.util.Date();
                     Date dateSQL = new Date(dateActuelle.getTime());
 
                     Cryptocurrency cryptocurrency = list_value_clone(id_list_valeur);
+                    Stock stock = list_action_clone(id_list_value);
 
-                    Wallet wallet = new Wallet(0,name, dateSQL, description, amount, true,cryptocurrency);
+                    Wallet wallet = new Wallet(0,name, dateSQL, description, amount, true,cryptocurrency, stock);
 
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                     alert2.setTitle("Clone Wallet");
@@ -518,6 +521,39 @@ public class ControllerWallet {
 
     }
 
+    public Stock list_action_clone(int id_list_valeur){
+        /*
+            Cette fonction permet de récupérer les valeurs cryptomonnaie d'un wallet
+         */
+        String query = "SELECT AMSZN, AAPL, GOOGL, MSFT FROM actions WHERE id_list_valeur = ? ;";
+        String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
+        Stock stock = new Stock();
+        try (
+                Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, id_list_valeur);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = IntefaceFeatures.random_id();
+
+                    int AMSZN = resultSet.getInt("AMSZN");
+                    int AAPL = resultSet.getInt("AAPL");
+                    int GOOGL = resultSet.getInt("GOOGL");
+                    int MSFT = resultSet.getInt("MSFT");
+                    stock = new Stock(id,AMSZN, AAPL, MSFT, GOOGL);
+                    return stock;
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stock;
+
+    }
+
 
     public void insert_wallet_bdd(Wallet wallet, int id_list_valeur_) throws Exception {
         /*
@@ -529,7 +565,7 @@ public class ControllerWallet {
 
             Connection connexion = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
 
-            String requeteSQL = "INSERT INTO wallet (id_wallet ,name, description, amount, date, id_investor, clone, id_list_valeur) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String requeteSQL = "INSERT INTO wallet (id_wallet ,name, description, amount, date, id_investor, clone, id_list_valeur, id_list_action ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connexion.prepareStatement(requeteSQL);
             int id = IntefaceFeatures.random_id();
             preparedStatement.setInt(1, id);
@@ -548,8 +584,20 @@ public class ControllerWallet {
                 pstmt.executeUpdate();
                 preparedStatement.setInt(8, id_list_value);
 
-                Cryptocurrency new_values = new Cryptocurrency(0,0,0,0,0,0,0,0,0,0);
+                Cryptocurrency new_values = new Cryptocurrency(id_list_value,0,0,0,0,0,0,0,0,0, 0);
                 wallet.setList_value(new_values);
+
+
+                int id_list_action = IntefaceFeatures.random_id();
+                String sql_ = "INSERT INTO actions (id_list_valeur, AMSZN, AAPL, GOOGL, MSFT ) VALUES (?, 0, 0, 0, 0)";
+                PreparedStatement pstmt_ = connexion.prepareStatement(sql_);
+                pstmt_.setInt(1, id_list_action);
+                pstmt_.executeUpdate();
+                preparedStatement.setInt(9, id_list_value);
+
+                Stock stock = new Stock(id_list_action,0,0,0,0);
+
+                wallet.setList_action(stock);
 
 
             }else{

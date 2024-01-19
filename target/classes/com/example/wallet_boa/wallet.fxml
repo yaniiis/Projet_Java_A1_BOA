@@ -25,7 +25,7 @@
             </children></Pane>
     </top>
     <left>
-        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER">
+        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C7FAFF;" BorderPane.alignment="CENTER">
             <children>
                 <VBox prefHeight="366.0" prefWidth="202.0">
                     <children>
@@ -49,10 +49,6 @@
                                 <Insets left="73.0" top="30.0" />
                             </VBox.margin>
                         </Button>
-                        <Button fx:id="btn_transaction" mnemonicParsing="false" onAction="#l_transaction" text="Transaction">
-                            <VBox.margin>
-                                <Insets left="61.0" top="30.0" />
-                            </VBox.margin></Button>
                         <Button fx:id="btn_account" mnemonicParsing="false" onAction="#l_account" text="Account">
                             <VBox.margin>
                                 <Insets left="73.0" top="30.0" />
@@ -90,11 +86,15 @@
                         <Insets left="250.0" />
                     </GridPane.margin>
                 </Label>
+            <Button mnemonicParsing="false" onAction="#layout_all" text="View all" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                <GridPane.margin>
+                    <Insets left="40.0" />
+                </GridPane.margin></Button>
             <Button fx:id="btn_new_wallet" mnemonicParsing="false" onAction="#layout_new_wallet" text="Create a new wallet" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets left="180.0" />
+                  <Insets left="130.0" />
                </GridPane.margin></Button>
-            <Button fx:id="btn_back" mnemonicParsing="false" onAction="#back_wallet" visible="false" text="back" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <Button fx:id="btn_back" mnemonicParsing="false" onAction="#back_wallet" text="back" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                 <GridPane.margin>
                     <Insets left="500.0" />
                 </GridPane.margin></Button>
@@ -102,7 +102,7 @@
                 <GridPane.margin>
                     <Insets left="330.0" />
                 </GridPane.margin></Button>
-            <VBox fx:id="vbox_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #6FEB4E; -fx-background-radius: 10;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <VBox fx:id="vbox_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="415.0" style="-fx-background-color: #DAFFC7; -fx-background-radius: 10;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
 
                 <children>
                     <HBox>
@@ -397,17 +397,16 @@
                         <TextArea fx:id="txt_description" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="224.0" />
                     </children>
                 </HBox>
-                <Button maxHeight="-Infinity" maxWidth="-Infinity" onAction="#insert_wallet" text="Create">
+                <Button onAction="#insert_wallet" text="Create">
                      <VBox.margin>
-                        <Insets left="180.0" top="10.0" />
+                        <Insets left="150" />
                      </VBox.margin></Button>
-
                 </children>
                 <GridPane.margin>
                     <Insets bottom="170.0" left="105.0" />
                 </GridPane.margin>
             </VBox>
-            <VBox fx:id="vbox_clone" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="190.0" prefWidth="305.0" style="-fx-background-color: orange; -fx-background-radius: 10;" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <VBox fx:id="vbox_clone" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="190.0" prefWidth="305.0" style="-fx-background-color: #F4FFC7 ; -fx-background-radius: 10;" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
                 <children>
                     <Button mnemonicParsing="false" onAction="#back_wallet" style="-fx-background-color: none;" text="Back" />
 
@@ -453,7 +452,7 @@
                   <Insets bottom="15.0" />
                </padding>
             </VBox>
-            <HBox fx:id="hbox_crypto" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="560.0" style="-fx-background-color: orange; -fx-background-radius: 10;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <HBox fx:id="hbox_crypto" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="560.0" style="-fx-background-color: #C9FFC7; -fx-background-radius: 10;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                 <children>
                     <Pane fx:id="pane_crypto_1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="100.0" style="-fx-background-color: #B8FFE3; -fx-background-radius: 10;">
                         <children>
@@ -554,14 +553,20 @@
             </HBox>
             <HBox fx:id="hbox_walet_list_values" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="331.0" prefWidth="567.0" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
                 <children>
-                    <VBox fx:id="vbox_value_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: orange;" />
-                    <VBox fx:id="vbox_name_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: blue;" />
+                    <VBox fx:id="vbox_value_wallet" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: #ECFFB4;">
+                     <children>
+                        <Label text="Value" />
+                     </children></VBox>
+                    <VBox fx:id="vbox_name_wallet" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="321.0" prefWidth="100.0" style="-fx-background-color: #FFDCB4;">
+                     <children>
+                        <Label text="Amount" />
+                     </children></VBox>
                     <LineChart fx:id="lineChart" prefHeight="292.0" prefWidth="325.0" title="">
                         <xAxis>
                             <NumberAxis autoRanging="true" label="Daily" fx:id="xAxis" />
                         </xAxis>
                         <yAxis>
-                            <NumberAxis autoRanging="true" label="Value $ " />
+                            <NumberAxis autoRanging="true" label="Value " />
                         </yAxis>
                     </LineChart>
                 </children>
@@ -752,6 +757,19 @@
                         </font></Label>
                 </children>
             </VBox>
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="259.0" prefWidth="387.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                    <LineChart fx:id="lineChartAll" minHeight="-Infinity" minWidth="-Infinity" prefHeight="202.0" prefWidth="225.0" title="All wallets" visible="false">
+                        <xAxis>
+                            <NumberAxis autoRanging="true" label="Daily" fx:id="xAxis_" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis autoRanging="true" label="Value $ " />
+                        </yAxis>
+                    </LineChart>
+               <GridPane.margin>
+                  <Insets left="50.0" />
+               </GridPane.margin>
+                </VBox>
 
             <HBox fx:id="hbox_btn_action_wallet" prefHeight="100.0" prefWidth="200.0" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <children>
@@ -759,13 +777,9 @@
                        <HBox.margin>
                            <Insets left="90.0" top="25.0" />
                        </HBox.margin></Button>
-                  <Button fx:id="btn_profit" mnemonicParsing="false" text="Profit">
-                     <HBox.margin>
-                        <Insets left="180.0" top="25.0" />
-                     </HBox.margin></Button>
                   <Button fx:id="btn_impot" mnemonicParsing="false" onAction="#impot_layout" text="Impots">
                      <HBox.margin>
-                        <Insets left="25.0" top="25.0" />
+                        <Insets left="120.0" top="25.0" />
                      </HBox.margin></Button>
                   <Button fx:id="btn_conseil" mnemonicParsing="false" onAction="#layout_conseil" text="Conseils">
                      <HBox.margin>
@@ -775,6 +789,11 @@
                        <HBox.margin>
                            <Insets left="25.0" top="25.0" />
                        </HBox.margin></Button>
+                   <Button fx:id="btn_convertir_euro" mnemonicParsing="false" onAction="#convertir_euro" text="Convertir en euro">
+                       <HBox.margin>
+                           <Insets left="25.0" top="25.0" />
+                       </HBox.margin></Button>
+
 
                </children>
             </HBox>

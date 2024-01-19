@@ -106,9 +106,6 @@ public class ControlleurCryptocurrency {
     public void l_action() throws Exception{
         IntefaceFeatures.layout_stock(investor,blockchain);
     }
-    public void l_transaction() throws Exception{
-        IntefaceFeatures.layout_transaction(investor,blockchain);
-    }
     public void l_account() throws Exception{
         IntefaceFeatures.layout_account(investor,blockchain);
     }
@@ -761,6 +758,8 @@ public class ControlleurCryptocurrency {
             String value_etudier = value_graph;
             try {
 
+
+
                 String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1h&limit=20";
                 URL obj = new URL(url);
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -790,14 +789,13 @@ public class ControlleurCryptocurrency {
 
                 xAxis.setLabel("Hour");
 
-
                 for (int i = 0; i < closingPrices.size(); i++) {
                     series.getData().add(new XYChart.Data<>(i, closingPrices.get(i)));
                 }
 
                 Platform.runLater(() -> {
-                    lineChartcrypto.getData().clear(); // Effacez toutes les séries existantes.
-                    lineChartcrypto.getData().add(series); // Ajoutez la nouvelle série.
+                    lineChartcrypto.getData().clear();
+                    lineChartcrypto.getData().add(series);
                 });
                 time_graph=0;
 
@@ -917,12 +915,10 @@ public class ControlleurCryptocurrency {
     @FXML
     public void graph_year() {
         if (time_graph == 3) {
-
         } else {
             String value_etudier = value_graph;
             try {
-
-                String url = "https://api.binance.com/api/v3/klines?symbol=" + value_etudier + "USDT&interval=1M&limit=120"; // Obtenir 120 mois (10 ans)
+                String url = "https://api.binance.com/api/v3/klines?symbol=" + value_etudier + "USDT&interval=1M&limit=120";
                 URL obj = new URL(url);
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -951,32 +947,31 @@ public class ControlleurCryptocurrency {
 
                 xAxis.setLabel("Years");
 
-                List<Double> lastValues = new ArrayList<>();
-                int interval = data.size() / 10;
+                int interval = closingPrices.size() / 20;
+
                 for (int i = 0; i < 20; i++) {
-
                     int startIndex = i * interval;
-                    int endIndex = startIndex + interval;
-                    List<Double> subList = closingPrices.subList(startIndex, endIndex);
-                    double lastValue = subList.get(subList.size() - 1);
-                    lastValues.add(lastValue);
-                }
+                    int endIndex = Math.min((i + 1) * interval, closingPrices.size());
 
-                for (int i = 0; i < lastValues.size(); i++) {
-                    series.getData().add(new XYChart.Data<>(i * interval, lastValues.get(i)));
+                    if (startIndex < closingPrices.size() && startIndex < endIndex) {
+                        List<Double> subList = closingPrices.subList(startIndex, endIndex);
+                        double lastValue = subList.get(subList.size() - 1);
+                        series.getData().add(new XYChart.Data<>(i * interval, lastValue));
+                    }
                 }
 
                 Platform.runLater(() -> {
                     lineChartcrypto.getData().clear();
                     lineChartcrypto.getData().add(series);
                 });
-                time_graph=3;
+                time_graph = 3;
 
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
     }
+
 
     public Label getCryptoData(String symbol) throws Exception {
 

@@ -59,12 +59,13 @@ public class ControllerInscription {
         Cette fonction permet de charger une video automatiquement au chargement de la page
          */
 
-        String errorMessage = "Format de votre mot de passe !\n" +
-                "  - minimum 8 caractères\n" +
-                "  - minimum 1 majuscule\n" +
-                "  - minimum 1 minuscule\n" +
-                "  - minimum 1 caractère spécial\n" +
-                "  - minimum 1 chiffre";
+        String errorMessage = "Your password format!\n" +
+                "  - minimum 8 characters\n" +
+                "  - minimum 1 uppercase letter\n" +
+                "  - minimum 1 lowercase letter\n" +
+                "  - minimum 1 special character\n" +
+                "  - minimum 1 digit";
+
 
         area_mdp.setText(errorMessage);
         Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
@@ -115,7 +116,7 @@ public class ControllerInscription {
                         i_mdp.setText("");
                     }else{
                         if(!IntefaceFeatures.isValidPhone(phone)){
-                            label_erreur.setText("Le format du numéro de téléphone est incorrecte ! Ex : 0728213087");
+                            label_erreur.setText("Le format du numéro de téléphone est incorrecte !");
                             i_phone.setText("");
 
                         }else{
@@ -126,7 +127,6 @@ public class ControllerInscription {
                             }else{
                                 String query = "INSERT INTO investor (name, surname, email, mdp, phone_number) VALUES (?, ?, ?, ?, ?)";
                                 String url = "jdbc:mysql://localhost:3306/database_boa_java?serverTimezone=UTC&useSSL=false";
-
                                 try (
                                         Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
                                         PreparedStatement preparedStatement = connection.prepareStatement(query);

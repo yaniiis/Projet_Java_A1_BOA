@@ -24,7 +24,7 @@
          </children></Pane>
     </top>
    <left>
-       <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER">
+       <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C7FAFF;" BorderPane.alignment="CENTER">
          <children>
              <VBox prefHeight="366.0" prefWidth="202.0">
                  <children>
@@ -48,10 +48,6 @@
                              <Insets left="73.0" top="30.0" />
                          </VBox.margin>
                      </Button>
-                     <Button fx:id="btn_transaction" mnemonicParsing="false" onAction="#l_transaction" text="Transaction">
-                         <VBox.margin>
-                             <Insets left="61.0" top="30.0" />
-                         </VBox.margin></Button>
                      <Button fx:id="btn_account" mnemonicParsing="false" onAction="#l_account" text="Account">
                          <VBox.margin>
                              <Insets left="73.0" top="30.0" />
@@ -111,11 +107,10 @@
                        <Insets left="310.0" top="200.0" />
                    </GridPane.margin>
                </Label>
-               <Pane maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#l_crytpo" prefHeight="234.0" prefWidth="205.0" style="-fx-background-color: #417DDA;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+               <Pane maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#l_crytpo" prefHeight="234.0" prefWidth="205.0" style="-fx-background-color: linear-gradient(#DAFFC7, #83CA5D);" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
                     <children>
                   <HBox prefHeight="234.0" prefWidth="200.0">
                      <children>
-      
                               <VBox prefHeight="234.0" prefWidth="101.0">
                                   <children>
                                       <ImageView fx:id="image4" fitHeight="60.0" fitWidth="60.0" layoutX="0.0" layoutY="0.0">
@@ -155,9 +150,7 @@
                   <Insets left="140.0" />
                </GridPane.margin>
                </Pane>
-
-
-               <Pane maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#l_wallet" prefHeight="234.0" prefWidth="205.0" style="-fx-background-color: orange;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+               <Pane maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#l_wallet" prefHeight="234.0" prefWidth="205.0" style="-fx-background-color: linear-gradient(#E0FCFF, #5DBFCA);" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
                    <children>
                        <VBox fx:id="vbox_wallet" alignment="TOP_CENTER" prefHeight="234.0" prefWidth="200.0">
                      <children>
@@ -176,8 +169,6 @@
                        <Insets left="390.0" />
                    </GridPane.margin>
                </Pane>
-
-
            </children>
        </GridPane>
    </center>

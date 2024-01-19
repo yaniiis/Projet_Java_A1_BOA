@@ -15,28 +15,25 @@
                 </children>
             </Pane>
         </VBox>
-
     </top>
     <center>
         <HBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
-
                 <Pane prefHeight="200.0" prefWidth="300.0">
                <children>
-                  <Button fx:id="btn_presentation" layoutX="35.0" layoutY="172.0" mnemonicParsing="false" onAction="#l_presentation" text="Qui sommes nous ?" />
+                  <Button fx:id="btn_presentation" layoutX="35.0" layoutY="172.0" mnemonicParsing="false" onAction="#l_presentation" style="-fx-background-color: #417DDA; -fx-font-size: 13px; -fx-border-width: 2px;-fx-border-radius: 5px; -fx-background-radius: 5px;" text="Who are you ?" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
                </children></Pane>
-
-
                 <VBox prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                     <Pane prefHeight="10.0" prefWidth="305.0">
                   <children>
                   </children></Pane>
                     <Pane prefHeight="300.0" prefWidth="238.0" style="-fx-background-color: lightblue; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
                         <children>
-
                             <VBox alignment="CENTER_LEFT" prefHeight="228.0" prefWidth="307.0">
                                 <children>
-
                                     <Label text="Connexion">
                                         <font>
                                             <Font name="JetBrains Mono Bold" size="30.0" />
@@ -79,9 +76,9 @@
                                             <Font size="12.0" />
                                         </font>
                                     </Button>
-                                    <Button id="btn-connecter" fx:id="btn_connexion" mnemonicParsing="false" onAction="#verif_identifiants" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 11pt; -fx-padding: 2 5; -fx-border-radius: 15; -fx-border: transparent; -fx-font-weight: bold;" text="Log in">
+                                    <Button id="btn-connecter" fx:id="btn_connexion" mnemonicParsing="false" onAction="#verif_identifiants" style="-fx-background-color: #4CAF50; -fx-font-size: 11pt; -fx-border-radius: 10; -fx-border: none;" text="Log in">
                                         <font>
-                                            <Font name="Mistral" size="12.0" />
+                                            <Font name="Mistral" size="11.0" />
                                         </font>
                                         <textFill>
                                         </textFill>
@@ -109,16 +106,16 @@
                               <VBox.margin>
                                  <Insets top="30.0" />
                               </VBox.margin></Label>
-
                                 </children>
                             </VBox>
-
                         </children>
-
                     </Pane>
 
-                    <Pane fx:id="pane_password" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: orange; -fx-background-radius: 10;" visible="false">
+
+
+                    <Pane fx:id="pane_password" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: #E9FFDE; -fx-background-radius: 10;" visible="false">
                         <children>
+                            <Label fx:id="label_erreur_email" layoutY="60.0" prefHeight="17.0" prefWidth="332.0" text="" textFill="RED" />
                             <HBox prefHeight="100.0" prefWidth="400.0">
                                 <children>
                                     <Label id="label_forget" fx:id="label_forget" text="Your email : ">
@@ -128,10 +125,10 @@
                               <font>
                                  <Font name="System Bold" size="14.0" />
                               </font></Label>
-                                    <TextField id="field_forget" fx:id="field_forget" promptText="email@px.c" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
-                                        <HBox.margin>
-                                            <Insets left="8.0" top="8.0" />
-                                        </HBox.margin></TextField>
+                                <TextField id="field_forget" fx:id="field_forget" promptText="email@px.c" style="-fx-background-color: #F1F1F1; -fx-region-border: none;">
+                                    <HBox.margin>
+                                        <Insets left="8.0" top="8.0" />
+                                    </HBox.margin></TextField>
                                     <Button id="btn_forget" fx:id="btn_forget" mnemonicParsing="false" onAction="#sendMail" style="-fx-background-color: #4081E8 ; -fx-text-fill: white;" text="OK">
                                         <HBox.margin>
                                             <Insets left="10.0" top="8.0" />

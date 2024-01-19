@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.media.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.image.ImageView?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.wallet_boa.controleur.ControllerPresentation">
     <top>
-        <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER" >
+        <Pane prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: #417DDA;" BorderPane.alignment="CENTER">
             <children>
                 <ImageView fx:id="imageView" fitHeight="34.0" fitWidth="34.0" layoutX="70.0" layoutY="1.0" />
             </children>
@@ -15,7 +18,57 @@
     <center>
         <Pane>
          <children>
-            <MediaView fx:id="mediaView" fitHeight="300.0" fitWidth="300.0" />
+            <VBox alignment="TOP_CENTER" layoutX="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="515.0">
+               <children>
+                  <Label text="BOA">
+                     <font>
+                        <Font name="Bookman Old Style Bold" size="32.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Label>
+                  <MediaView fx:id="mediaView" fitHeight="350.0" fitWidth="350.0">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin></MediaView>
+                   <Label layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="429.0" style="-fx-background-color: none;" text="Investissez dans l'avenir avec simplicité !">
+                       <font>
+                           <Font size="18.0" />
+                       </font>
+                     <VBox.margin>
+                        <Insets left="110.0" top="20.0" />
+                     </VBox.margin></Label>
+                   <Label layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="21.0" prefWidth="618.0" style="-fx-background-color: none;" text="Découvrez BOA, la plateforme tout-en-un pour acheter et suivre">
+                       <font>
+                           <Font size="15.0" />
+                       </font>
+                     <VBox.margin>
+                        <Insets left="50.0" />
+                     </VBox.margin></Label>
+                   <Label layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="21.0" prefWidth="543.0" style="-fx-background-color: none;" text="vos crypto-monnaies et actions préférées. Que vous soyez un novice ou un">
+                       <font>
+                           <Font size="15.0" />
+                       </font></Label>
+                   <Label layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="21.0" prefWidth="691.0" style="-fx-background-color: none;" text="expert, nous vous offrons les outils nécessaires pour investir intelligemment. ">
+                       <font>
+                           <Font size="15.0" />
+                       </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></Label>
+                   <Label layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="21.0" prefWidth="691.0" style="-fx-background-color: none;" text="Commencez dès maintenant et faites croître votre portefeuille financier.">
+                       <font>
+                           <Font size="15.0" />
+                       </font>
+                     <VBox.margin>
+                        <Insets left="40.0" />
+                     </VBox.margin></Label>
+                  <Button mnemonicParsing="false" onAction="#back" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 4px 10px; -fx-border-radius: 5px; " text="Back">
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin></Button>
+               </children>
+            </VBox>
          </children>
         </Pane>
     </center>

@@ -51,10 +51,6 @@
                                 <Insets left="73.0" top="30.0" />
                             </VBox.margin>
                         </Button>
-                        <Button fx:id="btn_transaction" mnemonicParsing="false" onAction="#l_transaction" text="Transaction">
-                            <VBox.margin>
-                                <Insets left="61.0" top="30.0" />
-                            </VBox.margin></Button>
                         <Button fx:id="btn_account" mnemonicParsing="false" onAction="#l_account" text="Account">
                             <VBox.margin>
                                 <Insets left="73.0" top="30.0" />

@@ -58,8 +58,8 @@ public class ControlleurHelp {
                 String question = resultSet.getString("question");
                 String answer = resultSet.getString("answer");
 
-                Label questionLabel = new Label("Q:     " + question);
-                Label answerLabel = new Label("A:      " + answer);
+                Label questionLabel = new Label("Q :     " + question);
+                Label answerLabel = new Label("A :      " + answer);
                 VBox vbox = new VBox(questionLabel, answerLabel);
                 VBox.setMargin(vbox, new Insets(20, 0, 0, 250));
 
@@ -90,32 +90,34 @@ public class ControlleurHelp {
                 Connection connection = DriverManager.getConnection(url, IntefaceFeatures.NAME_DB, IntefaceFeatures.MDP_DB);
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
         ) {
-            String question= textAreaAnswer.getText();
 
+            String question= textAreaAnswer.getText();
             preparedStatement.setString(1, question);
 
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
                     alert.setTitle("FAQ");
                     alert.setHeaderText("send");
                     alert.setContentText("Votre question a été envoyé, le service BOA se charge de vous répondre au plus vite");
                     alert.showAndWait();
 
-                Label questionLabel = new Label(question);
-                Label answerLabel = new Label(""); // Vous pouvez le remplacer par une chaîne en attente de réponse.
-                VBox vbox = new VBox(questionLabel, answerLabel);
-                VBox.setMargin(vbox, new Insets(20, 0, 0, 250));
-                vbox_q_r.getChildren().add(vbox);
+                    String q = "Q :     " + question;
+                    Label questionLabel = new Label(q);
+                    Label answerLabel = new Label("");
+                    VBox vbox = new VBox(questionLabel, answerLabel);
+                    VBox.setMargin(vbox, new Insets(20, 0, 0, 250));
+                    vbox_q_r.getChildren().add(vbox);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         vbox_q_r.setVisible(true);
         vbox_q.setVisible(false);
     }
+
 
     /*
         Toutes les fonctions commencant par l_
@@ -129,9 +131,6 @@ public class ControlleurHelp {
     }
     public void l_action() throws Exception{
         IntefaceFeatures.layout_stock(this.investor,blockchain);
-    }
-    public void l_transaction() throws Exception{
-        IntefaceFeatures.layout_transaction(this.investor,blockchain);
     }
     public void l_crytpo() throws Exception{
         IntefaceFeatures.layout_crypto(investor,blockchain);

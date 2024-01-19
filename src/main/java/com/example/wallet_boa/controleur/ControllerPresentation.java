@@ -1,5 +1,8 @@
 package com.example.wallet_boa.controleur;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.*;
@@ -18,7 +21,6 @@ public class ControllerPresentation {
         Permettent la redirection vers une autre page
     */
 
-
     public void initialize() {
         /*
         Cette fonction permet de charger une video automatiquement au chargement de la page
@@ -32,15 +34,13 @@ public class ControllerPresentation {
         Image image = new Image(new File("src/main/resources/galerie/logo.png").toURI().toString());
         imageView.setImage(image);
 
+
     }
 
     @FXML
-    public void l_connection() throws Exception {
+    public void back() throws Exception {
         IntefaceFeatures.layout_connexion();
     }
 
-    @FXML
-    public void l_inscription() throws Exception {
-        IntefaceFeatures.layout_inscription();
-    }
+
 }

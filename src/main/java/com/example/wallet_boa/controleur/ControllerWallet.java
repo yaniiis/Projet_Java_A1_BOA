@@ -37,7 +37,9 @@ public class ControllerWallet {
     private double values_total_wallet;
     private ArrayList<Wallet> list_wallet;
     private ArrayList<Double> list_value;
-
+    private XYChart.Series<Number, Number> seriess;
+    private List<String> list_val;
+    private String naame;
     @FXML
     Button btn_back;
     @FXML
@@ -181,6 +183,8 @@ public class ControllerWallet {
     @FXML
     NumberAxis xAxis;
     @FXML
+    NumberAxis xAxis_;
+    @FXML
     VBox Vbox_conseil;
     @FXML
     Button btn_conseil;
@@ -208,6 +212,9 @@ public class ControllerWallet {
     VBox Vbox_impot;
     @FXML
     Label label_impot;
+    @FXML
+    LineChart lineChartAll;
+
 
 
 
@@ -331,9 +338,6 @@ public class ControllerWallet {
     }
     public void l_action() throws Exception{
         IntefaceFeatures.layout_stock(investor, blockchain);
-    }
-    public void l_transaction() throws Exception{
-        IntefaceFeatures.layout_transaction(investor, blockchain);
     }
     public void l_crytpo() throws Exception{
         IntefaceFeatures.layout_crypto(investor, blockchain);
@@ -618,8 +622,139 @@ public class ControllerWallet {
         }
     }
 
-    public void charger_graphique(List<String> symbolss, String name) throws Exception {
 
+    public List<String> values_presene(Wallet wallet) throws Exception {
+
+        Cryptocurrency cryptocurrency = wallet.getList_value();
+        List<String> list_crypto_presente = new ArrayList<>();
+
+        if(cryptocurrency.getADA()!=0){
+            list_crypto_presente.add("ADA");
+        }
+        if(cryptocurrency.getBTC()!=0){
+            list_crypto_presente.add("BTC");
+        }
+        if(cryptocurrency.getBNB()!=0){
+            list_crypto_presente.add("BNB");
+        }
+        if(cryptocurrency.getETH()!=0){
+            list_crypto_presente.add("ETH");
+        }
+        if(cryptocurrency.getSOL()!=0){
+            list_crypto_presente.add("SOL");
+        }
+        if(cryptocurrency.getXRP()!=0){
+            list_crypto_presente.add("XRP");
+        }
+        if(cryptocurrency.getDOT()!=0){
+            list_crypto_presente.add("DOT");
+        }
+        if(cryptocurrency.getDOGE()!=0){
+            list_crypto_presente.add("DOGE");
+        }
+
+        if(cryptocurrency.getAVAX()!=0){
+            list_crypto_presente.add("AVAX");
+        }
+        if(cryptocurrency.getLINK()!=0){
+            list_crypto_presente.add("LINK");
+        }
+        return list_crypto_presente;
+    }
+
+    @FXML
+    public void layout_all() throws Exception{
+
+        lineChartAll.setVisible(true);
+        vbox_wallet.setVisible(false);
+        hbox_crypto.setVisible(false);
+        for(Wallet wallet : investor.getList_wallet()){
+            List<String> symbolss = values_presene(wallet);
+            List<Double> closingPrices = new ArrayList<>(Collections.nCopies(20, 0.0));
+
+            for(String value_etudier : symbolss){
+                String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1d&limit=20";
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+                con.setRequestMethod("GET");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference<List<List<Object>>> typeRef = new TypeReference<>() {};
+                List<List<Object>> data = mapper.readValue(response.toString(), typeRef);
+                double part = 1;
+                switch (value_etudier){
+                    case "BTC":
+                        part = wallet.getList_value().getBTC();
+                        break;
+                    case "ETH":
+                        part = wallet.getList_value().getETH();
+                        break;
+                    case "BNB":
+                        part = wallet.getList_value().getBNB();
+                        break;
+                    case "ADA":
+                        part = wallet.getList_value().getADA();
+                        break;
+                    case "SOL":
+                        part = wallet.getList_value().getSOL();
+                        break;
+                    case "XRP":
+                        part = wallet.getList_value().getXRP();
+                        break;
+                    case "DOT":
+                        part = wallet.getList_value().getDOT();
+                        break;
+                    case "DOGE":
+                        part = wallet.getList_value().getDOGE();
+                        break;
+                    case "AVAX":
+                        part = wallet.getList_value().getAVAX();
+                        break;
+                    case "LINK":
+                        part = wallet.getList_value().getLINK();
+                        break;
+                }
+
+
+                for (int i = 0; i < data.size(); i++) {
+                    List<Object> dayData = data.get(i);
+                    double newPrice = Double.parseDouble(dayData.get(4).toString()) * part;
+                    double contenu = closingPrices.get(i);
+                    closingPrices.set(i, contenu + newPrice);
+                }
+
+            }
+
+
+            XYChart.Series<Number, Number> series = new XYChart.Series<>();
+            series.setName(wallet.getName());
+
+            xAxis_ = new NumberAxis(0, 20, 1);
+
+
+            for (int i = 0; i < closingPrices.size(); i++) {
+                series.getData().add(new XYChart.Data<>(i, closingPrices.get(i)));
+            }
+
+            Platform.runLater(() -> {
+                lineChartAll.getData().add(series);
+            });
+        }
+    }
+
+    public void charger_graphique(List<String> symbolss, String name ) throws Exception {
+        list_val = symbolss;
+        naame = name;
         List<Double> closingPrices = new ArrayList<>(Collections.nCopies(20, 0.0));
         Wallet wallet = investor.getList_wallet().get(indice_wallet_layout);
         for(String value_etudier : symbolss){
@@ -700,6 +835,90 @@ public class ControllerWallet {
             });
     }
 
+
+
+    @FXML
+    public void convertir_euro() throws Exception{
+
+        List<Double> closingPrices = new ArrayList<>(Collections.nCopies(20, 0.0));
+        Wallet wallet = investor.getList_wallet().get(indice_wallet_layout);
+        for(String value_etudier : list_val){
+            String url = "https://api.binance.com/api/v3/klines?symbol="+ value_etudier + "USDT&interval=1d&limit=20";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+            con.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            ObjectMapper mapper = new ObjectMapper();
+            TypeReference<List<List<Object>>> typeRef = new TypeReference<>() {};
+            List<List<Object>> data = mapper.readValue(response.toString(), typeRef);
+            double part = 1;
+            switch (value_etudier){
+                case "BTC":
+                    part = wallet.getList_value().getBTC();
+                    break;
+                case "ETH":
+                    part = wallet.getList_value().getETH();
+                    break;
+                case "BNB":
+                    part = wallet.getList_value().getBNB();
+                    break;
+                case "ADA":
+                    part = wallet.getList_value().getADA();
+                    break;
+                case "SOL":
+                    part = wallet.getList_value().getSOL();
+                    break;
+                case "XRP":
+                    part = wallet.getList_value().getXRP();
+                    break;
+                case "DOT":
+                    part = wallet.getList_value().getDOT();
+                    break;
+                case "DOGE":
+                    part = wallet.getList_value().getDOGE();
+                    break;
+                case "AVAX":
+                    part = wallet.getList_value().getAVAX();
+                    break;
+                case "LINK":
+                    part = wallet.getList_value().getLINK();
+                    break;
+            }
+
+
+            for (int i = 0; i < data.size(); i++) {
+                List<Object> dayData = data.get(i);
+                double newPrice = Double.parseDouble(dayData.get(4).toString()) * part * 0.93;
+                double contenu = closingPrices.get(i);
+                closingPrices.set(i, contenu + newPrice);
+            }
+
+        }
+
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.setName(naame);
+        xAxis = new NumberAxis(0, 20, 1);
+
+
+        for (int i = 0; i < closingPrices.size(); i++) {
+            series.getData().add(new XYChart.Data<>(i, closingPrices.get(i)));
+        }
+
+        Platform.runLater(() -> {
+            lineChart.getData().clear();
+            lineChart.getData().add(series);
+        });
+    }
 
     public void lancement_wallet(List<String> list_crypto) throws Exception {
         vbox_wallet.setVisible(false);

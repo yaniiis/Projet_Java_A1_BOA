@@ -49,10 +49,6 @@
                                 <Insets left="73.0" top="30.0" />
                             </VBox.margin>
                         </Button>
-                        <Button fx:id="btn_transaction" mnemonicParsing="false" onAction="#l_transaction" text="Transaction">
-                            <VBox.margin>
-                                <Insets left="61.0" top="30.0" />
-                            </VBox.margin></Button>
                         <Button fx:id="btn_account" mnemonicParsing="false" onAction="#l_account" text="Account">
                             <VBox.margin>
                                 <Insets left="73.0" top="30.0" />
@@ -94,7 +90,7 @@
                <GridPane.margin>
                   <Insets left="180.0" />
                </GridPane.margin></Button>
-            <Button fx:id="btn_back" mnemonicParsing="false" onAction="#back_wallet" visible="false" text="back" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <Button fx:id="btn_back" mnemonicParsing="false" onAction="#back_wallet" text="back" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                 <GridPane.margin>
                     <Insets left="500.0" />
                 </GridPane.margin></Button>
@@ -102,7 +98,7 @@
                 <GridPane.margin>
                     <Insets left="330.0" />
                 </GridPane.margin></Button>
-            <VBox fx:id="vbox_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #6FEB4E; -fx-background-radius: 10;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <VBox fx:id="vbox_wallet" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="415.0" style="-fx-background-color: #6FEB4E; -fx-background-radius: 10;" visible="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
 
                 <children>
                     <HBox>
@@ -752,6 +748,23 @@
                         </font></Label>
                 </children>
             </VBox>
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" onAction="#layout_all" prefWidth="4.0" text="View all">
+               <GridPane.margin>
+                  <Insets left="250.0" top="180.0" />
+               </GridPane.margin></Button>
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="259.0" prefWidth="387.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                    <LineChart fx:id="lineChartAll" minHeight="-Infinity" minWidth="-Infinity" prefHeight="202.0" prefWidth="225.0" title="All wallets" visible="false">
+                        <xAxis>
+                            <NumberAxis autoRanging="true" label="Daily" fx:id="xAxis_" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis autoRanging="true" label="Value $ " />
+                        </yAxis>
+                    </LineChart>
+               <GridPane.margin>
+                  <Insets left="50.0" />
+               </GridPane.margin>
+                </VBox>
 
             <HBox fx:id="hbox_btn_action_wallet" prefHeight="100.0" prefWidth="200.0" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <children>
@@ -759,13 +772,9 @@
                        <HBox.margin>
                            <Insets left="90.0" top="25.0" />
                        </HBox.margin></Button>
-                  <Button fx:id="btn_profit" mnemonicParsing="false" text="Profit">
-                     <HBox.margin>
-                        <Insets left="180.0" top="25.0" />
-                     </HBox.margin></Button>
                   <Button fx:id="btn_impot" mnemonicParsing="false" onAction="#impot_layout" text="Impots">
                      <HBox.margin>
-                        <Insets left="25.0" top="25.0" />
+                        <Insets left="120.0" top="25.0" />
                      </HBox.margin></Button>
                   <Button fx:id="btn_conseil" mnemonicParsing="false" onAction="#layout_conseil" text="Conseils">
                      <HBox.margin>
@@ -775,6 +784,11 @@
                        <HBox.margin>
                            <Insets left="25.0" top="25.0" />
                        </HBox.margin></Button>
+                   <Button fx:id="btn_convertir_euro" mnemonicParsing="false" onAction="#convertir_euro" text="Convertir en euro">
+                       <HBox.margin>
+                           <Insets left="25.0" top="25.0" />
+                       </HBox.margin></Button>
+
 
                </children>
             </HBox>

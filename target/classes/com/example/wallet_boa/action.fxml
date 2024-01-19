@@ -52,10 +52,6 @@
                                 <Insets left="73.0" top="30.0" />
                             </VBox.margin>
                         </Button>
-                        <Button fx:id="btn_transaction" mnemonicParsing="false" onAction="#l_transaction" text="Transaction">
-                            <VBox.margin>
-                                <Insets left="61.0" top="30.0" />
-                            </VBox.margin></Button>
                         <Button fx:id="btn_account" mnemonicParsing="false" onAction="#l_account" text="Account">
                             <VBox.margin>
                                 <Insets left="73.0" top="30.0" />
@@ -227,9 +223,13 @@
                             </VBox.margin></Button>
                     </children>
                 </VBox>
-                <LineChart fx:id="lineChart" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="218.0" prefWidth="456.0" title="" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
+                <Button fx:id="btn_back_graphe" mnemonicParsing="false" onAction="#back_layout" style="-fx-background-color: none;" text="Back" GridPane.columnIndex="0" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="150.0" left="50.0" />
+               </GridPane.margin></Button>
+                <LineChart fx:id="lineChart" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="302.0" prefWidth="500.0" title="" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
                     <xAxis>
-                        <NumberAxis autoRanging="true" label="dza" prefWidth="203.0" fx:id="xAxis" />
+                        <NumberAxis autoRanging="true" label="Daily" prefWidth="203.0" fx:id="xAxis" />
                     </xAxis>
                     <yAxis>
                         <NumberAxis autoRanging="true" label="Value $ " prefWidth="49.0" />

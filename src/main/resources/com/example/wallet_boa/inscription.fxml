@@ -20,10 +20,10 @@
 
                 <Pane prefHeight="200.0" prefWidth="300.0">
                <children>
-                   <Label fx:id="area_mdp" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="182.0" prefWidth="232.0" style="-fx-background-color: none;">
-
-
-                   </Label>
+                   <Label fx:id="area_mdp" layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="182.0" prefWidth="232.0" style="-fx-background-color: none;">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
                </children></Pane>
 
 

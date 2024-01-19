@@ -85,9 +85,6 @@ public class ControlleurAccount {
     public void l_action() throws Exception{
         IntefaceFeatures.layout_stock(investor, blockchain);
     }
-    public void l_transaction() throws Exception{
-        IntefaceFeatures.layout_transaction(investor, blockchain);
-    }
     public void l_crytpo() throws Exception{
         IntefaceFeatures.layout_crypto(investor, blockchain);
     }

@@ -101,7 +101,7 @@ public class Evenements<T> {
 
                 msg = list_people.get(intervalMinutes3) + " a posté un tweet sur " + list_crypto_.get(intervalMinutes3);
 
-                Evenements<String> intLogger2 = new Evenements<>("233", msg);
+                Evenements<Integer> intLogger2 = new Evenements<>(123, msg);
                 random = new Random();
                 int intervalMinut = random.nextInt(4) + 2;
                 scheduler.schedule(() -> {
@@ -125,7 +125,7 @@ public class Evenements<T> {
                 int ervalMinutes5 = random5.nextInt(4);
                 msg = cryptoInvestors.get(ervalMinutes5) + " a posté des conseils sur Youtube";
 
-                Evenements<String> intLogger4 = new Evenements<>("902", msg);
+                Evenements<Double> intLogger4 = new Evenements<>(12.2, msg);
                 random = new Random();
                 int intervalMinutes5 = random.nextInt(4) + 2;
                 scheduler.schedule(() -> {

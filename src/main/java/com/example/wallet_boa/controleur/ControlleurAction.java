@@ -95,9 +95,6 @@ public class ControlleurAction {
     public void l_wallet() throws Exception{
         IntefaceFeatures.layout_wallet(investor, blockchain);
     }
-    public void l_transaction() throws Exception{
-        IntefaceFeatures.layout_transaction(investor, blockchain);
-    }
     public void l_crytpo() throws Exception{
         IntefaceFeatures.layout_crypto(investor, blockchain);
     }

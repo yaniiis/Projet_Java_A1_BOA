@@ -51,6 +51,8 @@ public class ControllerConnexion {
     ImageView imageView;
     @FXML
     Label label_erreur;
+    @FXML
+    Label label_erreur_email;
 
     /*
         Toutes les fonctions commencant par l_
@@ -344,13 +346,14 @@ public class ControllerConnexion {
 
         String toEmail = field_forget.getText();
         if(!IntefaceFeatures.isValidEmail(toEmail)){
-            System.out.println("Format email incorrecte !");
+            label_erreur_email.setText("Format email incorrecte !");
         }else {
             List<String> infor_user = trouver_email(toEmail);
             if (infor_user.get(0) == "") {
-                System.out.println("Aucun email correspondant !");
+                label_erreur_email.setText("Aucun email correspondant !");
             } else {
 
+                String mdpp = IntefaceFeatures.decryptPassword(infor_user.get(1));
 
                 final String username = "boa75000@outlook.com";
                 final String password = "boa12345";
@@ -367,17 +370,17 @@ public class ControllerConnexion {
                     }
                 });
 
-
                 try {
+
                     Message message = new MimeMessage(session);
                     message.setFrom(new InternetAddress(username));
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
                     message.setSubject("Subject: Bienvenue sur notre plateforme de crypto-monnaies et d'actions !");
-
                     message.setText("Cher(e)" + infor_user.get(0) + ",\n\n"
+
                             + "\n\n"
                             + "Vous avez demandé la réinitialisation de votre mot de passe pour notre plateforme.\n\n"
-                            + "Votre mot de passe : " + infor_user.get(1) + "\n\n"
+                            + "Votre mot de passe : " + mdpp + "\n\n"
                             + "Pensez à créer un nouveau mot de passe.\n\n"
                             + "\n\n"
                             + "Revolutionize your investment strategy ! \n\n"
@@ -385,22 +388,14 @@ public class ControllerConnexion {
 
                     Transport.send(message);
 
-                    System.out.println("Email envoyé à : " + toEmail);
-
-
-
-    /*                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("E-mail envoyé");
                     alert.setHeaderText(null);
                     alert.setContentText("L'e-mail a été envoyé avec succès !");
                     alert.showAndWait();
 
-     */
-
-
             } catch(MessagingException e){
                 e.printStackTrace();
-
             }
             pane_password.setVisible(false);
             }

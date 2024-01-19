@@ -53,20 +53,6 @@ public interface IntefaceFeatures {
     }
 
 
-    static void layout_transaction(Investor investor, Blockchaine blockchaine) throws Exception {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("transactions.fxml"));
-        Parent root = fxmlLoader.load();
-
-        ControlleurTransactions accueilController = fxmlLoader.getController();
-
-        accueilController.setInvestor(investor, blockchaine);
-
-        Stage stage = HelloApplication.getPrimaryStage();
-        stage.setTitle("Transactions");
-        stage.setScene(new Scene(root, 900, 600));
-        stage.show();
-    }
 
 
 
@@ -218,6 +204,19 @@ public interface IntefaceFeatures {
 
         byte[] encVal = c.doFinal(password.getBytes());
         return Base64.getEncoder().encodeToString(encVal);
+    }
+
+    static String decryptPassword(String encryptedPassword) throws Exception {
+        String key = "@213_DRX281SKAL!";
+        byte[] keyValue = key.getBytes();
+        SecretKey secretKey = new SecretKeySpec(keyValue, "AES");
+
+        Cipher c = Cipher.getInstance("AES");
+        c.init(Cipher.DECRYPT_MODE, secretKey);
+
+        byte[] decodedValue = Base64.getDecoder().decode(encryptedPassword);
+        byte[] decValue = c.doFinal(decodedValue);
+        return new String(decValue);
     }
 
 

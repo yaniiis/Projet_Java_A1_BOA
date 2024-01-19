@@ -26,7 +26,7 @@ public class ControllerPresentation {
         Cette fonction permet de charger une video automatiquement au chargement de la page
          */
 
-        Media media = new Media(new File("src/main/resources/galerie/videotest.mp4").toURI().toString());
+        Media media = new Media(new File("src/main/resources/galerie/video.mp4").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaView.setMediaPlayer(mediaPlayer);
 

@@ -186,9 +186,13 @@ public class ControlleurAccount {
                     first = true;
                 }else{
                     label_erreur.setText("L'email est déjà utilisé !");
+                    txt_email.setText(investor.getEmail());
+
                 }
             }else{
                 label_erreur.setText("Format de l'email ne correspond pas ! Ex : java@boa.fr");
+                txt_email.setText(investor.getEmail());
+
             }
 
         }else{
@@ -202,7 +206,9 @@ public class ControlleurAccount {
                 txt_phone_number.setText(phone_number);
                 values.add(phone_number);
                 first = true;
+                System.out.println("a");
             }else{
+                txt_phone_number.setText(investor.getPhone_number());
                 label_erreur.setText("Le format du numéro de téléphone est incorrecte ! Ex : 0728213087");
             }
 
@@ -211,22 +217,8 @@ public class ControlleurAccount {
         }
 
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation");
-        alert.setHeaderText("Update field");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            if(!first){
-                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                alert2.setTitle("Confirmation");
-                alert2.setHeaderText(null);
-                alert2.setContentText("no fields modified\n");
-                alert2.showAndWait();
-            }
-        } else {
-            first = false;
 
-        }
+
         if(first){
             requeteBuilder.append(" WHERE id_investor = ?");
             values.add(String.valueOf(investor.getId()));
@@ -243,6 +235,10 @@ public class ControlleurAccount {
 
                 int affectedRows = statement.executeUpdate();
                 if(affectedRows > 0) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation");
+                    alert.setHeaderText("Update field");
+                    Optional<ButtonType> result = alert.showAndWait();
 
                 }
 
@@ -250,7 +246,14 @@ public class ControlleurAccount {
                 e.printStackTrace();
             }
 
+        }else{
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setTitle("Confirmation");
+            alert2.setHeaderText(null);
+            alert2.setContentText("no fields modified\n");
+            alert2.showAndWait();
         }
+
         edit_fields2();
     }
 

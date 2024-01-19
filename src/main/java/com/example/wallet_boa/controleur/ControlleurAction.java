@@ -117,7 +117,7 @@ public class ControlleurAction {
         this.blockchain = blockchaine;
         label_name.setText(investor.getName());
         remplirWallet();
-        //charger_graphique();
+        charger_graphique();
 
 
         md_wallet_sell.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -179,8 +179,7 @@ public class ControlleurAction {
     public void charger_graphique() throws Exception {
 
         String[] symbols = {"AAPL", "MSFT", "AMZN", "GOOGL"};
-        String apiKey = "RGMOA4EPC2N6MFF9";
-        //O2VSXG62XNBFFJDL
+        String apiKey = "O2VSXG62XNBFFJDL";
 
         ObservableList<LigneStock> list = FXCollections.observableArrayList();
 
@@ -213,7 +212,6 @@ public class ControlleurAction {
                     try {
                         lineChart.setVisible(true);
                         tableview_value.setVisible(false);
-                        btn_back_graphe.setVisible(true);
                         graphe_action(symbol);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -309,7 +307,6 @@ public class ControlleurAction {
         tableview_value.setVisible(true);
         lineChart.setVisible(false);
         btn_back.setVisible(false);
-        btn_back_graphe.setVisible(false);
     }
 
 

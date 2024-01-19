@@ -284,7 +284,11 @@ public class ControllerConnexion {
         String mdp = txt_mdp.getText();
 
         if(mdp.equals("") || email.equals("") ){
-            label_erreur.setText("Veuillez remplir tous les champs");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Authentification");
+            alert.setHeaderText(null);
+            alert.setContentText("Fields empthy");
+            alert.showAndWait();
         }else{
             mdp = IntefaceFeatures.encryptPassword(mdp);
 
@@ -307,9 +311,13 @@ public class ControllerConnexion {
                         int id = resultSet.getInt("id_investor");
                         if (name != null && !name.isEmpty()) {
                             layout_accueil(name, surname, email, phone_number, id);
-                        } else {
-                            label_erreur.setText("Aucun utilisateur trouvé avec ces identifiants.");
                         }
+                    }else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Authentification");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Error password or email");
+                        alert.showAndWait();
                     }
                 }
             } catch (SQLException e) {

@@ -27,7 +27,7 @@
             </children></Pane>
     </top>
     <left>
-        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER">
+        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C7FAFF;" BorderPane.alignment="CENTER">
             <children>
                 <VBox prefHeight="366.0" prefWidth="202.0">
                     <children>

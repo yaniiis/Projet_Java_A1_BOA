@@ -245,9 +245,9 @@ public class ControllerWallet {
         switch (i){
             case 1 :
                 if(clone==true){
-                    pane_1.setStyle("-fx-background-color: red; -fx-background-radius: 10;");
+                    pane_1.setStyle("-fx-background-color: #F0B4FF; -fx-background-radius: 10;");
                 }else{
-                    pane_1.setStyle("-fx-background-color: orange; -fx-background-radius: 10;");
+                    pane_1.setStyle("-fx-background-color: #FFB4D2 ; -fx-background-radius: 10;");
                 }
                 label_1.setText(name);
                 amount_1.setText(String.valueOf(amount));
@@ -412,6 +412,7 @@ public class ControllerWallet {
 
     @FXML
     public void insert_wallet() throws Exception {
+        System.out.println("aa");
         String wallet_name = txt_wallet.getText();
         String description_wallet = txt_description.getText();
         java.util.Date dateActuelle = new java.util.Date();
@@ -1281,6 +1282,7 @@ public class ControllerWallet {
         hbox_insert_montant.setVisible(false);
         Vbox_conseil.setVisible(false);
         btn_back.setVisible(true);
+
     }
 
     @FXML
@@ -1290,6 +1292,9 @@ public class ControllerWallet {
         hbox_insert_montant.setVisible(false);
         Vbox_conseil.setVisible(true);
         btn_back.setVisible(true);
+        
+        
+        
         int y = 0;
         int z = 0;
         int c = 0;
@@ -1463,6 +1468,7 @@ public class ControllerWallet {
 
     @FXML
     public void retraite_layout(){
+        Vbox_retraite.setVisible(false);
         lineChart.setVisible(false);
         hbox_insert_montant.setVisible(false);
         Vbox_retraite.setVisible(true);
@@ -1474,6 +1480,12 @@ public class ControllerWallet {
     @FXML
     public void calcul_retraite() {
 
+        Vbox_retraite.setVisible(true);
+        lineChart.setVisible(false);
+        hbox_insert_montant.setVisible(false);
+        Vbox_retraite.setVisible(false);
+        Vbox_conseil.setVisible(false);
+        
         String txt_annee_retrait = txt_annee_retraite.getText();
         String txt_montant_pt = txt_montant_ptf.getText();
         int montant_final;

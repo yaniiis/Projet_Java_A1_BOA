@@ -116,7 +116,7 @@ public class ControllerInscription {
                         i_mdp.setText("");
                     }else{
                         if(!IntefaceFeatures.isValidPhone(phone)){
-                            label_erreur.setText("Le format du numéro de téléphone est incorrecte ! Ex : 0728213087");
+                            label_erreur.setText("Le format du numéro de téléphone est incorrecte !");
                             i_phone.setText("");
 
                         }else{

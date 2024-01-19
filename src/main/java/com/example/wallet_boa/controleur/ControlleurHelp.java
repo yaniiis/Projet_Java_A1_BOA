@@ -101,7 +101,7 @@ public class ControlleurHelp {
 
                     alert.setTitle("FAQ");
                     alert.setHeaderText("send");
-                    alert.setContentText("Votre question a été envoyé, le service BOA se charge de vous répondre au plus vite");
+                    alert.setContentText("BOA se charge de vous répondre au plus vite");
                     alert.showAndWait();
 
                     String q = "Q :     " + question;
